@@ -45,8 +45,8 @@ export function PaymentStatus({ bookingId }: { bookingId: string }) {
     <main className="status-page shell">
       <div className={paid ? "status-mark paid" : failed ? "status-mark failed" : "status-mark pending"}>{paid ? <CheckIcon /> : failed ? "!" : "···"}</div>
       <div className="eyebrow"><span /> {paid ? "Payment confirmed" : failed ? "Payment needs attention" : "Confirming payment"}</div>
-      <h1>{paid ? <>Your moment is<br />being confirmed.</> : failed ? <>That payment did<br />not complete.</> : <>We’re checking with<br />the payment provider.</>}</h1>
-      <p>{paid ? "The provider webhook confirmed payment. Next, the creator reviews the campaign and the work begins." : failed ? "No booking has been confirmed. Return to the moment to try again or choose another payment method." : stopped ? "Confirmation is taking longer than usual. We’ll update the booking from the provider webhook; you can safely close this page." : "A redirect alone never marks a booking paid. This page will update when the signed provider webhook arrives."}</p>
+      <h1>{paid ? <>Your placement is<br />being confirmed.</> : failed ? <>That payment did<br />not complete.</> : <>We’re checking with<br />the payment provider.</>}</h1>
+      <p>{paid ? "The provider webhook confirmed payment. Next, the creator reviews the campaign and the work begins." : failed ? "No booking has been confirmed. Return to the placement to try again or choose another payment method." : stopped ? "Confirmation is taking longer than usual. We’ll update the booking from the provider webhook; you can safely close this page." : "A redirect alone never marks a booking paid. This page will update when the signed provider webhook arrives."}</p>
       <div className="status-steps">
         <span className={paid ? "done" : "active"}><b>1</b>Payment</span>
         <span className={paid ? "active" : ""}><b>2</b>Creator confirmation</span>

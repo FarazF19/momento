@@ -1,107 +1,62 @@
-# Momento MVP
+# Momento
 
-Momento is a marketplace where creators list upcoming trips and events as concrete sponsorship inventory, and brands book or offer on those moments before they happen.
+Brands rent advertising space on creators’ clothes, laptops, bags, and travel items. Creators retain ownership, define the placement, and approve offers.
 
-## Included
+## Implemented in this revision
 
-- Cream, bright editorial landing page with responsive navigation
-- Searchable moment discovery and six seeded listings
-- Moment pages with selectable sponsorship inventory
-- Brand offers and Tazapay-hosted checkout
-- Creator listing intake and self-serve, country-aware payout onboarding
-- Signed and deduplicated payment and payout webhooks
-- Separate booking, payment, fulfillment, and payout states
-- Automatic payout creation after paid work is approved
-- Daily retry job for eligible payouts
+- Cream landing page with direct brand/creator calls to action, FAQs, and an original 16-second silent hero video.
+- Searchable physical placements with explicit surface, dimensions, duration, visibility, production, exclusivity, and proof requirements.
+- Supabase email/password signup, email confirmation, login, recovery, and logout. Server-side identity verification and cookie refresh.
+- Separate creator and brand accounts with protected dashboards.
+- Verified creators publish into PostgreSQL; live listings appear in discovery and at `/placements/:id`.
+- Verified brands propose offers. Creators accept/reserve or decline; brands withdraw pending offers.
+- Database row-level permissions protect profiles and offers. Offer mutations use narrowly scoped database functions, derive identities from authenticated sessions, and store an immutable copy of the placement terms.
+- Acceptance locks the placement, reserves it, and declines competing offers in one transaction. A partial unique index prevents multiple accepted offers.
+- Six clearly marked fictional examples are shown when no live listings are available. They cannot collect offers or payments.
 
-## Payment architecture
+Code completion does not mean production setup is complete. The migration must be applied to the connected Supabase project and the environment configured in Vercel before real signup/publication works.
 
-The payment flow is fail-closed:
+## Setup
 
-1. The server recalculates inventory prices from trusted product data.
-2. Tazapay creates a hosted checkout using an idempotency key.
-3. The redirect page polls booking status but never declares success by itself.
-4. A signed `checkout.paid` webhook confirms the exact amount and currency.
-5. The creator completes a self-serve payout wizard. Required fields come from Tazapay's payout metadata API.
-6. Bank data passes directly to Tazapay and is not stored by Momento. Only the beneficiary ID and payout route are retained.
-7. Delivery approval automatically calls the payout API. A daily job retries safe, idempotent payout creation.
-8. Payout webhooks update the final status.
+1. Install packages: `npm ci`.
+2. Copy `.env.example` to `.env.local`.
+3. In the dedicated Supabase project, apply `supabase/migrations/202609190001_marketplace.sql` using the migration runner or SQL editor. This creates new `profiles`, `placements`, and `offers` tables. It does not migrate historical Tazapay booking records.
+4. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `APP_URL`. Only the publishable key is needed; no service-role key belongs in browser code.
+5. Enable email confirmation. Configure Site URL and allowlisted callback URLs: `https://YOUR_DOMAIN/auth/callback` and `https://YOUR_DOMAIN/auth/callback?next=/auth/reset`. Add localhost equivalents for development. Configure production SMTP before inviting external users.
+6. Run `npm run dev`. Configure the same values in Vercel, then rebuild and deploy.
 
-Do not market this as escrow unless Tazapay has explicitly approved an escrow product and the related terms for this business.
-
-## Local setup
-
-```bash
-npm install
-cp .env.example .env.local
-```
-
-Create a PostgreSQL database, then apply the schema:
-
-```bash
-psql "$DATABASE_URL" -f db/schema.sql
-```
-
-Add sandbox credentials and at least 32 random characters for each application secret in `.env.local`, then run:
-
-```bash
-npm run dev
-```
-
-Open `http://localhost:3000`.
-
-## Tazapay setup
-
-Use sandbox until all of these pass:
-
-- Hosted checkout success, failure, cancellation, and delayed-webhook cases
-- Duplicate and out-of-order webhook delivery
-- Amount/currency mismatch handling
-- Beneficiary creation for every launch country
-- Local and SWIFT payout corridors used by launch creators
-- Payout success, failure, reversal, and retry cases
-
-Configure the webhook destination as:
-
-```text
-https://YOUR_DOMAIN/api/webhooks/tazapay
-```
-
-Subscribe to checkout, payment-attempt, and payout events. Put the webhook secret in `TAZAPAY_WEBHOOK_SECRET`.
-
-`TAZAPAY_PAYOUT_PURPOSE_CODE` must be confirmed with Tazapay for creator sponsorship services. It is deliberately not guessed in code.
-
-## Automatic payouts
-
-A payout becomes eligible only when:
-
-- `payment_status = paid`
-- `fulfillment_status = approved`
-- the creator has an approved Tazapay beneficiary
-- `payout_status` is `not_ready` or `retry`
-
-The protected delivery approval endpoint marks fulfillment approved and immediately attempts the payout:
-
-```text
-POST /api/bookings/:id/approve-delivery
-Authorization: Bearer $OPERATIONS_SECRET
-```
-
-`vercel.json` also invokes `/api/jobs/release-payouts` daily so it can deploy on Vercel Hobby. Vercel sends `CRON_SECRET` as the bearer token. The same endpoint can be called by another scheduler if more frequent retries are needed.
-
-## Before live launch
-
-- Obtain written marketplace/creator-services approval from Tazapay.
-- Complete Momento merchant KYB and enable required collection/payout corridors.
-- Replace sample listings with authenticated creator-owned records.
-- Add brand and creator authentication before exposing dashboards.
-- Add email notifications for offers, paid bookings, approval, and payout state changes.
-- Add refund/cancellation operations and terms.
-- Run the database behind encrypted connections and backups.
+The marketplace uses Supabase’s authenticated Data API. `DATABASE_URL` and the old `db/schema.sql` are **not required** for the new listing/offer flow.
 
 ## Verification
 
 ```bash
+npm test
 npm run lint
 npm run build
 ```
+
+The database suite executes the actual migration in PGlite (PostgreSQL in WASM), with a minimal Supabase auth schema fixture. It tests ownership, role restrictions, verification, private reads, spoofed writes, immutable snapshots, duplicate offers, reservation, decline, and withdrawal. It does not replace testing against the hosted Supabase auth service.
+
+The video and poster are checked in. Regeneration requires FFmpeg and `npm run render:ad`; deployment does not require FFmpeg.
+
+## Payments: not ready for production
+
+The user’s preferred providers are Dodo or Polar, with automated creator payouts. No compatible production provider has been established for this physical advertising marketplace. The current marketplace stops at accepted/reserved terms and clearly states that no money has been collected. No manual payout workflow is substituted.
+
+Provider checks on September 19, 2026:
+
+- [Polar acceptable-use policy](https://polar.sh/legal/acceptable-use-policy) explicitly prohibits advertising/sponsorship and marketplaces.
+- [Dodo merchant acceptance](https://docs.dodopayments.com/miscellaneous/merchant-acceptance) focuses on digital products and excludes services whose principal value is human labour. This placement model is not confirmed eligible.
+
+Legacy Tazapay checkout, payout, webhook, and cron modules remain from the prior prototype. They are not connected to new Supabase offers and are not evidence of a working launch payment flow. The anonymous legacy listing endpoint returns 410, and all example bookings are rejected. Do not configure legacy payment credentials as a shortcut to launch.
+
+## Monday, September 21 release gates
+
+- Apply the migration and verify security checks on the hosted project.
+- Configure production auth email delivery; exercise signup, confirmation, login, recovery, expiry, and logout with two real test accounts.
+- Publish one actual creator listing, send a brand offer, accept it, and confirm private dashboard access and reservation on the deployed site.
+- Verify responsive screens and video playback on mobile and desktop.
+- Establish a payment provider that approves physical advertising, the merchant’s jurisdiction, and automated creator payouts. Complete sandbox payment, webhook, refund, payout, failure, and duplicate-event checks before enabling charges.
+- Add agreed cancellation/refund terms, production fulfillment/proof workflow, abuse controls, and transactional notifications before accepting paid placements.
+
+Monday’s paid launch remains conditional on payment eligibility and these hosted checks. Public discovery and account onboarding can launch independently once their gates pass.

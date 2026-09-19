@@ -33,6 +33,10 @@ create table if not exists creator_payout_profiles (
   updated_at timestamptz not null default now()
 );
 
+-- Additive migration: existing submissions and booking records are preserved.
+alter table listing_submissions
+  add column if not exists placement_details jsonb not null default '{}'::jsonb;
+
 create table if not exists bookings (
   id text primary key,
   moment_slug text not null,

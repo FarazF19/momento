@@ -37,6 +37,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Please complete the booking details." }, { status: 400 });
   }
 
+  if (moment.isDemo) return NextResponse.json({ error: "This is an illustrative listing. Real offers and payments are disabled." }, { status: 409 });
+
   const selected = moment.inventory.filter((item) => inventoryIds.includes(item.id));
   if (selected.length !== inventoryIds.length || selected.some((item) => item.remaining < 1)) {
     return NextResponse.json({ error: "One or more selected items are unavailable." }, { status: 409 });
@@ -45,7 +47,7 @@ export async function POST(request: Request) {
   const listedTotalMinor = selected.reduce((sum, item) => sum + item.price * 100, 0);
   const offered = Number(body.offerAmount);
   const amountMinor = mode === "offer" ? Math.round(offered * 100) : listedTotalMinor;
-  if (!Number.isInteger(amountMinor) || amountMinor < 10000 || (mode === "offer" && amountMinor > listedTotalMinor)) {
+  if (!Number.isInteger(amountMinor) || !Number.isSafeInteger(amountMinor) || amountMinor < 100 || amountMinor > 10000000) {
     return NextResponse.json({ error: "The offer amount is outside the allowed range." }, { status: 400 });
   }
 
@@ -82,9 +84,9 @@ export async function POST(request: Request) {
       amountMinor,
       currency: "USD",
       customer: { name: brandName, email, country: brandCountry },
-      description: `${moment.event}: ${selected.map((item) => item.name).join(", ")}`.slice(0, 180),
+      description: `${moment.title}: ${selected.map((item) => item.name).join(", ")}`.slice(0, 180),
       successUrl: `${appUrl}/checkout/success?booking=${bookingId}`,
-      cancelUrl: `${appUrl}/moments/${moment.slug}?checkout=cancelled`,
+      cancelUrl: `${appUrl}/placements/${moment.slug}?checkout=cancelled`,
       webhookUrl: `${appUrl}/api/webhooks/tazapay`,
     });
 

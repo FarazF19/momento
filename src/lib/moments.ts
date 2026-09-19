@@ -1,212 +1,79 @@
-export type InventoryItem = {
-  id: string;
-  name: string;
-  description: string;
-  timing: string;
-  reach: string;
-  price: number;
-  remaining: number;
-};
-
+export const categories = ["All", "Clothing", "Laptops", "Bags", "Travel"] as const;
+export type PlacementCategory = Exclude<(typeof categories)[number], "All">;
+export type InventoryItem = { id: string; name: string; description: string; timing: string; reach: string; price: number; remaining: number };
 export type Moment = {
-  slug: string;
-  event: string;
-  city: string;
-  country: string;
-  dates: string;
-  month: string;
-  category: "Tech" | "Fashion" | "Culture" | "Travel" | "Gaming";
-  tagline: string;
-  creator: {
-    name: string;
-    handle: string;
-    niche: string;
-    followers: string;
-    engagement: string;
-    avatar: string;
-  };
-  image: string;
-  color: string;
-  accent: string;
-  inventory: InventoryItem[];
-  fit: string[];
+  slug: string; title: string; city: string; country: string; dates: string; startDate: string; month: string;
+  category: PlacementCategory; tagline: string; surface: string; dimensions: string; duration: string;
+  itinerary: string; visibility: string; proof: string; production: string; exclusivity: string; isDemo: boolean;
+  creator: { name: string; handle: string; niche: string; followers: string; avatar: string };
+  color: string; accent: string; inventory: InventoryItem[]; fit: string[]; photoUrl?: string;
 };
 
-export const moments: Moment[] = [
-  {
-    slug: "sxsw-austin",
-    event: "SXSW Austin",
-    city: "Austin",
-    country: "USA",
-    dates: "12–20 Mar 2027",
-    month: "MAR",
-    category: "Tech",
-    tagline: "The ideas shaping culture, captured from the ground.",
-    creator: {
-      name: "Lena Park",
-      handle: "@lenamakes",
-      niche: "Tech × culture",
-      followers: "186K",
-      engagement: "4.9%",
-      avatar: "LP",
-    },
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1400&q=85",
-    color: "#ff5b3a",
-    accent: "#ffe04d",
-    inventory: [
-      { id: "reel", name: "Event recap Reel", description: "A fast, cinematic recap with an integrated brand moment.", timing: "During event", reach: "55K–100K", price: 1800, remaining: 2 },
-      { id: "stories", name: "3 Story frames", description: "Live coverage with tag, link, and a clear campaign message.", timing: "During event", reach: "25K–60K", price: 650, remaining: 4 },
-      { id: "newsletter", name: "Newsletter field note", description: "A dedicated section in Lena's post-event field note.", timing: "Within 3 days", reach: "18K subscribers", price: 900, remaining: 1 },
-    ],
-    fit: ["AI tools", "Creator tech", "Travel"],
-  },
-  {
-    slug: "cannes-film-festival",
-    event: "Cannes Film Festival",
-    city: "Cannes",
-    country: "France",
-    dates: "11–22 May 2027",
-    month: "MAY",
-    category: "Culture",
-    tagline: "Film, style, and the stories behind the red carpet.",
-    creator: {
-      name: "Marco Alvarez",
-      handle: "@marcoframes",
-      niche: "Film & lifestyle",
-      followers: "320K",
-      engagement: "5.4%",
-      avatar: "MA",
-    },
-    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1400&q=85",
-    color: "#4f63ff",
-    accent: "#ff8e67",
-    inventory: [
-      { id: "diary", name: "Festival video diary", description: "One editorial day-in-the-life film with natural product placement.", timing: "During event", reach: "90K–180K", price: 3200, remaining: 1 },
-      { id: "stories", name: "5 Story frames", description: "Arrival, venue, and event coverage with campaign link.", timing: "During event", reach: "45K–90K", price: 1100, remaining: 3 },
-      { id: "photos", name: "Photo set", description: "Six campaign-ready stills licensed for organic brand channels.", timing: "Within 5 days", reach: "Brand-owned", price: 1500, remaining: 2 },
-    ],
-    fit: ["Fashion", "Travel", "Cameras"],
-  },
-  {
-    slug: "london-design-festival",
-    event: "London Design Festival",
-    city: "London",
-    country: "United Kingdom",
-    dates: "11–19 Sep 2027",
-    month: "SEP",
-    category: "Culture",
-    tagline: "Design lives in the details—and in the people who notice them.",
-    creator: {
-      name: "Maya Chen",
-      handle: "@mayacitynotes",
-      niche: "Design & city culture",
-      followers: "128K",
-      engagement: "5.6%",
-      avatar: "MC",
-    },
-    image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1400&q=85",
-    color: "#ffe04d",
-    accent: "#ff5b3a",
-    inventory: [
-      { id: "reel", name: "Festival Reel", description: "A short, cinematic recap from the festival.", timing: "During event", reach: "40K–90K", price: 1800, remaining: 3 },
-      { id: "stories", name: "3 Story frames", description: "Behind-the-scenes coverage with tag and link.", timing: "During event", reach: "25K–60K", price: 650, remaining: 5 },
-      { id: "newsletter", name: "Newsletter field note", description: "A personal report from London with a dedicated brand mention.", timing: "Within 3 days", reach: "8K–15K", price: 900, remaining: 2 },
-    ],
-    fit: ["Design tools", "Travel", "Culture"],
-  },
-  {
-    slug: "tokyo-game-show",
-    event: "Tokyo Game Show",
-    city: "Tokyo",
-    country: "Japan",
-    dates: "23–26 Sep 2027",
-    month: "SEP",
-    category: "Gaming",
-    tagline: "New worlds, hardware, and culture from Tokyo.",
-    creator: {
-      name: "Kaito Sato",
-      handle: "@kaitoplays",
-      niche: "Gaming & tech",
-      followers: "278K",
-      engagement: "6.1%",
-      avatar: "KS",
-    },
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1400&q=85",
-    color: "#9cff57",
-    accent: "#4f63ff",
-    inventory: [
-      { id: "hands-on", name: "Hands-on video", description: "A dedicated short-form demo recorded on the show floor.", timing: "During event", reach: "80K–160K", price: 2400, remaining: 2 },
-      { id: "stories", name: "4 Story frames", description: "Live reactions and product placement from the venue.", timing: "During event", reach: "35K–70K", price: 800, remaining: 4 },
-      { id: "stream", name: "Livestream mention", description: "A 60-second integrated segment in the nightly recap stream.", timing: "Event evening", reach: "12K live", price: 1200, remaining: 2 },
-    ],
-    fit: ["Games", "Hardware", "Energy"],
-  },
-  {
-    slug: "new-york-fashion-week",
-    event: "New York Fashion Week",
-    city: "New York",
-    country: "USA",
-    dates: "8–14 Sep 2027",
-    month: "SEP",
-    category: "Fashion",
-    tagline: "Street style, emerging labels, and the view from the front row.",
-    creator: {
-      name: "Isabella Cruz",
-      handle: "@isabellainmotion",
-      niche: "Fashion & beauty",
-      followers: "412K",
-      engagement: "4.7%",
-      avatar: "IC",
-    },
-    image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1400&q=85",
-    color: "#ff8bc7",
-    accent: "#ffe04d",
-    inventory: [
-      { id: "look", name: "Sponsored look", description: "One styled look featured in an editorial Reel and photo carousel.", timing: "During event", reach: "120K–240K", price: 4500, remaining: 1 },
-      { id: "stories", name: "5 Story frames", description: "Show-day coverage with product tag and link.", timing: "During event", reach: "70K–130K", price: 1350, remaining: 3 },
-      { id: "roundup", name: "Trend roundup mention", description: "Integrated placement in the post-week trend report.", timing: "Within 5 days", reach: "90K–170K", price: 1800, remaining: 2 },
-    ],
-    fit: ["Fashion", "Beauty", "Accessories"],
-  },
-  {
-    slug: "web-summit-lisbon",
-    event: "Web Summit Lisbon",
-    city: "Lisbon",
-    country: "Portugal",
-    dates: "1–4 Nov 2027",
-    month: "NOV",
-    category: "Tech",
-    tagline: "Startups, operators, and what the internet builds next.",
-    creator: {
-      name: "Andre Silva",
-      handle: "@andrebuilds",
-      niche: "Startups & business",
-      followers: "260K",
-      engagement: "4.3%",
-      avatar: "AS",
-    },
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1400&q=85",
-    color: "#73d8ff",
-    accent: "#ff5b3a",
-    inventory: [
-      { id: "interview", name: "Founder interview", description: "A concise on-site conversation packaged for short-form channels.", timing: "During event", reach: "65K–140K", price: 2800, remaining: 2 },
-      { id: "stories", name: "3 Story frames", description: "Live event coverage with campaign message and link.", timing: "During event", reach: "30K–65K", price: 700, remaining: 4 },
-      { id: "brief", name: "Operator brief mention", description: "A native mention in Andre's post-event email briefing.", timing: "Within 2 days", reach: "22K subscribers", price: 1100, remaining: 2 },
-    ],
-    fit: ["B2B software", "Fintech", "Founder tools"],
-  },
-];
+const examples = [
+  { slug: "hoodie-dubai-week", title: "Your logo. My hoodie.", category: "Clothing", city: "Dubai", country: "UAE",
+    startDate: "2026-11-05", dates: "5–11 Nov 2026", tagline: "A chest patch on my everyday hoodie, out and about for seven days.",
+    surface: "Front chest of a cream hoodie", dimensions: "12 × 8 cm removable patch", duration: "7 days",
+    itinerary: "Dubai Marina walks and cafés; private venues only with permission.",
+    visibility: "At least 3 hours of agreed outings each day, with the patch visible.",
+    proof: "One dated placement photo per day and a final seven-photo report.",
+    production: "Brand supplies the removable patch and pays delivery before the start date.",
+    name: "Maya Chen", handle: "@mayacitynotes", niche: "Style & city life", followers: "28K", avatar: "MC", price: 175, color: "#ff8e67", fit: ["Lifestyle", "Travel"] },
+  { slug: "laptop-lahore-coworking", title: "A laptop lid with room for you.", category: "Laptops", city: "Lahore", country: "Pakistan",
+    startDate: "2026-11-01", dates: "1–30 Nov 2026", tagline: "Your sticker on my laptop during a month of coworking sessions.",
+    surface: "Outward-facing laptop lid", dimensions: "10 × 7 cm removable sticker", duration: "30 days",
+    itinerary: "Shared workspaces and cafés in Lahore, subject to venue permission.",
+    visibility: "12 work sessions of at least 2 hours, with the lid facing the shared workspace.",
+    proof: "One dated setup photo per session, plus a session log.",
+    production: "Brand ships a removable, residue-free sticker before the first session.",
+    name: "Lena Park", handle: "@lenamakes", niche: "Builders & remote work", followers: "18K", avatar: "LP", price: 120, color: "#73d8ff", fit: ["Software", "Creator tools"] },
+  { slug: "backpack-london-commute", title: "Put your brand on my backpack.", category: "Bags", city: "London", country: "United Kingdom",
+    startDate: "2026-11-09", dates: "9–22 Nov 2026", tagline: "A front-panel patch on the bag I carry around the city.",
+    surface: "Backpack front panel", dimensions: "15 × 10 cm fabric patch", duration: "14 days",
+    itinerary: "Walking routes between public transit and work. Private addresses are not shared.",
+    visibility: "10 weekday commutes of at least 45 minutes, with the panel unobstructed.",
+    proof: "One dated placement photo per commute day; no bystander faces required.",
+    production: "Brand supplies a removable fabric patch and pays shipping.",
+    name: "Marco Alvarez", handle: "@marcoframes", niche: "Urban life & photography", followers: "32K", avatar: "MA", price: 140, color: "#9cff57", fit: ["Local brands", "Accessories"] },
+  { slug: "travel-tokyo-week", title: "Your brand, along for the trip.", category: "Travel", city: "Tokyo", country: "Japan",
+    startDate: "2026-11-15", dates: "15–21 Nov 2026", tagline: "Reserve backpack ad space across my seven-day Tokyo itinerary.",
+    surface: "Daypack front panel during travel", dimensions: "15 × 10 cm removable patch", duration: "7 days",
+    itinerary: "Public walks in Shibuya, Asakusa, and Ueno. Dates and permitted locations agreed before payment.",
+    visibility: "At least 3 hours of planned outings per day. No flights or social posts included.",
+    proof: "Daily dated placement photos and an itinerary completion report.",
+    production: "Brand ships the patch before departure. Trip expenses are not included.",
+    name: "Kaito Sato", handle: "@kaitoplays", niche: "Travel & tech", followers: "45K", avatar: "KS", price: 250, color: "#ffe04d", fit: ["Travel apps", "Connectivity"] },
+  { slug: "tshirt-karachi-weekend", title: "A weekend in your colours.", category: "Clothing", city: "Karachi", country: "Pakistan",
+    startDate: "2026-11-07", dates: "7–8 Nov 2026", tagline: "Your supplied T-shirt worn on two days of city outings.",
+    surface: "Chest print on a brand-supplied T-shirt", dimensions: "Up to 20 × 15 cm print", duration: "2 days",
+    itinerary: "Public weekend walks and cafés; no restricted events included.",
+    visibility: "At least 3 hours each day with the print visible. Social content is not included.",
+    proof: "Two dated photos per day showing the print and outing context.",
+    production: "Brand supplies a correctly sized shirt and pays delivery; creator approves the design.",
+    name: "Isabella Cruz", handle: "@isabellainmotion", niche: "Everyday style", followers: "41K", avatar: "IC", price: 60, color: "#ff8bc7", fit: ["Fashion", "Local businesses"] },
+  { slug: "tote-lisbon-week", title: "A tote that takes you places.", category: "Bags", city: "Lisbon", country: "Portugal",
+    startDate: "2026-11-02", dates: "2–6 Nov 2026", tagline: "Your printed tote, carried to five days of work and coffee stops.",
+    surface: "One outer side of a canvas tote", dimensions: "25 × 25 cm print", duration: "5 days",
+    itinerary: "Central Lisbon walking routes and cafés where branding is permitted.",
+    visibility: "At least 1 hour of walking each day with the printed side facing outward.",
+    proof: "One dated placement photo per day and a completion note.",
+    production: "Brand supplies the printed tote and pays delivery.",
+    name: "Andre Silva", handle: "@andrebuilds", niche: "Work & city life", followers: "26K", avatar: "AS", price: 90, color: "#c8b5ff", fit: ["Independent shops", "Design"] },
+] satisfies Array<{
+  slug: string; title: string; category: PlacementCategory; city: string; country: string; startDate: string; dates: string;
+  tagline: string; surface: string; dimensions: string; duration: string; itinerary: string; visibility: string; proof: string;
+  production: string; name: string; handle: string; niche: string; followers: string; avatar: string; price: number; color: string; fit: string[];
+}>;
 
-export const categories = ["All", "Tech", "Fashion", "Culture", "Travel", "Gaming"] as const;
+// Fictional examples only. Never take money or bids against these records.
+export const moments: Moment[] = examples.map((item) => ({
+  ...item, month: "NOV", accent: "#ffe04d", isDemo: true,
+  creator: { name: item.name, handle: item.handle, niche: item.niche, followers: item.followers, avatar: item.avatar },
+  exclusivity: "One brand on this placement during the agreed dates; no broader exclusivity implied.",
+  inventory: [{ id: "placement", name: item.surface, description: item.dimensions, timing: item.duration,
+    reach: "No guaranteed impressions", price: item.price, remaining: 1 }],
+}));
 
-export function getMoment(slug: string) {
-  return moments.find((moment) => moment.slug === slug);
-}
-
+export function getMoment(slug: string) { return moments.find((item) => item.slug === slug); }
 export function formatPrice(price: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(price);
+  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(price);
 }
