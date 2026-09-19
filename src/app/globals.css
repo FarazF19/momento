@@ -453,6 +453,37 @@ summary { cursor: pointer; line-height: 1.5; }
   .onboarding-card.complete { padding: 42px 20px; }
 }
 
+.audience-page { padding-top: 80px; padding-bottom: 100px; }
+.creator-context { grid-column: 1 / -1; padding: 24px; border-top: 1px solid var(--line); }
+.creator-context h3 { font-size: 15px; margin: 0 0 8px; }
+.creator-context p { font-size: 14px; line-height: 1.65; color: var(--muted); margin: 0 0 20px; }
+.creator-context p:last-child { margin-bottom: 0; }
+.audience-page h1 { max-width: 1000px; font-size: clamp(46px, 6vw, 84px); line-height: 1.04; letter-spacing: -.055em; margin: 24px 0; }
+.audience-page h1 em { color: #b83e27; font-style: normal; }
+.audience-lede { max-width: 720px; font-size: 21px; line-height: 1.6; color: var(--muted); }
+.audience-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 70px 0; }
+.audience-grid article { padding: 30px; border: 1px solid var(--line); border-radius: 20px; background: var(--white); }
+.audience-grid article > span { font-size: 12px; text-transform: uppercase; letter-spacing: .09em; color: #a23e2b; }
+.audience-grid h2 { font-size: 27px; line-height: 1.15; letter-spacing: -.035em; margin: 22px 0 14px; }
+.audience-grid p, .audience-note p { line-height: 1.7; color: var(--muted); }
+.audience-note { max-width: 760px; border-top: 1px solid var(--line); padding-top: 32px; }
+.hero h1 { font-size: clamp(50px, 5.6vw, 86px); line-height: 1.02; letter-spacing: -.06em; }
+.moment-card { border: 1px solid rgba(30, 25, 20, .13); border-radius: 18px; overflow: hidden; background: var(--white); }
+.moment-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(50, 35, 15, .08); }
+.moment-card h3 { font-size: 24px; line-height: 1.15; letter-spacing: -.035em; }
+.moment-card .date-ticket { display: none; }
+.moment-card .card-surface { line-height: 1.5; font-size: 14px; min-height: 42px; }
+.placement-facts { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 0 18px; }
+.placement-facts span { font-size: 11px; padding: 6px 9px; border-radius: 6px; background: #f0ece3; }
+.moment-card .creator-row { border-top: 1px solid var(--line); padding-top: 16px; }
+.moment-card .card-footer { margin-top: 18px; gap: 10px; align-items: center; }
+.listing-price { display: flex; flex-direction: column; gap: 3px; }
+.listing-price b { font-size: 23px; }
+.listing-price small { font-size: 10px; color: var(--muted); }
+.moment-card .card-bid-link { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; width: auto; height: auto; border: 0; padding: 10px 0; }
+.card-bid-link svg { width: 16px; height: 16px; }
+@media (max-width: 760px) { .audience-grid { grid-template-columns: 1fr; margin: 40px 0; } .audience-page { padding-top: 45px; } .audience-lede { font-size: 18px; } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }

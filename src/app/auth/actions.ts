@@ -9,8 +9,9 @@ export async function authenticate(form: FormData) {
   const email = String(form.get("email") || "").trim();
   const password = String(form.get("password") || "");
   const mode = String(form.get("mode"));
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || password.length < 12 || password.length > 128) message("Enter a valid email and a password between 12 and 128 characters.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !password || password.length > 128) message("Enter a valid email and password.");
   if (mode === "signup") {
+    if (password.length < 12) message("Choose a password with at least 12 characters.");
     const role = form.get("role");
     const name = String(form.get("name") || "").trim().slice(0, 100);
     if (!name || (role !== "brand" && role !== "creator")) message("Enter your name and choose a creator or brand account.");

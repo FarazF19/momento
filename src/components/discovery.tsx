@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Header } from "@/components/header";
 import { MomentCard } from "@/components/moment-card";
 import { SearchIcon } from "@/components/icons";
 import { categories, type Moment } from "@/lib/moments";
@@ -31,7 +30,6 @@ export default function Discovery({ placements, unavailable }: { placements: Mom
 
   return (
     <>
-      <Header />
       <main className="discover-page shell">
         <div className="page-hero compact">
           <div className="eyebrow"><span /> Ad space in real life</div>

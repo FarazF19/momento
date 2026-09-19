@@ -30,15 +30,15 @@ export function MomentCard({ moment, featured = false }: { moment: Moment; featu
       <div className="moment-card-body">
         <div className="card-location"><PinIcon /> {moment.city}, {moment.country}</div>
         <Link href={`/placements/${moment.slug}`}><h3>{moment.title}</h3></Link>
-        <p>{moment.tagline}</p>
+        <p className="card-surface">{moment.surface}</p>
+        <div className="placement-facts"><span>{moment.dimensions}</span><span>{moment.duration}</span></div>
         <div className="creator-row">
           <span className="avatar" style={{ background: moment.color }}>{moment.creator.avatar}</span>
           <div><b>{moment.creator.name}</b><small>{moment.creator.niche}</small></div>
-          <div className="price-block"><small>{moment.isDemo ? "Example asking price" : "Asking price"}</small><b>{formatPrice(startingPrice)}</b></div>
         </div>
         <div className="card-footer">
-          <span>{moment.duration} · View ad space</span>
-          <Link href={`/placements/${moment.slug}`} aria-label={`View ${moment.title}`}><ArrowIcon /></Link>
+          <div className="listing-price"><b>{formatPrice(startingPrice)}</b><small>asking · full period</small></div>
+          <Link href={`/placements/${moment.slug}`} className="card-bid-link" aria-label={`View ${moment.title}`}>{moment.isDemo ? "View example" : "View & offer"} <ArrowIcon /></Link>
         </div>
       </div>
     </article>

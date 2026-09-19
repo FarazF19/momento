@@ -2,7 +2,6 @@
 
 import { categories } from "@/lib/moments";
 import { useState } from "react";
-import { Header } from "@/components/header";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
 
 type SubmitState = "idle" | "loading" | "success" | "error";
@@ -36,7 +35,6 @@ export default function ListingForm({ name, email }: { name: string; email: stri
 
   return (
     <>
-      <Header />
       <main className="list-page shell">
         <div className="listing-intro">
           <div className="eyebrow"><span /> For creators</div>

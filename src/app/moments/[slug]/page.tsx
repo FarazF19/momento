@@ -30,9 +30,10 @@ export default async function MomentDetailPage({ params }: { params: Promise<{ s
             </section>
             <section className="creator-profile">
               <div className="creator-identity"><span className="profile-avatar" style={{ background: moment.color }}>{moment.creator.avatar}</span><div><h2>{moment.creator.name}</h2><p>{moment.creator.handle} · {moment.creator.niche}</p></div></div>
-              <div className="creator-stat"><b>{moment.creator.followers}</b><span>Followers</span></div>
+              <div className="creator-stat"><b>{moment.city}</b><span>Placement location</span></div>
               <div className="creator-stat"><b>{moment.isDemo ? "Example" : "Creator listed"}</b><span>{moment.isDemo ? "Fictional creator" : "Self-reported profile"}</span></div>
               {moment.fit.length > 0 && <div className="creator-fit"><span>Good fit for</span><div>{moment.fit.map((item) => <b key={item}>{item}</b>)}</div></div>}
+              <div className="creator-context"><h3>Where your brand goes</h3><p>{moment.itinerary}</p><h3>What this creator commits to</h3><p>{moment.visibility}</p></div>
             </section>
             <section className="placement-terms"><h2>What the brand is renting</h2><p>{moment.tagline}</p><dl>{[
               ["Ad surface", moment.surface], ["Size", moment.dimensions], ["Duration", moment.duration],

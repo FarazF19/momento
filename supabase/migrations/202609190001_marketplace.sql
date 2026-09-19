@@ -139,4 +139,5 @@ begin
 end;
 $$;
 revoke all on function public.create_marketplace_profile(), public.submit_offer(uuid, integer, text), public.respond_to_offer(uuid, text) from public, anon;
+revoke execute on function public.create_marketplace_profile() from authenticated;
 grant execute on function public.submit_offer(uuid, integer, text), public.respond_to_offer(uuid, text) to authenticated;

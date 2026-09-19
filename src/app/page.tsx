@@ -16,12 +16,12 @@ export default async function Home() {
       <main>
         <section className="hero shell">
           <div className="hero-copy">
-            <div className="eyebrow"><span /> Ad space, worn and carried</div>
-            <h1>Your brand.<br />Their <em>everyday.</em></h1>
-            <p className="hero-lede">Put your brand on the clothes, laptops, and bags creators wear and carry—even on their next trip. Creators list the ad space. Brands make an offer.</p>
+            <div className="eyebrow"><span /> The real-world creator ad marketplace</div>
+            <h1>Their everyday.<br /><em>Your next ad space.</em></h1>
+            <p className="hero-lede">Rent ad space on creators’ clothes, laptops, and bags—wherever life takes them. Creators list the space. Brands make an offer. Both agree the fit.</p>
             <div className="hero-actions">
               <Link href="/discover" className="button button-primary button-large">Explore ad spaces <ArrowIcon /></Link>
-              <Link href="/list" className="button button-outline button-large">List your ad space</Link>
+              <Link href="/creators" className="button button-outline button-large">I’m a creator</Link>
             </div>
             <div className="trust-row">
               <span><CheckIcon /> Defined ad space</span>
