@@ -1,0 +1,32 @@
+name: Apply verified Momento release
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/apply-momento-release.yml]
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify and extract release b2bef6b
+        run: |
+          echo "3e556371379e9c58475522562671c9931dbdc762b37d6604b908749ad180536a  momento-b2bef6b.tar.gz" | sha256sum -c -
+          tar -xzf momento-b2bef6b.tar.gz
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build
+      - name: Commit verified sources and remove staging files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm momento-b2bef6b.tar.gz .github/workflows/apply-momento-release.yml
+          git add .env.example README.md db package.json package-lock.json src public/placements scripts tests supabase
+          git commit -m "Build physical ad-space marketplace with Supabase accounts and offers"
+          git push origin HEAD:main
