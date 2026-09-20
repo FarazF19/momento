@@ -3,8 +3,15 @@ import { Header } from "@/components/header";
 import { MomentCard } from "@/components/moment-card";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
 import { LandingFx } from "@/components/landing-fx";
-import { SurfaceExplorer } from "@/components/surface-explorer";
-import { SlotEstimator } from "@/components/slot-estimator";
+import {
+  LandingCompare,
+  LandingHow,
+  LandingInclude,
+  LandingProof,
+  LandingTheme,
+  SurfaceExplorer,
+} from "@/components/surface-explorer";
+import { LandingCta, LandingEyebrow, LandingFaq, LandingHeroActions, LandingTrust, SlotEstimator } from "@/components/slot-estimator";
 import { moments } from "@/lib/moments";
 
 export const revalidate = 300;
@@ -22,23 +29,17 @@ export default async function Home() {
     <>
       <Header />
       <LandingFx />
+      <LandingTheme>
       <main>
         <section className="hero shell">
           <div className="hero-copy">
-            <div className="eyebrow"><span /> Physical ad marketplace</div>
+            <LandingEyebrow />
             <h1>Sell ad space on your body &amp; clothes<br /><em>at real events.</em></h1>
             <p className="hero-lede">
               Creators publish a campaign with numbered zones — chest, arm, jersey, dress. Brands send offers on this site. Proof lives on the same page.
             </p>
-            <div className="hero-actions">
-              <Link href={listHref} className="button button-primary button-large">List your slots <ArrowIcon /></Link>
-              <Link href={browseHref} className="button button-outline button-large">Browse open slots</Link>
-            </div>
-            <div className="trust-row">
-              <span><CheckIcon /> Offers stay on Momento</span>
-              <span><CheckIcon /> Photo proof required</span>
-              <span><CheckIcon /> No follower minimum</span>
-            </div>
+            <LandingHeroActions listHref={listHref} browseHref={browseHref} />
+            <LandingTrust />
           </div>
           {featured && (
             <div className="hero-feature">
@@ -69,23 +70,7 @@ export default async function Home() {
             <h2>How it works</h2>
             <p>List the zones. Take the offer. Wear it and prove it on the same page.</p>
           </div>
-          <div className="how-now-grid reveal-stagger">
-            <article>
-              <b>1</b>
-              <h3>Creator lists the slots</h3>
-              <p>Chest, sleeve, jersey, dress — numbered, priced, and tied to a real event or city.</p>
-            </article>
-            <article>
-              <b>2</b>
-              <h3>Brand sends an offer</h3>
-              <p>Pick one zone. Send a brief and a price. The conversation stays on Momento.</p>
-            </article>
-            <article>
-              <b>3</b>
-              <h3>Wear it. Prove it.</h3>
-              <p>The creator approves the artwork, wears the mark, and uploads dated photos to the same page.</p>
-            </article>
-          </div>
+          <LandingHow />
         </section>
 
         <section className="surfaces-now shell" id="surfaces">
@@ -104,28 +89,7 @@ export default async function Home() {
             <div className="eyebrow"><span /> What is in a slot</div>
             <h2>One price. One zone. Clear terms.</h2>
           </div>
-          <div className="include-grid reveal-stagger">
-            <article>
-              <span>01</span>
-              <h3>The wear</h3>
-              <p>The mark is on the numbered zone for the event dates you list. The clothes stay with the creator.</p>
-            </article>
-            <article>
-              <span>02</span>
-              <h3>The proof</h3>
-              <p>Dated photos go on the same campaign page. Brands do not have to chase a DM for evidence.</p>
-            </article>
-            <article>
-              <span>03</span>
-              <h3>The exclusivity</h3>
-              <p>One brand per numbered slot. Another logo does not sit on the same square of fabric.</p>
-            </article>
-            <article>
-              <span>04</span>
-              <h3>The conversation</h3>
-              <p>Offers, acceptance, and artwork approval stay on Momento. No outbound hop to another site.</p>
-            </article>
-          </div>
+          <LandingInclude />
         </section>
 
         <section className="moments-section shell" id="campaigns">
@@ -145,26 +109,7 @@ export default async function Home() {
             <h2>Not another sponsored post.</h2>
             <p>A brand can already buy a story. Here they buy a square they can point at in a room.</p>
           </div>
-          <div className="compare-table reveal">
-            <div className="compare-col">
-              <h3>Influencer post</h3>
-              <ul>
-                <li>Lives in a feed for a day</li>
-                <li>Reach is a screenshot</li>
-                <li>Hard to say where the logo sat</li>
-                <li>Proof is a link that dies</li>
-              </ul>
-            </div>
-            <div className="compare-col is-on">
-              <h3>Numbered slot</h3>
-              <ul>
-                <li>Worn in a real room, on a real date</li>
-                <li>One zone, one price</li>
-                <li>Chest, sleeve, dress — you can name it</li>
-                <li>Dated photos stay on the campaign page</li>
-              </ul>
-            </div>
-          </div>
+          <LandingCompare />
         </section>
 
         <section className="proof-now shell">
@@ -172,20 +117,7 @@ export default async function Home() {
             <div className="eyebrow"><span /> After the event</div>
             <h2>The page does not go quiet.</h2>
           </div>
-          <ol className="proof-line reveal-stagger">
-            <li>
-              <b>Before</b>
-              <p>Brand sends artwork. Creator approves it. The slot is reserved on the same page.</p>
-            </li>
-            <li>
-              <b>During</b>
-              <p>The mark is worn for the dates on the listing — race, conference, city week.</p>
-            </li>
-            <li>
-              <b>After</b>
-              <p>Dated photos upload to the campaign. Anyone with the link can see the proof.</p>
-            </li>
-          </ol>
+          <LandingProof />
         </section>
 
         <section className="split-audience shell" id="for-who">
@@ -199,7 +131,7 @@ export default async function Home() {
               <li><CheckIcon /> Offers land in your dashboard</li>
               <li><CheckIcon /> Photo proof stays on your page</li>
             </ul>
-            <Link href={listHref} className="button button-primary">List your slots</Link>
+            <LandingCta href={listHref} tone="primary">List your slots</LandingCta>
           </article>
           <article className="reveal">
             <div className="eyebrow"><span /> For brands</div>
@@ -211,7 +143,7 @@ export default async function Home() {
               <li><CheckIcon /> Artwork approved before it is worn</li>
               <li><CheckIcon /> Dated photos required on the page</li>
             </ul>
-            <Link href={browseHref} className="button button-dark">Browse open slots</Link>
+            <LandingCta href={browseHref} tone="dark">Browse open slots</LandingCta>
           </article>
         </section>
 
@@ -220,7 +152,7 @@ export default async function Home() {
             <div className="eyebrow"><span /> Time</div>
             <h2>Live campaign page in under five minutes.</h2>
             <p>Account, event, photo, number of slots, price. Preview while you fill. Publish. Share the link.</p>
-            <Link href={listHref} className="button button-primary button-large">Start a listing <ArrowIcon /></Link>
+            <LandingCta href={listHref} tone="primary" size="lg">Start a listing <ArrowIcon /></LandingCta>
           </div>
           <div className="reveal">
             <SlotEstimator />
@@ -231,28 +163,7 @@ export default async function Home() {
           <div className="landing-heading reveal">
             <h2>What people ask first</h2>
           </div>
-          <div className="reveal-stagger">
-            <details>
-              <summary>How does payment work?</summary>
-              <p>An accepted offer reserves the slot and the terms. Checkout is not live in this preview, so no money is taken yet. Do not start paid work until payment is on.</p>
-            </details>
-            <details>
-              <summary>What if the creator does not deliver proof?</summary>
-              <p>Every listing writes the proof up front: dated photos uploaded to the same campaign page. If a creator does not deliver, the brand can decline to proceed and raise it from the dashboard. We do not hold funds until checkout is live.</p>
-            </details>
-            <details>
-              <summary>Is this only for big influencers?</summary>
-              <p>No. There is no follower minimum. Brands buy the zone and the room you walk into. Audience size is shown as context, never as a gate.</p>
-            </details>
-            <details>
-              <summary>How do I list my slots?</summary>
-              <p>Create a creator account, then describe the event, the number of spots, and a price range. We build the campaign page on Momento. Brands offer there.</p>
-            </details>
-            <details>
-              <summary>Do I need my own website?</summary>
-              <p>No. The campaign URL lives on Momento. Brands open it, pick a slot, and send an offer here.</p>
-            </details>
-          </div>
+          <LandingFaq />
         </section>
 
         <section className="final-cta shell">
@@ -261,11 +172,12 @@ export default async function Home() {
             <h2>List your slots.</h2>
           </div>
           <div className="final-actions reveal">
-            <Link href={listHref} className="button button-primary button-large">List your slots <ArrowIcon /></Link>
-            <Link href={browseHref} className="button button-outline button-large">Browse open slots</Link>
+            <LandingCta href={listHref} tone="primary" size="lg">List your slots <ArrowIcon /></LandingCta>
+            <LandingCta href={browseHref} tone="outline" size="lg">Browse open slots</LandingCta>
           </div>
         </section>
       </main>
+      </LandingTheme>
       <footer className="site-footer">
         <div className="shell footer-inner">
           <div><strong>MOMENTO</strong><p>Numbered ad slots on real people. Offers and proof stay on this site.</p></div>

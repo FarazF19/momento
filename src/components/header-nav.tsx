@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Logo } from "./logo";
 import { CloseIcon, MenuIcon } from "./icons";
+import { Button } from "@/components/ui/button";
 
 function listHref(role: "creator" | "brand" | null) {
   if (role === "creator") return "/studio";
@@ -15,6 +16,8 @@ export function HeaderNav({ role }: { role: "creator" | "brand" | null }) {
   const [open, setOpen] = useState(false);
   const primaryHref = listHref(role);
   const primaryLabel = role === "brand" ? "Browse open slots" : "List your slots";
+  const signInHref = role ? "/dashboard" : "/login";
+  const signInLabel = role ? "Dashboard" : "Sign in";
 
   return (
     <header className="site-header">
@@ -26,17 +29,33 @@ export function HeaderNav({ role }: { role: "creator" | "brand" | null }) {
           <Link href="/brands" onClick={() => setOpen(false)}>For brands</Link>
           <Link href="/creators" onClick={() => setOpen(false)}>For creators</Link>
           <div className="mobile-actions">
-            <Link href={role ? "/dashboard" : "/login"} className="button button-outline">{role ? "Dashboard" : "Sign in"}</Link>
-            <Link href={primaryHref} className="button button-primary">{primaryLabel}</Link>
+            <Button nativeButton={false} variant="outline" className="header-btn-outline" render={<Link href={signInHref} onClick={() => setOpen(false)} />}>
+              {signInLabel}
+            </Button>
+            <Button nativeButton={false} className="header-cta" render={<Link href={primaryHref} onClick={() => setOpen(false)} />}>
+              {primaryLabel}
+            </Button>
           </div>
         </nav>
         <div className="header-actions">
-          <Link href={role ? "/dashboard" : "/login"} className="text-link">{role ? "Dashboard" : "Sign in"}</Link>
-          <Link href={primaryHref} className="button button-primary button-small">{primaryLabel}</Link>
+          <Button nativeButton={false} variant="outline" size="sm" className="header-btn-outline" render={<Link href={signInHref} />}>
+            {signInLabel}
+          </Button>
+          <Button nativeButton={false} size="sm" className="header-cta" render={<Link href={primaryHref} />}>
+            {primaryLabel}
+          </Button>
         </div>
-        <button className="menu-button" type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? "Close menu" : "Open menu"}>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="menu-button"
+          aria-expanded={open}
+          aria-label={open ? "Close menu" : "Open menu"}
+          onClick={() => setOpen(!open)}
+        >
           {open ? <CloseIcon /> : <MenuIcon />}
-        </button>
+        </Button>
       </div>
     </header>
   );

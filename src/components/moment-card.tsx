@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import type { Moment } from "@/lib/moments";
 import { formatPrice } from "@/lib/moments";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowIcon } from "./icons";
 
 export function MomentCard({ moment }: { moment: Moment; featured?: boolean }) {
@@ -10,7 +14,7 @@ export function MomentCard({ moment }: { moment: Moment; featured?: boolean }) {
   const price = moment.raisedLabel || formatPrice(Math.min(...moment.inventory.map((item) => item.price)));
 
   return (
-    <article className="campaign-card">
+    <Card className="campaign-card landing-campaign-card">
       <Link className="campaign-photo" href={href} aria-label={moment.title}>
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -18,17 +22,19 @@ export function MomentCard({ moment }: { moment: Moment; featured?: boolean }) {
         ) : (
           <span className="campaign-initials" style={{ background: moment.color }}>{moment.creator.avatar}</span>
         )}
-        <span className="space-zone">{slots} slots</span>
+        <Badge className="space-zone landing-slot-badge">{slots} slots</Badge>
       </Link>
-      <div className="campaign-meta">
+      <CardHeader className="campaign-meta">
         <p className="space-kicker">{moment.creator.niche}</p>
-        <h3><Link href={href}>{moment.title}</Link></h3>
-        <p className="space-where">{moment.tagline}</p>
-        <div className="campaign-meta-row">
-          <div><strong>{price}</strong><small>{moment.city}</small></div>
-          <Link className="space-cta" href={href}>Open campaign <ArrowIcon /></Link>
-        </div>
-      </div>
-    </article>
+        <CardTitle>
+          <Link href={href}>{moment.title}</Link>
+        </CardTitle>
+        <CardDescription className="space-where">{moment.tagline}</CardDescription>
+      </CardHeader>
+      <CardFooter className="campaign-meta-row">
+        <div><strong>{price}</strong><small>{moment.city}</small></div>
+        <Link className="space-cta" href={href}>Open campaign <ArrowIcon /></Link>
+      </CardFooter>
+    </Card>
   );
 }
