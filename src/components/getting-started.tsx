@@ -1,7 +1,7 @@
 import Link from "next/link";
 export function GettingStarted({ creator, listed, offered, accepted }: { creator: boolean; listed: boolean; offered: boolean; accepted: boolean }) {
   const steps = creator ? [
-    { title: "Build your first campaign page", text: "Describe the slots, preview the Momento page, then publish the listing.", done: listed, href: "/studio", action: "Open the builder" },
+    { title: "List your slots", text: "Open the studio, map numbered zones, and publish. A social-bio check is optional later — not required to list.", done: listed, href: "/studio", action: "List your slots" },
     { title: "Review brand offers", text: "Compare the brand, brief, and price. You decide which offers fit.", done: offered, href: "#offers", action: "View incoming offers" },
     { title: "Agree the placement", text: "Accept the right fit to reserve the space. Payment is not enabled yet—do not start paid work.", done: accepted, href: "#offers", action: "Review terms" },
   ] : [

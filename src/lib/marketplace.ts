@@ -1,7 +1,7 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { authConfigured } from "./supabase/server";
-import type { Moment } from "./moments";
+import type { AdSlot, Moment } from "./moments";
 
 // Anonymous read client: public listing reads can never expose offers or profiles.
 function publicClient() {
@@ -11,19 +11,48 @@ function publicClient() {
 export type ListingRow = {
   id: string; title: string; category: Moment["category"]; creator_name: string; handle: string;
   audience: string; followers: number; city: string; country: string; start_date: string; end_date: string;
-  asking_price_minor: number; details: Record<string, string>;
+  asking_price_minor: number; details: Record<string, unknown>;
 };
+
+function asText(value: unknown, fallback = "") {
+  return typeof value === "string" ? value : fallback;
+}
+
+function asSlots(value: unknown): AdSlot[] | undefined {
+  const parsed = typeof value === "string" ? (() => { try { return JSON.parse(value); } catch { return null; } })() : value;
+  if (!Array.isArray(parsed) || !parsed.length) return undefined;
+  return parsed.map((slot, index) => {
+    const item = slot && typeof slot === "object" ? slot as Record<string, unknown> : {};
+    const price = Number(item.price);
+    return {
+      id: asText(item.id, `s${index + 1}`),
+      name: asText(item.name, `Slot ${index + 1}`),
+      brand: asText(item.brand, "Open"),
+      price: Number.isFinite(price) ? price : 0,
+      color: asText(item.color, "#ffe04d"),
+    };
+  });
+}
+
 export function asPlacement(row: ListingRow): Moment {
-  const d = row.details;
+  const d = row.details || {};
+  const slots = asSlots(d.slots);
+  const bodyKind = d.bodyKind === "dress" || d.bodyKind === "body" ? d.bodyKind : undefined;
+  const priceMode = asText(d.priceMode);
+  const duration = row.start_date + " – " + row.end_date;
+  const surface = asText(d.surface);
+  const dimensions = asText(d.dimensions);
   return {
-    slug: row.id, title: row.title, category: row.category, industry: d.industry, city: row.city, country: row.country,
-    dates: row.start_date + " – " + row.end_date, startDate: row.start_date, month: new Date(row.start_date + "T12:00:00Z").toLocaleString("en", { month: "short", timeZone: "UTC" }).toUpperCase(),
-    tagline: d.visibility, surface: d.surface, dimensions: d.dimensions, duration: row.start_date + " – " + row.end_date,
-    itinerary: d.itinerary, visibility: d.visibility, proof: d.proof, production: d.production, exclusivity: d.exclusivity,
-    isDemo: false, photoUrl: d.photoUrl, creator: { name: row.creator_name, handle: row.handle, niche: row.audience,
-      portraitUrl: d.portraitUrl, socialUrl: d.socialUrl, audienceSource: d.audienceSource, followers: new Intl.NumberFormat("en", { notation: "compact" }).format(row.followers), avatar: row.creator_name.slice(0, 2).toUpperCase() },
+    slug: row.id, title: row.title, category: row.category, industry: asText(d.industry), city: row.city, country: row.country,
+    dates: duration, startDate: row.start_date, month: new Date(row.start_date + "T12:00:00Z").toLocaleString("en", { month: "short", timeZone: "UTC" }).toUpperCase(),
+    tagline: asText(d.visibility), surface, dimensions, duration,
+    itinerary: asText(d.itinerary), visibility: asText(d.visibility), proof: asText(d.proof), production: asText(d.production), exclusivity: asText(d.exclusivity),
+    isDemo: false, photoUrl: asText(d.photoUrl), bodyKind, slots, raisedLabel: priceMode === "offer" ? "Open to offers" : undefined, creator: { name: row.creator_name, handle: row.handle, niche: row.audience,
+      portraitUrl: asText(d.portraitUrl) || undefined, socialUrl: asText(d.socialUrl) || undefined, audienceSource: asText(d.audienceSource) || undefined, followers: new Intl.NumberFormat("en", { notation: "compact" }).format(row.followers), avatar: row.creator_name.slice(0, 2).toUpperCase() },
     color: "#f5d8c4", accent: "#ffe04d", fit: [],
-    inventory: [{ id: "placement", name: d.surface, description: d.dimensions, timing: row.start_date + " – " + row.end_date, reach: "No guaranteed impressions", price: row.asking_price_minor / 100, remaining: 1 }],
+    inventory: slots?.length
+      ? slots.map((slot) => ({ id: slot.id, name: slot.name, description: slot.brand, timing: duration, reach: "No guaranteed impressions", price: slot.price, remaining: 1 }))
+      : [{ id: "placement", name: surface, description: dimensions, timing: duration, reach: "No guaranteed impressions", price: row.asking_price_minor / 100, remaining: 1 }],
   };
 }
 export async function publishedPlacements() {

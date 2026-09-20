@@ -4,6 +4,10 @@ import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase/server";
 import { adminClient } from "@/lib/supabase/admin";
 import { appOrigin, authCallbackUrl, safeNext } from "@/lib/app-origin";
+import { industries } from "@/lib/moments";
+import { sanitizeHandle } from "@/lib/placement-validation";
+
+const niches = industries.filter((item) => item !== "All");
 
 function loginUrl(params: Record<string, string>) {
   const query = new URLSearchParams();
@@ -58,7 +62,7 @@ function publicAuthError(error: { message?: string; code?: string } | null) {
   return "";
 }
 
-async function createConfirmedUserLocally(email: string, password: string, name: string, role: string) {
+async function createConfirmedUserLocally(email: string, password: string, metadata: { name: string; role: string; handle: string; niche: string }) {
   if (process.env.NODE_ENV !== "development") return false;
   const admin = adminClient();
   if (!admin) return false;
@@ -66,7 +70,7 @@ async function createConfirmedUserLocally(email: string, password: string, name:
     email,
     password,
     email_confirm: true,
-    user_metadata: { name, role },
+    user_metadata: metadata,
   });
   if (!error) return true;
   if (/already/i.test(error.message || "")) return confirmEmailLocally(email);
@@ -118,17 +122,24 @@ export async function authenticate(form: FormData) {
     if (password.length < 12) message("Choose a password with at least 12 characters.", { next, mode: "signup" });
     const role = form.get("role");
     const name = String(form.get("name") || "").trim().slice(0, 100);
+    const handle = sanitizeHandle(String(form.get("handle") || ""));
+    const niche = String(form.get("niche") || "").trim();
     if (!name || (role !== "brand" && role !== "creator")) {
       message("Enter your name and choose a creator or brand account.", { next, mode: "signup" });
     }
+    if (!handle) message("Enter a handle like @you (letters and numbers only).", { next, mode: "signup" });
+    if (!niches.includes(niche as (typeof niches)[number])) {
+      message("Choose a niche so brands can find you.", { next, mode: "signup" });
+    }
+    const metadata = { name, role: String(role), handle, niche };
     const origin = await redirectOrigin();
     const { data, error } = await client.auth.signUp({
       email,
       password,
-      options: { data: { name, role }, emailRedirectTo: authCallbackUrl(origin, next) },
+      options: { data: metadata, emailRedirectTo: authCallbackUrl(origin, next) },
     });
     if (error) {
-      const created = await createConfirmedUserLocally(email, password, name, String(role));
+      const created = await createConfirmedUserLocally(email, password, metadata);
       if (created) await signInAndGo(client, email, password, next);
       message(publicAuthError(error) || "We could not create the account. Check the details or try again in a moment.", { mode: "signup", next, email });
     }

@@ -2,8 +2,11 @@ import Link from "next/link";
 import { Header } from "@/components/header";
 import { authenticate, requestPasswordReset, resendConfirmation } from "@/app/auth/actions";
 import { authConfigured, currentAccount } from "@/lib/supabase/server";
+import { industries } from "@/lib/moments";
 import { safeNext } from "@/lib/app-origin";
 import { redirect } from "next/navigation";
+
+const niches = industries.filter((item) => item !== "All");
 
 export default async function Login({ searchParams }: { searchParams: Promise<{ mode?: string; message?: string; role?: string; notice?: string; email?: string; next?: string }> }) {
   const { mode, message, role, notice, email, next: nextParam } = await searchParams;
@@ -25,7 +28,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
           <h1>{signup ? "Join Momento." : verify ? "Confirm your inbox." : "Welcome back."}</h1>
           <p>
             {signup
-              ? "Create a creator or brand account. After your email is confirmed, we will take you to the next step — listing slots or browsing campaigns."
+              ? "Name, handle, niche, email, and a password. Creators can list slots after email confirmation — no social-bio check first."
               : verify
                 ? "A confirmation link was sent to your inbox. Open it, then sign in with the same password. Check spam and promotions if it is not in the primary inbox."
                 : "Sign in to manage listings, offers, and your campaign page."}
@@ -74,6 +77,14 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
                   </label>
                 </fieldset>
                 <label>Your name or company<input name="name" autoComplete="name" required maxLength={100} /></label>
+                <label>Handle<input name="handle" autoComplete="username" required maxLength={32} placeholder="@you" /></label>
+                <label>
+                  Niche
+                  <select name="niche" required defaultValue="">
+                    <option value="" disabled>Choose the niche brands should find you in</option>
+                    {niches.map((item) => <option key={item} value={item}>{item}</option>)}
+                  </select>
+                </label>
               </>
             )}
             <label>Email<input name="email" type="email" autoComplete="email" required defaultValue={email || ""} /></label>
