@@ -8,19 +8,22 @@ const valid = {
   creatorCountry: "Pakistan", event: "Backpack patch", city: "Lahore", country: "Pakistan",
   startDate: "2026-11-01", endDate: "2026-11-07", description: "Daily public walks",
   deliverable: "Three hours per day", reach: "Not measured", deliverableDetails: "Daily dated photos",
-  placementCategory: "Bags", item: "Backpack", surface: "Front panel", dimensions: "10 x 8 cm",
+  placementCategory: "Bags", industry: "Lifestyle", item: "Backpack", surface: "Front panel", dimensions: "10 x 8 cm",
   photoUrl: "https://example.com/bag.jpg", production: "Brand supplies patch", exclusivity: "One patch",
   followers: "10000", price: "60.50",
 };
 const validate = (body) => validatePlacementSubmission(body, "2026-09-19");
 
-test("all physical categories have explicitly fictional examples", () => {
-  assert.deepEqual(new Set(moments.map((item) => item.category)), new Set(categories.slice(1)));
+test("campaign examples use real public slot maps", () => {
+  assert.ok(moments.length >= 2);
   assert.equal(new Set(moments.map((item) => item.slug)).size, moments.length);
   for (const item of moments) {
     assert.equal(item.isDemo, true);
+    assert.ok(categories.includes(item.category) || categories.slice(1).includes(item.category));
     for (const field of ["surface", "dimensions", "duration", "itinerary", "visibility", "proof", "production", "exclusivity"]) assert.ok(item[field]);
     assert.ok(item.inventory[0].price > 0);
+    assert.ok(item.bodyKind);
+    assert.ok(item.creator.portraitUrl);
   }
 });
 test("accepts physical ad space from a creator meeting the audience threshold", () => assert.equal(validate(valid), null));
@@ -29,6 +32,10 @@ test("requires surface, dimensions, photo, production, and proof", () => {
     assert.ok(validate({ ...valid, [key]: "" }));
 });
 test("rejects event-only categories", () => assert.ok(validate({ ...valid, placementCategory: "Tech" })));
+test("requires a recognised creator niche", () => {
+  for (const industry of ["", "Crypto", "tech"]) assert.match(String(validate({ ...valid, industry })), /niche|field/);
+  for (const industry of ["Tech", "Fashion", "Food & Drink"]) assert.equal(validate({ ...valid, industry }), null);
+});
 test("rejects invalid, reversed, and past dates", () => {
   for (const dates of [{ startDate: "2026-02-30" }, { endDate: "2026-10-01" }, { startDate: "2026-01-01" }, { endDate: "invalid" }])
     assert.ok(validate({ ...valid, ...dates }));
@@ -39,5 +46,6 @@ test("validates email and photo links", () => {
 });
 test("rejects invalid asking prices and audience sizes", () => {
   for (const price of ["", "0", "-10", "100001", "1.001", "Infinity"]) assert.ok(validate({ ...valid, price }));
-  for (const followers of ["", "-1", "1.5", "9999", "9999999999"]) assert.ok(validate({ ...valid, followers }));
+  for (const followers of ["", "-1", "0", "1.5", "9999999999"]) assert.ok(validate({ ...valid, followers }));
+  assert.equal(validate({ ...valid, followers: "250" }), null);
 });

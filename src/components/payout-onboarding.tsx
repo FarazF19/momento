@@ -65,7 +65,7 @@ export function PayoutOnboarding({ listingId, token }: { listingId: string; toke
     finally { setLoading(false); }
   }
 
-  if (!listingId || !token) return <main className="onboarding-page shell"><div className="onboarding-card"><h1>Invalid onboarding link.</h1><p>Return to the creator form and submit your moment again.</p><Link className="button button-dark" href="/list">List a moment</Link></div></main>;
+  if (!listingId || !token) return <main className="onboarding-page shell"><div className="onboarding-card"><h1>Invalid onboarding link.</h1><p>Return to the creator form and publish your listing again.</p><Link className="button button-dark" href="/list">List ad space</Link></div></main>;
   if (ready) return <main className="onboarding-page shell"><div className="onboarding-card complete"><div className="status-mark paid"><CheckIcon /></div><div className="eyebrow"><span /> Payouts ready</div><h1>You’re ready to get paid.</h1><p>Your payout destination was accepted by the provider. We did not store your bank details. Once a paid campaign is approved, payout is created automatically.</p><Link className="button button-primary button-large" href="/discover">Explore Momento <ArrowIcon /></Link></div></main>;
 
   return (

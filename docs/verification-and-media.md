@@ -1,14 +1,16 @@
 # Marketplace admission
 
-Creators: 18+, >=10,000 followers on **one** Instagram/TikTok/X account (never a cross-platform sum), public profile with 90 days of history and >=3 original posts in 60 days, control of the account shown by the unique application code in the live bio, original portrait and realistic placement/photo-proof plan. A reviewer checks activity/engagement consistency and the current count. The application count is self-reported until reviewed. No guaranteed offline impressions.
+Creators: 18+, control of **one** public Instagram/TikTok/X account shown by the unique application code in the live bio, and a realistic placement/photo-proof plan. There is no follower minimum: audience size, public name, and photo are read from the live profile by the automatic check and stored in the application payload (`fetchedName`, `fetchedPhoto`, `fetchedFollowers`). No guaranteed offline impressions.
 
-Brands: 18+, authority to act, business website or established business social page controlled via the application code, coherent public business identity, rights to artwork and acceptable campaign. No social audience requirement for brands.
+Brands: 18+, authority to act, business website or established business social page controlled via the application code, rights to artwork and acceptable campaign. No social audience requirement for brands.
 
-Flow: confirmed email -> /verify -> server-generated public ownership marker -> pending -> reviewer confirms live ownership and criteria -> approved or needs_changes -> resubmit if needed. Approved creators can publish; approved brands can bid. Database policies and offer trigger enforce admission even outside Next.js routes. Personal evidence is private; public approval helper returns only a boolean. Approval does not constitute payout-provider KYC.
+Flow: confirmed email -> /verify -> server-generated public ownership marker in bio/page -> submit -> **automatic review** (server fetches the live public page, confirms the code, extracts public identity) -> approved or needs_changes within about a minute -> fix and resubmit instantly if needed. Approved creators can publish; approved brands can bid. Database policies and offer trigger enforce admission even outside Next.js routes. Personal evidence is private; public approval helper returns only a boolean. Approval does not constitute payout-provider KYC.
+
+Automatic decisions are recorded by `public.auto_review_verification`, a security-definer function granted only to `service_role` and called server-side with `SUPABASE_SECRET_KEY` after the Next.js server has independently verified the live page (`src/lib/auto-review.ts`). Audit rows land in `private.verification_reviews` with `automated = true` and a null reviewer. If `SUPABASE_SECRET_KEY` is not configured, submissions stay `pending` and fall back to the human queue below. Platform notes: TikTok and ordinary websites verify most reliably from server IPs; Instagram and X sometimes block datacenter fetches, in which case the applicant gets an immediate needs_changes with guidance to retry or switch platforms.
 
 ## Operator setup
 
-The in-app queue is /review. Access is deny-by-default. In the Supabase SQL editor, an owner can grant reviewer access to an **existing confirmed** Momento account after confirming the person's identity:
+The in-app queue is /review. It is a fallback: with automatic review configured, applications rarely wait here. Access is deny-by-default. In the Supabase SQL editor, an owner can grant reviewer access to an **existing confirmed** Momento account after confirming the person's identity:
 
 ```sql
 insert into private.marketplace_reviewers(user_id)
@@ -17,11 +19,11 @@ where id = '<confirmed-owner-user-uuid>'::uuid and email_confirmed_at is not nul
 on conflict do nothing;
 ```
 
-No reviewer has been auto-assigned. Review through /review to record decisions in the private immutable audit table. For approvals, inspect the current public follower count (not screenshots alone), ownership marker, recent original activity, and campaign/placement fit. Self-declared follower counts are not proof. Request changes for ambiguity; do not auto-approve large accounts.
+No reviewer has been auto-assigned. Review through /review to record decisions in the private immutable audit table. For approvals, inspect the ownership marker on the live page and campaign/placement fit. Request changes for ambiguity.
 
-## Social API automation (not enabled)
+## Social OAuth (not enabled)
 
-Current release uses a live public-page ownership challenge and human review. It does not imply OAuth or automatic social checks. Future integrations need provider app setup/approval and authorized scopes. Instagram professional account support: https://developers.facebook.com/documentation/instagram-platform . TikTok user-info scopes: https://developers.tiktok.com/doc/tiktok-api-v2-get-user-info/ . Keep API tokens server-side; never request social passwords.
+The automatic check verifies ownership against the live public page and reads only public metadata (og tags, embedded public counts). It does not use OAuth or private APIs. Future OAuth integrations need provider app setup/approval and authorized scopes. Instagram professional account support: https://developers.facebook.com/documentation/instagram-platform . TikTok user-info scopes: https://developers.tiktok.com/doc/tiktok-api-v2-get-user-info/ . Keep API tokens server-side; never request social passwords.
 
 ## Media
 

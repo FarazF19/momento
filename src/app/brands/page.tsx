@@ -1,14 +1,69 @@
 import Link from "next/link";
 import { Header } from "@/components/header";
+import { CheckIcon } from "@/components/icons";
+import { industries } from "@/lib/moments";
+
 export const dynamic = "force-dynamic";
 
 export default function BrandsPage() {
-  return <><Header /><main className="audience-page shell">
-    <div className="eyebrow"><span /> Momento for brands</div>
-    <h1>Your next campaign.<br /><em>Out in the world.</em></h1>
-    <p className="audience-lede">A laptop at a coworking space. A hoodie around the city. A backpack on its next trip. Rent the ad space on the things creators already wear and carry.</p>
-    <div className="hero-actions"><Link href="/discover" className="button button-primary button-large">Find a creator</Link><Link href="/login?mode=signup&role=brand" className="button button-outline button-large">Create a brand account</Link></div>
-    <div className="audience-grid"><article><span>01 / Find your fit</span><h2>Choose where you show up.</h2><p>Find a creator whose plans fit your audience. Check their available space, location, dates, and asking price. Start with one placement.</p></article><article><span>02 / Make your offer</span><h2>Your budget. A clear brief.</h2><p>Propose a price for the full period and tell the creator what you want displayed. They review and accept or decline.</p></article><article><span>03 / Agree the details</span><h2>Know what you’re getting.</h2><p>Confirm artwork, production, visibility, and photo evidence before a campaign begins. Track your offers in Dashboard.</p></article></div>
-    <section className="audience-note"><h2>One placement. Clear expectations.</h2><p>You’re renting a defined surface—not buying the item, guaranteed impressions, or an automatic social post. Those expectations stay clear from the first offer.</p><p>Early marketplace preview: paid checkout is not enabled yet. Do not begin paid work before payment is confirmed.</p></section>
-  </main></>;
+  return (
+    <>
+      <Header />
+      <main className="audience-page shell">
+        <div className="eyebrow"><span /> For brands</div>
+        <h1>Book a zone<br /><em>on a real person.</em></h1>
+        <p className="audience-lede">Choose a creator on Momento, pick a numbered slot, and send an offer on the same page. Dated photos come back here. This is physical placement, not a banner buy.</p>
+        <div className="hero-actions">
+          <Link href="/discover" className="button button-primary button-large">Browse campaigns</Link>
+          <Link href="/login?mode=signup&role=brand&next=/discover" className="button button-outline button-large">Create a brand account</Link>
+        </div>
+        <div className="stat-strip">
+          <span><b>~1 min</b><small>to verify the brand</small></span>
+          <span><b>{industries.length - 1}</b><small>niches to filter</small></span>
+          <span><b>1 price</b><small>per slot, written down</small></span>
+          <span><b>Photos</b><small>agreed before you pay</small></span>
+        </div>
+
+        <div className="audience-grid">
+          <article><span>01 / Verify</span><h2>Prove the brand.</h2><p>One code on your site or public page. The check runs automatically. Independent businesses are welcome.</p></article>
+          <article><span>02 / Choose a person</span><h2>Then choose the slot.</h2><p>Filter by niche. Every listing shows the zone, size, city, dates, and asking price.</p></article>
+          <article><span>03 / Agree the proof</span><h2>Know what comes back.</h2><p>Artwork, visibility, and dated photos are in the terms before anything is worn.</p></article>
+        </div>
+
+        <div className="value-split">
+          <article>
+            <h2>Where a logo sits</h2>
+            <ul>
+              <li><CheckIcon /> A numbered chest or sleeve on race day</li>
+              <li><CheckIcon /> A dress spot on an event floor</li>
+              <li><CheckIcon /> A hoodie chest through a week of city days</li>
+              <li><CheckIcon /> A kit you can identify in a photo</li>
+            </ul>
+          </article>
+          <article className="accent">
+            <h2>Clear terms</h2>
+            <ul>
+              <li><CheckIcon /> One price for the slot and the dates</li>
+              <li><CheckIcon /> Audience size from a live profile, not a screenshot</li>
+              <li><CheckIcon /> Visibility and photo proof written first</li>
+              <li><CheckIcon /> Accepting a slot declines competing offers</li>
+            </ul>
+          </article>
+        </div>
+
+        <section className="audience-faq">
+          <h2>Brand questions</h2>
+          <details><summary>Am I buying impressions?</summary><p>No. You rent a physical zone for agreed dates. Followers are context, not a CPM guarantee.</p></details>
+          <details><summary>Who prints the mark?</summary><p>The listing says. Usually the brand supplies a patch, sticker, or file. The creator approves it before wearing it.</p></details>
+          <details><summary>Can a small local business join?</summary><p>Yes. A website or public business page is enough to verify.</p></details>
+          <details><summary>When do payments happen?</summary><p>Paid checkout is not on yet. An accepted offer only reserves terms.</p></details>
+        </section>
+
+        <section className="audience-cta">
+          <div><h2>Choose a person,<br />then a slot.</h2><p>Browse campaigns and send an offer when the zone is right.</p></div>
+          <Link href="/discover" className="button button-primary button-large">Browse campaigns</Link>
+        </section>
+      </main>
+    </>
+  );
 }

@@ -4,17 +4,20 @@ import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
 import { validateVerification } from '../src/lib/verification.ts';
 
-test('creator applications require 10,000 followers on a single supported account', () => {
- const valid={adult:'yes',accurate:'yes',summary:'I work in cafes and can supply dated placement photographs.',profileUrl:'https://www.instagram.com/creator/',platform:'instagram',portraitUrl:'https://example.com/me.jpg',followers:'10000',accountAge:'yes',recentPosts:'yes'};
+test('creator applications need a public supported profile link and a plan; no follower minimum', () => {
+ const valid={adult:'yes',accurate:'yes',summary:'I work in cafes and can supply dated placement photographs.',profileUrl:'https://www.instagram.com/creator/',platform:'instagram'};
  assert.equal(validateVerification('creator',valid),null);
- assert.match(validateVerification('creator',{...valid,followers:'9999'}),/10,000/);
+ assert.equal(validateVerification('creator',{...valid,platform:'tiktok',profileUrl:'https://www.tiktok.com/@creator'}),null);
+ assert.match(validateVerification('creator',{...valid,summary:'too short'}),/30/);
  assert.match(validateVerification('creator',{...valid,profileUrl:'https://instagram.com.evil.com/creator'}),/profile/);
  assert.match(validateVerification('creator',{...valid,profileUrl:'https://www.instagram.com/p/stolenpost'}),/profile/);
- assert.match(validateVerification('creator',{...valid,portraitUrl:'https://user:secret@example.com/me'}),/portrait/);
- assert.match(validateVerification('creator',{...valid,recentPosts:''}),/original posts/);
+ assert.match(validateVerification('creator',{...valid,platform:'facebook'}),/Instagram, TikTok, or X/);
+ assert.match(validateVerification('creator',{...valid,adult:''}),/age/);
+ assert.equal(validateVerification('brand',{adult:'yes',accurate:'yes',summary:'We sell handmade ceramics and want cafe laptop placements.',profileUrl:'https://brand.example.com/',businessName:'Ceramics Co',authority:'yes'}),null);
+ assert.match(validateVerification('brand',{adult:'yes',accurate:'yes',summary:'We sell handmade ceramics and want cafe laptop placements.',profileUrl:'https://brand.example.com/',businessName:'',authority:'yes'}),/business/);
 });
 
-test('verification privacy, self-approval prevention, review audit, and marketplace gates', async t => {
+test('verification privacy, self-approval prevention, automated review audit, and marketplace gates', async t => {
  const db=new PGlite();t.after(()=>db.close());
  await db.exec(`create role anon; create role authenticated; create schema auth;
  create table auth.users(id uuid primary key,raw_user_meta_data jsonb,email_confirmed_at timestamptz);
@@ -22,6 +25,7 @@ test('verification privacy, self-approval prevention, review audit, and marketpl
  grant usage on schema public,auth to anon,authenticated; grant execute on function auth.uid() to anon,authenticated;`);
  await db.exec(await readFile(new URL('../supabase/migrations/202609190001_marketplace.sql',import.meta.url),'utf8'));
  await db.exec(await readFile(new URL('../supabase/migrations/20260920111343_creator_brand_verification.sql',import.meta.url),'utf8'));
+ await db.exec(await readFile(new URL('../supabase/migrations/20260920150000_smooth_onboarding.sql',import.meta.url),'utf8'));
  const creator='00000000-0000-4000-8000-000000000001',brand='00000000-0000-4000-8000-000000000002',reviewer='00000000-0000-4000-8000-000000000003';
  for(const [id,role] of [[creator,'creator'],[brand,'brand'],[reviewer,'brand']]) await db.query('insert into auth.users values($1,$2,now())',[id,JSON.stringify({name:role,role})]);
  await db.query('insert into private.marketplace_reviewers values($1)',[reviewer]);
@@ -35,11 +39,13 @@ test('verification privacy, self-approval prevention, review audit, and marketpl
  await assert.rejects(db.query("update verification_applications set ownership_code='fake'"),/permission denied/);
  await assert.rejects(db.query("update verification_applications set review_note='approved myself'"),/permission denied/);
  await assert.rejects(db.query("update verification_applications set status='pending'"),/check constraint/);
- const payload={adult:'yes',accurate:'yes',summary:'I work in cafes and supply placement photos.',profileUrl:'https://instagram.com/creator',platform:'instagram',portraitUrl:'https://example.com/me.jpg',accountAge:'yes',recentPosts:'yes',followers:'10000'};
- await assert.rejects(db.query("update verification_applications set payload=$1,status='pending'",[JSON.stringify({...payload,followers:'9999'})]),/check constraint/);
+ const payload={adult:'yes',accurate:'yes',summary:'I work in cafes and supply placement photos.',profileUrl:'https://instagram.com/creator',platform:'instagram'};
+ await assert.rejects(db.query("update verification_applications set payload=$1,status='pending'",[JSON.stringify({...payload,platform:'facebook'})]),/check constraint/);
+ await assert.rejects(db.query("update verification_applications set payload=$1,status='pending'",[JSON.stringify({...payload,summary:'short'})]),/check constraint/);
  await db.query("update verification_applications set payload=$1,status='pending'",[JSON.stringify(payload)]);
  assert.equal((await db.query("update verification_applications set status='draft' returning user_id")).rows.length,0);
  await assert.rejects(db.query("select review_verification($1,'approved','Self approval attempt')",[creator]),/Reviewer access/);
+ await assert.rejects(db.query("select auto_review_verification($1,'approved','Automatic self approval attempt','{}'::jsonb)",[creator]),/permission denied/);
  await as(brand);
  assert.equal((await db.query('select * from verification_applications')).rows.length,0);
  await db.query("insert into verification_applications(user_id,role) values($1,'brand')",[brand]);
@@ -47,21 +53,27 @@ test('verification privacy, self-approval prevention, review audit, and marketpl
  await as(null,'anon');
  await assert.rejects(db.query('select * from verification_applications'),/permission denied/);
  assert.equal((await db.query('select * from placements')).rows.length,0);
- await as(reviewer);
- assert.equal((await db.query('select * from verification_applications')).rows.length,2);
- await db.query("select review_verification($1,'needs_changes','Please correct the social profile link')",[creator]);
+ // Automated review by the server (service_role) approves the creator and records identity evidence.
+ await as(null,'service_role');
+ await db.query("select auto_review_verification($1,'needs_changes','We could not find your code on the page yet. Add it and verify again.','{}'::jsonb)",[creator]);
  await as(creator);
  await db.query("update verification_applications set payload=$1,status='pending'",[JSON.stringify(payload)]);
- await as(reviewer);
- await db.query("select review_verification($1,'approved','Ownership and activity confirmed on public profile')",[creator]);
+ await as(null,'service_role');
+ await db.query("select auto_review_verification($1,'approved','Automatically verified: code found live.',$2::jsonb)",[creator,JSON.stringify({fetchedName:'Creator',fetchedFollowers:'2300',fetchedPhoto:'https://example.com/me.jpg'})]);
+ await assert.rejects(db.query("select auto_review_verification($1,'approved','Duplicate decision attempt','{}'::jsonb)",[creator]),/not awaiting review/);
  await as(creator);
+ assert.equal((await db.query('select payload from verification_applications')).rows[0].payload.fetchedFollowers,'2300');
  const placement=(await listing()).rows[0].id;
  await as(brand);
  await assert.rejects(db.query('select submit_offer($1,10000,$2)',[placement,'Please place our logo on your laptop']),/marketplace approval/);
+ // Human fallback review still works for the brand.
  await as(reviewer);
  await db.query("select review_verification($1,'approved','Business ownership and campaign checked')",[brand]);
  await as(brand);
  await db.query('select submit_offer($1,10000,$2)',[placement,'Please place our logo on your laptop']);
  await db.exec('reset role');
- assert.equal((await db.query('select * from private.verification_reviews')).rows.length,3);
+ const audit=(await db.query('select automated,reviewer_id from private.verification_reviews order by created_at')).rows;
+ assert.equal(audit.length,3);
+ assert.deepEqual(audit.map(r=>r.automated),[true,true,false]);
+ assert.equal(audit[0].reviewer_id,null);
 });

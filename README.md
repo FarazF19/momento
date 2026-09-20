@@ -8,6 +8,7 @@ Brands rent advertising space on creators’ clothes, laptops, bags, and travel 
 - Searchable physical placements with explicit surface, dimensions, duration, visibility, production, exclusivity, and proof requirements.
 - Supabase email/password signup, email confirmation, login, recovery, and logout. Server-side identity verification and cookie refresh.
 - Separate creator and brand accounts with protected dashboards.
+- Automatic marketplace verification: members put a one-time code in their public bio/website, the server confirms it on the live page, reads the public name, photo, and follower count, and records the decision in about a minute. No follower minimum. Human review remains as a fallback when `SUPABASE_SECRET_KEY` is unset.
 - Verified creators publish into PostgreSQL; live listings appear in discovery and at `/placements/:id`.
 - Verified brands propose offers. Creators accept/reserve or decline; brands withdraw pending offers.
 - Database row-level permissions protect profiles and offers. Offer mutations use narrowly scoped database functions, derive identities from authenticated sessions, and store an immutable copy of the placement terms.
@@ -20,8 +21,8 @@ Code completion does not mean production setup is complete. The migration must b
 
 1. Install packages: `npm ci`.
 2. Copy `.env.example` to `.env.local`.
-3. In the dedicated Supabase project, apply `supabase/migrations/202609190001_marketplace.sql` using the migration runner or SQL editor. This creates new `profiles`, `placements`, and `offers` tables. It does not migrate historical Tazapay booking records.
-4. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `APP_URL`. Only the publishable key is needed; no service-role key belongs in browser code.
+3. In the dedicated Supabase project, apply the migrations in `supabase/migrations/` in filename order using the migration runner or SQL editor. They create the `profiles`, `placements`, `offers`, and verification tables. They do not migrate historical Tazapay booking records.
+4. Set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `APP_URL`. For automatic verification decisions, also set `SUPABASE_SECRET_KEY` (service role) — server-side only; it must never reach browser code.
 5. Enable email confirmation. Configure Site URL and allowlisted callback URLs: `https://YOUR_DOMAIN/auth/callback` and `https://YOUR_DOMAIN/auth/callback?next=/auth/reset`. Add localhost equivalents for development. Configure production SMTP before inviting external users.
 6. Run `npm run dev`. Configure the same values in Vercel, then rebuild and deploy.
 

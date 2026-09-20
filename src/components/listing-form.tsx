@@ -1,12 +1,12 @@
 "use client";
 
-import { categories } from "@/lib/moments";
+import { categories, industries } from "@/lib/moments";
 import { useState } from "react";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
 
 type SubmitState = "idle" | "loading" | "success" | "error";
 
-export default function ListingForm({ name, email }: { name: string; email: string }) {
+export default function ListingForm({ name, email, handle, followers }: { name: string; email: string; handle?: string; followers?: string }) {
   const [state, setState] = useState<SubmitState>("idle");
   const [message, setMessage] = useState("");
 
@@ -38,8 +38,8 @@ export default function ListingForm({ name, email }: { name: string; email: stri
       <main className="list-page shell">
         <div className="listing-intro">
           <div className="eyebrow"><span /> For creators</div>
-          <h1>Your things.<br />Their next ad space.</h1>
-          <p>List advertising space on your clothes, laptop, bag, or an item you’ll carry on a trip. You keep the item and decide which brands you’ll work with.</p>
+          <h1>Your body.<br />Numbered slots.</h1>
+          <p>List a chest, a sleeve, a dress, or a race kit. Photo the person, mark the zones, set a price. You keep the clothes and pick the brands.</p>
           <div className="creator-benefits">
             <span><CheckIcon /> You define the ad space</span>
             <span><CheckIcon /> You approve every brand</span>
@@ -57,9 +57,10 @@ export default function ListingForm({ name, email }: { name: string; email: stri
             <div className="form-grid two">
               <label><span>Creator name</span><input name="creatorName" value={name} readOnly /></label>
               <label><span>Account email (kept private)</span><input name="email" type="email" value={email} readOnly /></label>
-              <label><span>Social handle</span><input name="handle" required placeholder="@mayacitynotes" /></label>
+              <label><span>Social handle</span><input name="handle" required defaultValue={handle} placeholder="@mayacitynotes" /></label>
+              <label><span>Your niche</span><select name="industry" required defaultValue=""><option value="" disabled>Where does your audience live?</option>{industries.filter((item) => item !== "All").map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
               <label><span>Main audience</span><input name="audience" required placeholder="Design & city culture" /></label>
-              <label><span>Audience size</span><input name="followers" type="number" min="10000" required placeholder="125000" /></label>
+              <label><span>{followers ? "Audience size (from your verified profile)" : "Audience size"}</span><input name="followers" type="number" min="1" required defaultValue={followers} readOnly={Boolean(followers)} placeholder="125000" /></label>
               <label><span>Country of residence</span><input name="creatorCountry" required placeholder="United Kingdom" /></label>
             </div>
           </div>
@@ -68,9 +69,9 @@ export default function ListingForm({ name, email }: { name: string; email: stri
             <div className="form-section-title"><span>02</span><div><h2>Your ad space</h2><p>What can a brand put its name on?</p></div></div>
             <div className="form-grid two">
               <label><span>Placement category</span><select name="placementCategory" required defaultValue=""><option value="" disabled>Choose an item type</option>{categories.filter((item) => item !== "All").map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
-              <label><span>Item</span><input name="item" required maxLength={160} placeholder="Cream hoodie, laptop, backpack…" /></label>
-              <label className="wide"><span>Listing title</span><input name="event" required maxLength={180} placeholder="Hoodie chest patch during my Dubai trip" /></label>
-              <label><span>Exact advertising surface</span><input name="surface" required maxLength={200} placeholder="Front chest, outward-facing laptop lid…" /></label>
+              <label><span>Item</span><input name="item" required maxLength={160} placeholder="Race kit, dress, hoodie…" /></label>
+              <label className="wide"><span>Listing title</span><input name="event" required maxLength={180} placeholder="Chest + sleeve slots at my next event" /></label>
+              <label><span>Exact advertising surface</span><input name="surface" required maxLength={200} placeholder="Left chest, dress mega spot, right sleeve…" /></label>
               <label><span>Available dimensions</span><input name="dimensions" required maxLength={100} placeholder="12 × 8 cm" /></label>
               <label className="wide"><span>Item photo link</span><input name="photoUrl" type="url" required placeholder="https://… (a shareable photo with the ad area marked)" /></label>
               <label><span>City</span><input name="city" required placeholder="London" /></label>

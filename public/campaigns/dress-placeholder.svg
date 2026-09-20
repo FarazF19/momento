@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 800" role="img" aria-label="Generic dress slot map">
+  <rect width="640" height="800" fill="#efe7dc"/>
+  <path d="M248 86h144c18 46 28 78 28 110 0 18-6 34-18 46l86 250c8 22 6 46-6 66L390 742H250L158 558c-12-20-14-44-6-66l86-250c-12-12-18-28-18-46 0-32 10-64 28-110z" fill="#f7f3ec" stroke="#111" stroke-width="6"/>
+  <rect x="250" y="210" width="64" height="78" rx="8" fill="#111"/>
+  <rect x="326" y="210" width="64" height="78" rx="8" fill="#4f63ff"/>
+  <rect x="236" y="308" width="80" height="70" rx="8" fill="#ff5b3a"/>
+  <rect x="324" y="308" width="80" height="70" rx="8" fill="#10a37f"/>
+  <rect x="226" y="400" width="86" height="72" rx="8" fill="#ffe04d"/>
+  <rect x="328" y="400" width="86" height="72" rx="8" fill="#9cff57"/>
+  <text x="320" y="772" text-anchor="middle" fill="#111" font-family="Arial, sans-serif" font-size="18" letter-spacing="3">YOUR SLOT MAP</text>
+</svg>

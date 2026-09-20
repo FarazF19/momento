@@ -22,7 +22,7 @@ export function BookingPanel({ moment }: { moment: Moment }) {
     event.preventDefault();
     setMessage("");
     if (moment.isDemo) {
-      setMessage("Preview only. No offer was sent, no personal details were saved, and no payment was taken. A live listing will need creator review and agreed terms before checkout.");
+      setMessage("Preview only. No offer was sent and no payment was taken. On a published page, the creator reviews the offer here.");
       return;
     }
     setSubmitting(true);
@@ -38,7 +38,7 @@ export function BookingPanel({ moment }: { moment: Moment }) {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Could not submit offer.");
       setSent(true);
-      setMessage("Offer sent to the creator. Follow its status in your dashboard. No payment has been taken.");
+      setMessage("Offer sent to the creator. Follow it in your dashboard. No payment has been taken.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Could not submit offer.");
     } finally { setSubmitting(false); }
@@ -46,30 +46,32 @@ export function BookingPanel({ moment }: { moment: Moment }) {
 
   return (
     <aside className="booking-card">
-      <div className="booking-card-top"><span>AD SPACE · {moment.category.toUpperCase()}</span><b>{moment.duration}</b></div>
-      <h2>Make it your space.</h2>
-      <p>{moment.surface} · {moment.dimensions}</p>
+      <div className="booking-card-top"><span>ON MOMENTO</span><b>{moment.duration}</b></div>
+      <h2>Pick a slot.</h2>
+      <p>{moment.surface}</p>
       <div className="selected-summary">
         <div className="summary-item"><span>Dates</span><b>{moment.dates}</b></div>
-        <div className="summary-item"><span>Location</span><b>{moment.city}</b></div>
-        <div className="summary-item"><span>Completion evidence</span><b>As listed in terms</b></div>
+        <div className="summary-item"><span>City</span><b>{moment.city}</b></div>
+        <div className="summary-item"><span>Proof</span><b>Photos on this page</b></div>
       </div>
-      <div className="booking-total"><span>{moment.isDemo ? "Example asking price" : "Asking price"}</span><b>{formatPrice(price)}</b></div>
-      <p>For the full placement period. Item ownership stays with the creator. Artwork and delivery responsibilities are listed above.</p>
-      <button type="button" className="button button-primary booking-button" onClick={() => { setMessage(""); setOpen(true); }}>{moment.isDemo ? "Preview a brand offer" : "Make an offer"} <ArrowIcon /></button>
-      <p className="sample-disclaimer">{moment.isDemo ? "Fictional listing. Try the offer form without sending a bid or paying." : "No charge to make an offer. Final terms must be agreed before payment."}</p>
+      <div className="booking-total"><span>{moment.raisedLabel ? "Slot range" : "Asking price"}</span><b>{moment.raisedLabel || formatPrice(price)}</b></div>
+      <p>Offers stay on Momento. The creator accepts or declines here.</p>
+      <button type="button" className="button button-primary booking-button" onClick={() => { setMessage(""); setOpen(true); }}>
+        {moment.isDemo ? "Preview an offer" : "Make an offer"} <ArrowIcon />
+      </button>
+      <p className="sample-disclaimer">{moment.isDemo ? "Example page. The form does not send a bid." : "No charge to offer. Terms are agreed before payment."}</p>
       <dialog ref={dialog} className="booking-modal" onClose={() => setOpen(false)} aria-labelledby="booking-title">
-          <button className="modal-close" type="button" onClick={() => setOpen(false)} aria-label="Close offer form"><CloseIcon /></button>
-          <div className="eyebrow"><span /> {moment.isDemo ? "Interactive example · not sent" : "Brand offer"}</div>
-          <h2 id="booking-title">Bid on the space.</h2>
-          <p>{moment.surface} for {moment.duration}. Propose a price and describe your brand and intended placement.</p>
-          <form onSubmit={submit}>
-            {!moment.isDemo && <p>Your brand needs marketplace approval to send an offer. <Link className="underlined-link" href="/login?mode=signup&role=brand">Create an account</Link> or <Link className="underlined-link" href="/verify">check your application</Link>.</p>}
-            <label><span>Your offer for the full period (USD)</span><input name="offerAmount" type="number" min="1" max="100000" step="0.01" required defaultValue={price} /></label>
-            <label><span>Brand, artwork, and placement requirements</span><textarea name="campaign" required minLength={10} maxLength={1500} rows={4} placeholder="What should appear on the patch or sticker? Confirm dates, shipping, visibility, and any changes you want to propose." /></label>
-            {message && <div className="form-message" role="status">{message}</div>}
-            {sent ? <Link className="button button-primary" href="/dashboard">View my offer</Link> : <button className="button button-primary button-large full-button" disabled={submitting} type="submit">{submitting ? "Sending…" : moment.isDemo ? "Preview offer — no payment" : "Send offer"}</button>}
-          </form>
+        <button className="modal-close" type="button" onClick={() => setOpen(false)} aria-label="Close offer form"><CloseIcon /></button>
+        <div className="eyebrow"><span /> {moment.isDemo ? "Preview · not sent" : "Brand offer"}</div>
+        <h2 id="booking-title">Offer on a slot.</h2>
+        <p>Propose a price and say which zone you want. This stays on Momento.</p>
+        <form onSubmit={submit}>
+          {!moment.isDemo && <p>Verify the brand in about a minute, then send. <Link className="underlined-link" href="/login?mode=signup&role=brand">Create an account</Link></p>}
+          <label><span>Your offer (USD)</span><input name="offerAmount" type="number" min="1" max="100000" step="0.01" required defaultValue={price} /></label>
+          <label><span>Brand and which slot</span><textarea name="campaign" required minLength={10} maxLength={1500} rows={4} placeholder="Which numbered zone, and what should be printed there?" /></label>
+          {message && <div className="form-message" role="status">{message}</div>}
+          {sent ? <Link className="button button-primary" href="/dashboard">View my offer</Link> : <button className="button button-primary button-large full-button" disabled={submitting} type="submit">{submitting ? "Sending…" : moment.isDemo ? "Preview offer" : "Send offer"}</button>}
+        </form>
       </dialog>
     </aside>
   );

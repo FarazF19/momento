@@ -1,11 +1,11 @@
 import Link from "next/link";
 export function GettingStarted({ creator, listed, offered, accepted }: { creator: boolean; listed: boolean; offered: boolean; accepted: boolean }) {
   const steps = creator ? [
-    { title: "List your first ad space", text: "Choose an item, show the surface, and set your dates and asking price.", done: listed, href: "/list", action: "Create a listing" },
+    { title: "Build your first campaign page", text: "Describe the slots, preview the Momento page, then publish the listing.", done: listed, href: "/studio", action: "Open the builder" },
     { title: "Review brand offers", text: "Compare the brand, brief, and price. You decide which offers fit.", done: offered, href: "#offers", action: "View incoming offers" },
     { title: "Agree the placement", text: "Accept the right fit to reserve the space. Payment is not enabled yet—do not start paid work.", done: accepted, href: "#offers", action: "Review terms" },
   ] : [
-    { title: "Find your first ad space", text: "Compare creators’ items by location, surface, dates, and asking price.", done: offered, href: "/discover", action: "Browse ad spaces" },
+    { title: "Find your first ad space", text: "Compare creators by niche, location, surface, dates, and asking price.", done: offered, href: "/discover", action: "Browse ad spaces" },
     { title: "Send a clear offer", text: "Open a live listing, propose your price, and describe your brand and artwork.", done: offered, href: "/discover", action: "Find a placement" },
     { title: "Track the response", text: "An accepted offer reserves terms; it is not a payment. Keep track of the creator’s decision here.", done: accepted, href: "#offers", action: "View my offers" },
   ];

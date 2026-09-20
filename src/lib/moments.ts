@@ -1,76 +1,85 @@
 export const categories = ["All", "Clothing", "Laptops", "Bags", "Travel"] as const;
 export type PlacementCategory = Exclude<(typeof categories)[number], "All">;
+export const industries = ["All", "Tech", "Fashion", "Beauty", "Fitness", "Food & Drink", "Travel", "Gaming", "Music", "Business", "Lifestyle"] as const;
+export type Industry = Exclude<(typeof industries)[number], "All">;
 export type InventoryItem = { id: string; name: string; description: string; timing: string; reach: string; price: number; remaining: number };
+export type AdSlot = { id: string; name: string; brand: string; price: number; color: string };
 export type Moment = {
   slug: string; title: string; city: string; country: string; dates: string; startDate: string; month: string;
-  category: PlacementCategory; tagline: string; surface: string; dimensions: string; duration: string;
+  category: PlacementCategory; industry?: Industry | string; tagline: string; surface: string; dimensions: string; duration: string;
   itinerary: string; visibility: string; proof: string; production: string; exclusivity: string; isDemo: boolean;
-  creator: { name: string; handle: string; niche: string; followers: string; avatar: string; portraitUrl?: string; socialUrl?: string };
+  creator: { name: string; handle: string; niche: string; followers: string; avatar: string; portraitUrl?: string; socialUrl?: string; audienceSource?: string };
   color: string; accent: string; inventory: InventoryItem[]; fit: string[]; photoUrl?: string;
+  campaignUrl?: string; bodyKind?: "body" | "dress"; slots?: AdSlot[]; raisedLabel?: string;
 };
 
 const examples = [
-  { slug: "hoodie-dubai-week", title: "Your logo. My hoodie.", category: "Clothing", city: "Dubai", country: "UAE",
-    startDate: "2026-11-05", dates: "5–11 Nov 2026", tagline: "A chest patch on my everyday hoodie, out and about for seven days.",
-    surface: "Front chest of a cream hoodie", dimensions: "12 × 8 cm removable patch", duration: "7 days",
-    itinerary: "Dubai Marina walks and cafés; private venues only with permission.",
-    visibility: "At least 3 hours of agreed outings each day, with the patch visible.",
-    proof: "One dated placement photo per day and a final seven-photo report.",
-    production: "Brand supplies the removable patch and pays delivery before the start date.",
-    name: "Maya Chen", handle: "@mayacitynotes", niche: "Style & city life", followers: "28K", avatar: "MC", price: 175, color: "#ff8e67", fit: ["Lifestyle", "Travel"] },
-  { slug: "laptop-lahore-coworking", title: "A laptop lid with room for you.", category: "Laptops", city: "Lahore", country: "Pakistan",
-    startDate: "2026-11-01", dates: "1–30 Nov 2026", tagline: "Your sticker on my laptop during a month of coworking sessions.",
-    surface: "Outward-facing laptop lid", dimensions: "10 × 7 cm removable sticker", duration: "30 days",
-    itinerary: "Shared workspaces and cafés in Lahore, subject to venue permission.",
-    visibility: "12 work sessions of at least 2 hours, with the lid facing the shared workspace.",
-    proof: "One dated setup photo per session, plus a session log.",
-    production: "Brand ships a removable, residue-free sticker before the first session.",
-    name: "Lena Park", handle: "@lenamakes", niche: "Builders & remote work", followers: "18K", avatar: "LP", price: 120, color: "#73d8ff", fit: ["Software", "Creator tools"] },
-  { slug: "backpack-london-commute", title: "Put your brand on my backpack.", category: "Bags", city: "London", country: "United Kingdom",
-    startDate: "2026-11-09", dates: "9–22 Nov 2026", tagline: "A front-panel patch on the bag I carry around the city.",
-    surface: "Backpack front panel", dimensions: "15 × 10 cm fabric patch", duration: "14 days",
-    itinerary: "Walking routes between public transit and work. Private addresses are not shared.",
-    visibility: "10 weekday commutes of at least 45 minutes, with the panel unobstructed.",
-    proof: "One dated placement photo per commute day; no bystander faces required.",
-    production: "Brand supplies a removable fabric patch and pays shipping.",
-    name: "Marco Alvarez", handle: "@marcoframes", niche: "Urban life & photography", followers: "32K", avatar: "MA", price: 140, color: "#9cff57", fit: ["Local brands", "Accessories"] },
-  { slug: "travel-tokyo-week", title: "Your brand, along for the trip.", category: "Travel", city: "Tokyo", country: "Japan",
-    startDate: "2026-11-15", dates: "15–21 Nov 2026", tagline: "Reserve backpack ad space across my seven-day Tokyo itinerary.",
-    surface: "Daypack front panel during travel", dimensions: "15 × 10 cm removable patch", duration: "7 days",
-    itinerary: "Public walks in Shibuya, Asakusa, and Ueno. Dates and permitted locations agreed before payment.",
-    visibility: "At least 3 hours of planned outings per day. No flights or social posts included.",
-    proof: "Daily dated placement photos and an itinerary completion report.",
-    production: "Brand ships the patch before departure. Trip expenses are not included.",
-    name: "Kaito Sato", handle: "@kaitoplays", niche: "Travel & tech", followers: "45K", avatar: "KS", price: 250, color: "#ffe04d", fit: ["Travel apps", "Connectivity"] },
-  { slug: "tshirt-karachi-weekend", title: "A weekend in your colours.", category: "Clothing", city: "Karachi", country: "Pakistan",
-    startDate: "2026-11-07", dates: "7–8 Nov 2026", tagline: "Your supplied T-shirt worn on two days of city outings.",
-    surface: "Chest print on a brand-supplied T-shirt", dimensions: "Up to 20 × 15 cm print", duration: "2 days",
-    itinerary: "Public weekend walks and cafés; no restricted events included.",
-    visibility: "At least 3 hours each day with the print visible. Social content is not included.",
-    proof: "Two dated photos per day showing the print and outing context.",
-    production: "Brand supplies a correctly sized shirt and pays delivery; creator approves the design.",
-    name: "Isabella Cruz", handle: "@isabellainmotion", niche: "Everyday style", followers: "41K", avatar: "IC", price: 60, color: "#ff8bc7", fit: ["Fashion", "Local businesses"] },
-  { slug: "tote-lisbon-week", title: "A tote that takes you places.", category: "Bags", city: "Lisbon", country: "Portugal",
-    startDate: "2026-11-02", dates: "2–6 Nov 2026", tagline: "Your printed tote, carried to five days of work and coffee stops.",
-    surface: "One outer side of a canvas tote", dimensions: "25 × 25 cm print", duration: "5 days",
-    itinerary: "Central Lisbon walking routes and cafés where branding is permitted.",
-    visibility: "At least 1 hour of walking each day with the printed side facing outward.",
-    proof: "One dated placement photo per day and a completion note.",
-    production: "Brand supplies the printed tote and pays delivery.",
-    name: "Andre Silva", handle: "@andrebuilds", niche: "Work & city life", followers: "26K", avatar: "AS", price: 90, color: "#c8b5ff", fit: ["Independent shops", "Design"] },
-] satisfies Array<{
-  slug: string; title: string; category: PlacementCategory; city: string; country: string; startDate: string; dates: string;
-  tagline: string; surface: string; dimensions: string; duration: string; itinerary: string; visibility: string; proof: string;
-  production: string; name: string; handle: string; niche: string; followers: string; avatar: string; price: number; color: string; fit: string[];
-}>;
+  {
+    slug: "marc-lou-hyrox", title: "15 slots on a race-day body.", category: "Clothing" as const, industry: "Fitness" as const,
+    city: "İzmir", country: "Turkey", startDate: "2026-09-19", dates: "19 Sep 2026", month: "SEP",
+    tagline: "Numbered zones on a HYROX kit — chest, arms, thighs — worn for the race, then proven with photos on this page.",
+    surface: "15 numbered body zones", dimensions: "Chest, arms, thighs, back", duration: "Race day",
+    itinerary: "HYROX İzmir, 19 September. Full race, then the recap.",
+    visibility: "Every zone worn for the race. Sponsors printed on the body and kit.",
+    proof: "Race photos and finish uploaded to this Momento campaign.",
+    production: "Brand sends a logo. The creator approves it. It goes on the zone.",
+    exclusivity: "One brand per zone. Offers stay on this page.",
+    name: "Marc Lou", handle: "@marclou", niche: "Indie maker · HYROX", followers: "public", avatar: "ML",
+    portraitUrl: "/campaigns/marc-lou.png", photoUrl: "/campaigns/marc-lou-og.jpg",
+    socialUrl: "https://x.com/marc_louvion",
+    bodyKind: "body" as const, color: "#1a2333", accent: "#ffe04d", price: 112000, raisedLabel: "$112,000 raised",
+    fit: ["Fitness", "SaaS", "Consumer apps"],
+    slots: [
+      { id: "chest-l", name: "Left chest", brand: "OpenAI", price: 8000, color: "#10a37f" },
+      { id: "chest-r", name: "Right chest", brand: "Star", price: 8000, color: "#4f63ff" },
+      { id: "bicep", name: "Right arm", brand: "Zero", price: 5000, color: "#ff5b3a" },
+      { id: "forearm", name: "Forearm", brand: "DataFast", price: 3500, color: "#ffe04d" },
+      { id: "thigh-l", name: "Left thigh", brand: "Ship", price: 4000, color: "#9cff57" },
+      { id: "thigh-r", name: "Right thigh", brand: "Build", price: 4000, color: "#ff8bc7" },
+    ],
+  },
+  {
+    slug: "vanshu-token2049", title: "13 spots on a TOKEN2049 dress.", category: "Clothing" as const, industry: "Tech" as const,
+    city: "Singapore", country: "Singapore", startDate: "2026-10-07", dates: "7 Oct 2026", month: "OCT",
+    tagline: "A white dress mapped into 13 priced spots — six on the front, seven on the back — worn on the TOKEN2049 floor.",
+    surface: "13 numbered dress spots", dimensions: "Front mega to back mini", duration: "Event day",
+    itinerary: "TOKEN2049 Singapore, Marina Bay Sands, 7 October 2026.",
+    visibility: "Worn all day on the floor. Photos and recap for every spot.",
+    proof: "Event photos uploaded to this Momento campaign.",
+    production: "Brand sends a logo. It prints on the dress after approval.",
+    exclusivity: "One brand per numbered spot. Offers stay on this page.",
+    name: "Vanshu", handle: "@vanshueth", niche: "Video · crypto events", followers: "public", avatar: "VA",
+    portraitUrl: "/campaigns/vanshu.jpg", photoUrl: "/campaigns/vanshu-dress.png",
+    socialUrl: "https://x.com/vanshueth",
+    bodyKind: "dress" as const, color: "#f4f0ea", accent: "#111111", price: 350, raisedLabel: "$350–$1,200 / spot",
+    fit: ["Crypto", "AI", "Consumer apps"],
+    slots: [
+      { id: "f1", name: "01 Mega", brand: "Variational", price: 1200, color: "#111111" },
+      { id: "f2", name: "02 Semi-mega", brand: "LeverUp", price: 900, color: "#4f63ff" },
+      { id: "f3", name: "03 Low key", brand: "Bagel", price: 700, color: "#ff5b3a" },
+      { id: "f4", name: "04 Low key", brand: "Bagel", price: 700, color: "#ffe04d" },
+      { id: "f5", name: "05 Zero chill", brand: "tiptop", price: 500, color: "#10a37f" },
+      { id: "f6", name: "06 Prime", brand: "Central", price: 900, color: "#9cff57" },
+    ],
+  },
+];
 
-// Fictional examples only. Never take money or bids against these records.
+// Public campaigns used as structure examples. Offers and payments stay off.
 export const moments: Moment[] = examples.map((item) => ({
-  ...item, month: "NOV", accent: "#ffe04d", isDemo: true,
-  creator: { name: item.name, handle: item.handle, niche: item.niche, followers: item.followers, avatar: item.avatar },
-  exclusivity: "One brand on this placement during the agreed dates; no broader exclusivity implied.",
-  inventory: [{ id: "placement", name: item.surface, description: item.dimensions, timing: item.duration,
-    reach: "No guaranteed impressions", price: item.price, remaining: 1 }],
+  slug: item.slug, title: item.title, category: item.category, industry: item.industry, city: item.city, country: item.country,
+  startDate: item.startDate, dates: item.dates, month: item.month, tagline: item.tagline, surface: item.surface,
+  dimensions: item.dimensions, duration: item.duration, itinerary: item.itinerary, visibility: item.visibility,
+  proof: item.proof, production: item.production, exclusivity: item.exclusivity, isDemo: true,
+  creator: {
+    name: item.name, handle: item.handle, niche: item.niche, followers: item.followers, avatar: item.avatar,
+    portraitUrl: item.portraitUrl, socialUrl: item.socialUrl, audienceSource: "live profile",
+  },
+  color: item.color, accent: item.accent, photoUrl: item.photoUrl,
+  bodyKind: item.bodyKind, slots: item.slots, raisedLabel: item.raisedLabel, fit: item.fit,
+  inventory: item.slots.map((slot) => ({
+    id: slot.id, name: slot.name, description: slot.brand, timing: item.duration,
+    reach: "Campaign example — no guaranteed impressions", price: slot.price, remaining: 1,
+  })),
 }));
 
 export function getMoment(slug: string) { return moments.find((item) => item.slug === slug); }

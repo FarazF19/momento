@@ -1,4 +1,6 @@
 // Only trusted configuration may determine authentication redirects.
+export const AUTH_NEXT_PATHS = ["/dashboard", "/list", "/studio", "/verify", "/auth/reset", "/discover"] as const;
+
 export function appOrigin(env: Record<string, string | undefined> = process.env) {
   const fallback = env.NODE_ENV === "development" ? "http://localhost:3000" : "https://momento-nine-rho.vercel.app";
   try {
@@ -7,4 +9,17 @@ export function appOrigin(env: Record<string, string | undefined> = process.env)
     if (url.protocol === "http:" && env.NODE_ENV !== "development") return fallback;
     return url.origin;
   } catch { return fallback; }
+}
+
+export function safeNext(value: string | null | undefined, fallback = "/dashboard") {
+  const raw = (value || "").trim();
+  if (!raw.startsWith("/") || raw.startsWith("//") || raw.includes("\\")) return fallback;
+  const pathname = raw.split("?")[0];
+  return (AUTH_NEXT_PATHS as readonly string[]).includes(pathname) ? pathname : fallback;
+}
+
+export function authCallbackUrl(origin: string, next?: string) {
+  const url = new URL("/auth/callback", origin);
+  if (next && next !== "/dashboard") url.searchParams.set("next", next);
+  return url.toString();
 }

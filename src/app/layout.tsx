@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { ScrollFx } from "@/components/scroll-fx";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Momento — Your brand. Their everyday.",
-  description: "Rent advertising space on creators’ clothes, laptops, bags, and upcoming trips. Creators list the space. Brands make an offer.",
+  title: "Momento — Numbered slots on a real person",
+  description: "Write one line. We turn it into a campaign page with a slot map. Brands offer on Momento.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><ScrollFx />{children}</body>
     </html>
   );
 }

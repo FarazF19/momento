@@ -5,17 +5,24 @@ import { useState } from "react";
 import { Logo } from "./logo";
 import { CloseIcon, MenuIcon } from "./icons";
 
+function buildHref(role: "creator" | "brand" | null) {
+  if (role === "creator") return "/studio";
+  if (role === "brand") return "/discover";
+  return "/login?mode=signup&role=creator&next=/studio";
+}
+
 export function HeaderNav({ role }: { role: "creator" | "brand" | null }) {
   const [open, setOpen] = useState(false);
-  const actionHref = role === "brand" ? "/discover" : role === "creator" ? "/list" : "/login?mode=signup";
-  const actionLabel = role === "brand" ? "Find ad space" : role === "creator" ? "List ad space" : "Get started";
+  const actionHref = buildHref(role);
+  const actionLabel = role === "brand" ? "Browse campaigns" : "Build my page";
 
   return (
     <header className="site-header">
       <div className="header-inner shell">
         <Logo />
         <nav className={open ? "nav-links nav-open" : "nav-links"} aria-label="Primary navigation">
-          <Link href="/discover" onClick={() => setOpen(false)}>Ad spaces</Link>
+          <Link href={actionHref} onClick={() => setOpen(false)}>Build my page</Link>
+          <Link href="/discover" onClick={() => setOpen(false)}>Campaigns</Link>
           <Link href="/brands" onClick={() => setOpen(false)}>For brands</Link>
           <Link href="/creators" onClick={() => setOpen(false)}>For creators</Link>
           <div className="mobile-actions">
