@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Header } from "@/components/header";
 import { MomentCard } from "@/components/moment-card";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
-import { HeroVideo } from "@/components/hero-video";
+import { PlacementShowcase } from "@/components/placement-showcase";
 import { moments } from "@/lib/moments";
 import { publishedPlacements } from "@/lib/marketplace";
 export const dynamic = "force-dynamic";
@@ -17,8 +17,8 @@ export default async function Home() {
         <section className="hero shell">
           <div className="hero-copy">
             <div className="eyebrow"><span /> The real-world creator ad marketplace</div>
-            <h1>Their everyday.<br /><em>Your next ad space.</em></h1>
-            <p className="hero-lede">Rent ad space on creators’ clothes, laptops, and bags—wherever life takes them. Creators list the space. Brands make an offer. Both agree the fit.</p>
+            <h1>Good brands.<br /><em>Going places.</em></h1>
+            <p className="hero-lede">Put your brand on the clothes, laptops, and bags creators already wear and carry. Rent a defined ad space—not another social post.</p>
             <div className="hero-actions">
               <Link href="/discover" className="button button-primary button-large">Explore ad spaces <ArrowIcon /></Link>
               <Link href="/creators" className="button button-outline button-large">I’m a creator</Link>
@@ -30,7 +30,7 @@ export default async function Home() {
             </div>
           </div>
           <div className="hero-feature">
-            <HeroVideo />
+            <PlacementShowcase />
           </div>
         </section>
 

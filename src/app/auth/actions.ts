@@ -1,6 +1,7 @@
 "use server";
 import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase/server";
+import { appOrigin } from "@/lib/app-origin";
 
 function message(value: string): never { redirect("/login?message=" + encodeURIComponent(value)); }
 export async function authenticate(form: FormData) {
@@ -15,8 +16,7 @@ export async function authenticate(form: FormData) {
     const role = form.get("role");
     const name = String(form.get("name") || "").trim().slice(0, 100);
     if (!name || (role !== "brand" && role !== "creator")) message("Enter your name and choose a creator or brand account.");
-    const origin = process.env.APP_URL;
-    if (!origin) message("Account creation is temporarily unavailable. Please try again later.");
+    const origin = appOrigin();
     const { data, error } = await client.auth.signUp({
       email, password, options: { data: { name, role }, emailRedirectTo: new URL("/auth/callback", origin).toString() },
     });
@@ -36,8 +36,8 @@ export async function signOut() {
 export async function requestPasswordReset(form: FormData) {
   const client = await supabaseServer();
   const email = String(form.get("email") || "").trim();
-  if (!client || !process.env.APP_URL) message("Account recovery is temporarily unavailable.");
-  await client.auth.resetPasswordForEmail(email, { redirectTo: new URL("/auth/callback?next=/auth/reset", process.env.APP_URL).toString() });
+  if (!client) message("Account recovery is temporarily unavailable.");
+  await client.auth.resetPasswordForEmail(email, { redirectTo: new URL("/auth/callback?next=/auth/reset", appOrigin()).toString() });
   message("If an account exists for this email, a password reset link will arrive shortly.");
 }
 export async function resetPassword(form: FormData) {

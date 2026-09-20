@@ -5,6 +5,7 @@ import { currentAccount } from "@/lib/supabase/server";
 import { signOut } from "@/app/auth/actions";
 import { decideOffer } from "./actions";
 import { formatPrice } from "@/lib/moments";
+import { GettingStarted } from "@/components/getting-started";
 export const dynamic = "force-dynamic";
 export default async function Dashboard({ searchParams }: { searchParams: Promise<{ message?: string }> }) {
   const account = await currentAccount();
@@ -15,11 +16,11 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
   const { data: listings, error: listingsError } = creator ? await account.client.from("placements").select("id, title, status, asking_price_minor").eq("creator_id", account.user.id).order("created_at", { ascending: false }) : { data: [], error: null };
   return <><Header /><main className="dashboard-page shell">
     <div className="dashboard-heading"><div><div className="eyebrow"><span /> {creator ? "Creator" : "Brand"} workspace</div><h1>Hello, {account.profile.name}.</h1><p>{creator ? "Your ad spaces and incoming brand offers." : "Your offers and agreed placements."}</p></div><form action={signOut}><button className="button button-outline">Sign out</button></form></div>
-    <Link className="button button-primary" href={creator ? "/list" : "/discover"}>{creator ? "List an ad space" : "Find an ad space"}</Link>
+    {!offersError && !listingsError && <GettingStarted creator={creator} listed={Boolean(listings?.length)} offered={Boolean(offers?.length)} accepted={Boolean(offers?.some(offer => offer.status === "accepted"))} />}
     {message && <p role="status" className="form-message">{message}</p>}
     {(offersError || listingsError) && <p role="alert">We couldn’t load your workspace. Please try again shortly.</p>}
     {creator && <section><h2>Your placements</h2>{!listings?.length && !listingsError && <p>No listings yet. Start with one item and one clearly defined ad space.</p>}<div className="dashboard-list">{listings?.map((listing) => <article key={listing.id}><h3>{listing.title}</h3><p>{formatPrice(listing.asking_price_minor / 100)} · {listing.status === "paused" ? "Reserved after offer acceptance" : "Published"}</p>{listing.status === "published" && <Link className="underlined-link" href={"/placements/" + listing.id}>View placement</Link>}</article>)}</div></section>}
-    <section><h2>{creator ? "Incoming offers" : "Your offers"}</h2>{!offers?.length && !offersError && <p>No offers yet. Each offer will include the price and placement requirements.</p>}
+    <section id="offers"><h2>{creator ? "Incoming offers" : "Your offers"}</h2>{!offers?.length && !offersError && <p>{creator ? "When a brand makes an offer, its brief and price appear here." : "Open a live listing and send your first offer. Track the creator’s response here."}</p>}
       <div className="dashboard-list">{offers?.map((offer) => <article key={offer.id}>
         <div className="dashboard-heading"><h3>{offer.placement_snapshot.title}</h3><b>{formatPrice(offer.amount_minor / 100)}</b></div>
         <p>{offer.brand_name} · {offer.status}</p><p>{offer.proposal}</p>
