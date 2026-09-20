@@ -3,183 +3,34 @@ import { Header } from "@/components/header";
 import { MomentCard } from "@/components/moment-card";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
 import { LandingFx } from "@/components/landing-fx";
-import {
-  LandingCompare,
-  LandingHow,
-  LandingInclude,
-  LandingProof,
-  LandingTheme,
-  SurfaceExplorer,
-} from "@/components/surface-explorer";
-import { LandingCta, LandingFaq, LandingHeroActions, LandingTrust, SlotEstimator } from "@/components/slot-estimator";
-import { ProofTicker } from "@/components/proof-ticker";
+import { LandingHow, LandingTheme } from "@/components/surface-explorer";
+import { LandingCta, LandingFaq, LandingHeroActions, LandingTrust } from "@/components/slot-estimator";
+import { HeroPlacement } from "@/components/hero-placement";
+import { publishedPlacements } from "@/lib/marketplace";
 import { moments } from "@/lib/moments";
-
-export const revalidate = 300;
-
+export const revalidate = 60;
 export default async function Home() {
-  const examples = moments.filter((item) => item.bodyKind);
-  const featured = examples[0];
-  const catalog = examples.slice(0, 2);
+  const { placements, unavailable } = await publishedPlacements(2500);
   const listHref = "/login?mode=signup&role=creator&next=/studio";
-  const browseHref = "/discover";
-
-  return (
-    <>
-      <Header />
-      <LandingFx />
-      <LandingTheme>
-      <main>
-        <section className="hero shell">
-          <div className="hero-copy">
-            <div className="eyebrow"><span /> Physical ads on real people</div>
-            <h1>Sell ad space on your body &amp; clothes<br /><em>at real events.</em></h1>
-            <p className="hero-lede">
-              Number the zones on what you wear. Brands send offers here. Dated photos of the wear stay on the same page.
-            </p>
-            <LandingHeroActions listHref={listHref} browseHref={browseHref} />
-            <LandingTrust />
-          </div>
-          {featured && (
-            <div className="hero-feature">
-              <figure className="hero-stage">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={featured.photoUrl} alt="" fetchPriority="high" decoding="async" />
-                <figcaption>
-                  <span className="hero-stage-kicker">{featured.creator.name} · {featured.city}</span>
-                  <strong>{featured.slots?.length ?? featured.inventory.length} numbered slots</strong>
-                  <p>{featured.raisedLabel}</p>
-                </figcaption>
-              </figure>
-            </div>
-          )}
-        </section>
-
-        <ProofTicker />
-
-        <section className="how-now shell" id="how-it-works">
-          <div className="landing-heading reveal">
-            <div className="eyebrow"><span /> How it works</div>
-            <h2>List. Offer. Wear.</h2>
-            <p>Three steps. One URL. The deal stays on this site.</p>
-          </div>
-          <LandingHow />
-        </section>
-
-        <section className="surfaces-now shell" id="surfaces">
-          <div className="landing-heading reveal">
-            <div className="eyebrow"><span /> The inventory</div>
-            <h2>Click a number. That is the ad.</h2>
-            <p>Chest, sleeve, dress, jersey — not a follower count, not a banner.</p>
-          </div>
-          <div className="reveal">
-            <SurfaceExplorer />
-          </div>
-        </section>
-
-        <section className="include-now shell">
-          <div className="landing-heading reveal">
-            <div className="eyebrow"><span /> What you sell</div>
-            <h2>A square. A date. A photo.</h2>
-            <p>That is a slot — fabric, a window of days, and proof on the same page.</p>
-          </div>
-          <LandingInclude />
-        </section>
-
-        <section className="moments-section shell" id="campaigns">
-          <div className="landing-heading reveal">
-            <div className="eyebrow"><span /> The format</div>
-            <h2>This is what a listing looks like.</h2>
-            <p>Marc Lou’s HYROX kit and Vanshu’s TOKEN2049 dress. Your page works the same way, on this site.</p>
-          </div>
-          <div className="campaign-grid reveal-stagger">
-            {catalog.map((moment) => <MomentCard key={moment.slug} moment={moment} />)}
-          </div>
-        </section>
-
-        <section className="compare-now shell">
-          <div className="landing-heading reveal">
-            <div className="eyebrow"><span /> Why this exists</div>
-            <h2>A post disappears. A slot is in the room.</h2>
-            <p>Brands can already buy a story. Here they buy a square they can point at.</p>
-          </div>
-          <LandingCompare />
-        </section>
-
-        <section className="proof-now shell">
-          <div className="landing-heading reveal">
-            <div className="eyebrow"><span /> After the event</div>
-            <h2>The page stays useful.</h2>
-            <p>Artwork, wear, and photos live on one campaign URL.</p>
-          </div>
-          <LandingProof />
-        </section>
-
-        <section className="split-audience shell" id="for-who">
-          <article className="reveal">
-            <div className="eyebrow"><span /> For creators</div>
-            <h2>Walking into an event? Number the kit.</h2>
-            <p>Race, conference, or a week of city days. You set the price. You approve every brand.</p>
-            <ul>
-              <li><CheckIcon /> No follower minimum</li>
-              <li><CheckIcon /> You keep the clothes</li>
-              <li><CheckIcon /> Offers land in your dashboard</li>
-              <li><CheckIcon /> Photo proof stays on your page</li>
-            </ul>
-            <LandingCta href={listHref} tone="primary">List your slots</LandingCta>
-          </article>
-          <article className="reveal">
-            <div className="eyebrow"><span /> For brands</div>
-            <h2>Buy a zone you can point to.</h2>
-            <p>Not a banner. A numbered spot on someone in the room — chest, arm, dress, jersey.</p>
-            <ul>
-              <li><CheckIcon /> One price per numbered slot</li>
-              <li><CheckIcon /> Offers stay on Momento</li>
-              <li><CheckIcon /> Artwork approved before it is worn</li>
-              <li><CheckIcon /> Dated photos required on the page</li>
-            </ul>
-            <LandingCta href={browseHref} tone="dark">Browse open slots</LandingCta>
-          </article>
-        </section>
-
-        <section className="speed-now shell">
-          <div className="speed-now-copy reveal">
-            <div className="eyebrow"><span /> Time</div>
-            <h2>A live page in under five minutes.</h2>
-            <p>Account, event, photo, slots, price. Preview as you type. Publish. Share the link.</p>
-            <LandingCta href={listHref} tone="primary" size="lg">Start a listing <ArrowIcon /></LandingCta>
-          </div>
-          <div className="reveal">
-            <SlotEstimator />
-          </div>
-        </section>
-
-        <section className="faq-section shell">
-          <div className="landing-heading reveal">
-            <h2>Common questions</h2>
-          </div>
-          <LandingFaq />
-        </section>
-
-        <section className="final-cta shell">
-          <div className="reveal">
-            <span className="eyebrow"><span /> Start today</span>
-            <h2>List your slots.</h2>
-          </div>
-          <div className="final-actions reveal">
-            <LandingCta href={listHref} tone="primary" size="lg">List your slots <ArrowIcon /></LandingCta>
-            <LandingCta href={browseHref} tone="outline" size="lg">Browse open slots</LandingCta>
-          </div>
-        </section>
-      </main>
-      </LandingTheme>
-      <footer className="site-footer">
-        <div className="shell footer-inner">
-          <div><strong>MOMENTO</strong><p>Numbered ad slots on real people. Offers and proof stay on this site.</p></div>
-          <div><Link href="/discover">Browse slots</Link><Link href="/creators">Creators</Link><Link href="/brands">Brands</Link><Link href={listHref}>List your slots</Link></div>
-          <small>© 2026 Momento</small>
-        </div>
-      </footer>
-    </>
-  );
+  return <><Header /><LandingFx /><LandingTheme><main>
+    <section className="hero shell launch-hero"><div className="hero-copy">
+      <div className="eyebrow"><span /> Creator sponsorships, out in the world</div>
+      <h1>Sponsor what creators wear.<br /><em>Where it matters.</em></h1>
+      <p className="hero-lede">Put your brand on a creator’s outfit, laptop, or bag at their next event. Choose the person, agree on the placement, and get photo proof.</p>
+      <LandingHeroActions listHref={listHref} browseHref="/discover" /><LandingTrust />
+      <p className="launch-stage-note">Early access · Create listings and discuss offers. Payments are not live yet.</p>
+    </div><div className="hero-feature"><HeroPlacement /></div></section>
+    <section className="moments-section shell launch-listings" id="campaigns"><div className="landing-heading"><div className="eyebrow"><span /> Meet the creators</div><h2>A person you’d pick.<br />A place your brand fits.</h2><p>Explore their niche, upcoming plans, placement details, and asking price.</p></div>
+      {placements.length ? <><div className="campaign-grid">{placements.slice(0, 3).map(moment => <MomentCard key={moment.slug} moment={moment} />)}</div><Link className="underlined-link" href="/discover">Explore all creators →</Link></> : <div className="launch-empty"><div><span className="eyebrow">{unavailable ? "Listings unavailable" : "Founding creators"}</span><h3>{unavailable ? "We couldn’t load creator listings." : "Going somewhere worth showing up?"}</h3><p>{unavailable ? "Please try the marketplace again shortly." : "We’re welcoming our first creators. Have 10,000+ followers on Instagram, TikTok, or X and an upcoming event? Create your profile and tell brands where you’re headed."}</p></div><LandingCta href={unavailable ? "/discover" : listHref}>{unavailable ? "Try the marketplace" : "Become a founding creator"}<ArrowIcon /></LandingCta></div>}
+    </section>
+    <section className="how-now shell" id="how-it-works"><div className="landing-heading reveal"><div className="eyebrow"><span /> How it works</div><h2>Choose the creator.<br />Agree on the details.</h2><p>Start with a person and a real plan. Keep the offer and deliverables together.</p></div><LandingHow /></section>
+    <section className="split-audience shell" id="for-who">
+      <article className="reveal"><div className="eyebrow"><span /> For creators</div><h2>Your plans.<br />A new way to earn.</h2><p>You’re already going. Give a brand a place on what you wear or carry, on terms you choose.</p><ul><li><CheckIcon /> 10,000+ followers on one supported platform</li><li><CheckIcon /> Your price, your dates, your choice of brands</li><li><CheckIcon /> You keep your clothes and belongings</li></ul><LandingCta href={listHref}>Create your creator profile</LandingCta></article>
+      <article className="reveal"><div className="eyebrow"><span /> For brands</div><h2>Find your people.<br />Show up with them.</h2><p>Find a creator heading to the conference, race, or community your customers care about.</p><ul><li><CheckIcon /> See the person, social profile, and event</li><li><CheckIcon /> Agree on size, dates, artwork, and photo proof</li><li><CheckIcon /> Send an offer for the placement that fits</li></ul><LandingCta href="/discover" tone="outline">Find creators</LandingCta></article>
+    </section>
+    <section className="moments-section shell launch-examples"><div className="landing-heading reveal"><div className="eyebrow"><span /> Explore the format</div><h2>Picture your next collaboration.</h2><p>These sample pages illustrate physical sponsorships. They are not available listings, Momento customers, or evidence of revenue earned here.</p></div><div className="campaign-grid reveal-stagger">{moments.slice(0, 2).map(moment => <MomentCard key={moment.slug} moment={moment} />)}</div></section>
+    <section className="launch-terms shell"><div><span className="eyebrow">Before any paid campaign</span><h2>Know exactly what’s agreed.</h2></div><div><p><strong>One written brief:</strong> placement size, event dates, total price, who prints and ships the branding, artwork approval, and when photos are due.</p><p><strong>Clear expectations:</strong> photos document the placement. Followers and event attendance do not guarantee views or sales.</p><p><strong>Current payment status:</strong> checkout and creator payouts are not enabled. Offers are expressions of interest; do not pay or start paid work through this preview.</p><Link href="/trust" className="underlined-link">Read verification and payment details →</Link></div></section>
+    <section className="faq-section shell"><div className="landing-heading reveal"><h2>A few things to know.</h2></div><LandingFaq /></section>
+    <section className="final-cta shell"><div><span className="eyebrow"><span /> Founding creators welcome</span><h2>Make your next event<br />a brand opportunity.</h2></div><div className="final-actions"><LandingCta href={listHref} size="lg">Create your profile <ArrowIcon /></LandingCta><LandingCta href="/brands" tone="outline" size="lg">I’m a brand</LandingCta></div></section>
+  </main></LandingTheme><footer className="site-footer"><div className="shell footer-inner"><div><strong>MOMENTO</strong><p>Your brand. Their next adventure.</p></div><div><Link href="/discover">Find creators</Link><Link href="/creators">For creators</Link><Link href="/brands">For brands</Link><Link href="/trust">Verification &amp; payments</Link></div><small>© 2026 Momento</small></div></footer></>;
 }

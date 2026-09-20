@@ -133,14 +133,14 @@ function MomentoCard({ index, title, children, featured }: { index?: string; tit
 export function LandingHow() {
   return (
     <div className="how-now-grid reveal-stagger">
-      <MomentoCard index="01" title="Number the zones">
-        Chest, sleeve, jersey, dress. Price each one. Tie them to a race, a conference, or a city week.
+      <MomentoCard index="01" title="List your next event">
+        Creators share where they’re going, what they’ll wear or carry, and the placement they’re offering.
       </MomentoCard>
-      <MomentoCard index="02" title="Take the offer">
-        A brand picks one square, sends a brief and a price. You approve it here.
+      <MomentoCard index="02" title="Find the right fit">
+        Brands choose a creator and propose a price. Together, agree on the artwork, dates, and photo requirements.
       </MomentoCard>
-      <MomentoCard index="03" featured title="Wear it. Prove it.">
-        Approve the art, wear the mark, upload dated photos to the same page.
+      <MomentoCard index="03" featured title="Make the plan clear">
+        Keep the offer and deliverables in one place. Paid campaigns can begin once checkout is enabled and payment is confirmed.
       </MomentoCard>
     </div>
   );
@@ -203,3 +203,4 @@ export function LandingProof() {
     </div>
   );
 }
+

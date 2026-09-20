@@ -1,5 +1,5 @@
 import "server-only";
-import { creatorPlatforms, safePublicUrl, type VerificationPayload } from "./verification";
+import { creatorAudienceError, creatorPlatforms, safePublicUrl, type VerificationPayload } from "./verification";
 
 // Automatic marketplace review. The server fetches the applicant's public page,
 // confirms the unique ownership code is visible on it, and picks up the public
@@ -107,6 +107,11 @@ export async function runAutoReview(role: "creator" | "brand", payload: Verifica
   if (followers !== null) identity.fetchedFollowers = String(followers);
   if (role === "brand") { const site = metaContent(html, "og:site_name"); if (site) identity.fetchedName = cleanName(site); }
 
+  if (role === "creator") {
+    const audienceError = creatorAudienceError(followers);
+    if (audienceError) return { decision: "needs_changes", note: audienceError, identity };
+  }
+
   const picked = [identity.fetchedName && "name", identity.fetchedPhoto && "photo", identity.fetchedFollowers && "audience size"].filter(Boolean).join(", ");
   return {
     decision: "approved",
@@ -114,3 +119,4 @@ export async function runAutoReview(role: "creator" | "brand", payload: Verifica
     identity,
   };
 }
+

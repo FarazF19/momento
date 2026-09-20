@@ -15,10 +15,10 @@ export type Moment = {
 
 const examples = [
   {
-    slug: "marc-lou-hyrox", title: "15 slots on a race-day body.", category: "Clothing" as const, industry: "Fitness" as const,
+    slug: "marc-lou-hyrox", title: "A race-day sponsorship example.", category: "Clothing" as const, industry: "Fitness" as const,
     city: "İzmir", country: "Turkey", startDate: "2026-09-19", dates: "19 Sep 2026", month: "SEP",
     tagline: "Numbered zones on a HYROX kit — chest, arms, thighs — worn for the race, then proven with photos on this page.",
-    surface: "15 numbered body zones", dimensions: "Chest, arms, thighs, back", duration: "Race day",
+    surface: "6 illustrated body placements", dimensions: "Chest, arms, thighs, back", duration: "Race day",
     itinerary: "HYROX İzmir, 19 September. Full race, then the recap.",
     visibility: "Every zone worn for the race. Sponsors printed on the body and kit.",
     proof: "Race photos and finish uploaded to this Momento campaign.",
@@ -27,7 +27,7 @@ const examples = [
     name: "Marc Lou", handle: "@marclou", niche: "Indie maker · HYROX", followers: "public", avatar: "ML",
     portraitUrl: "/campaigns/marc-lou.png", photoUrl: "/campaigns/marc-lou-og.jpg",
     socialUrl: "https://x.com/marc_louvion",
-    bodyKind: "body" as const, color: "#1a2333", accent: "#ffe04d", price: 112000, raisedLabel: "$112,000 raised",
+    bodyKind: "body" as const, color: "#1a2333", accent: "#ffe04d", price: 112000, raisedLabel: "Example pricing",
     fit: ["Fitness", "SaaS", "Consumer apps"],
     slots: [
       { id: "chest-l", name: "Left chest", brand: "OpenAI", price: 8000, color: "#10a37f" },
@@ -39,10 +39,10 @@ const examples = [
     ],
   },
   {
-    slug: "vanshu-token2049", title: "13 spots on a TOKEN2049 dress.", category: "Clothing" as const, industry: "Tech" as const,
+    slug: "vanshu-token2049", title: "A conference outfit sponsorship example.", category: "Clothing" as const, industry: "Tech" as const,
     city: "Singapore", country: "Singapore", startDate: "2026-10-07", dates: "7 Oct 2026", month: "OCT",
-    tagline: "A white dress mapped into 13 priced spots — six on the front, seven on the back — worn on the TOKEN2049 floor.",
-    surface: "13 numbered dress spots", dimensions: "Front mega to back mini", duration: "Event day",
+    tagline: "A sample conference outfit with six illustrated placements. Explore the layout and proposed deliverables.",
+    surface: "6 illustrated dress placements", dimensions: "Front mega to back mini", duration: "Event day",
     itinerary: "TOKEN2049 Singapore, Marina Bay Sands, 7 October 2026.",
     visibility: "Worn all day on the floor. Photos and recap for every spot.",
     proof: "Event photos uploaded to this Momento campaign.",
@@ -51,7 +51,7 @@ const examples = [
     name: "Vanshu", handle: "@vanshueth", niche: "Video · crypto events", followers: "public", avatar: "VA",
     portraitUrl: "/campaigns/vanshu.jpg", photoUrl: "/campaigns/vanshu-dress.png",
     socialUrl: "https://x.com/vanshueth",
-    bodyKind: "dress" as const, color: "#f4f0ea", accent: "#111111", price: 350, raisedLabel: "$350–$1,200 / spot",
+    bodyKind: "dress" as const, color: "#f4f0ea", accent: "#111111", price: 350, raisedLabel: "Example pricing",
     fit: ["Crypto", "AI", "Consumer apps"],
     slots: [
       { id: "f1", name: "01 Mega", brand: "Variational", price: 1200, color: "#111111" },
@@ -86,3 +86,4 @@ export function getMoment(slug: string) { return moments.find((item) => item.slu
 export function formatPrice(price: number) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(price);
 }
+

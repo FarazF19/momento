@@ -31,6 +31,10 @@ export async function POST(request: Request) {
   const account = await currentAccount();
   if (!account) return NextResponse.json({ error: "Sign in with a creator account to publish." }, { status: 401 });
   if (account.profile.role !== "creator") return NextResponse.json({ error: "Only creator accounts can publish ad space." }, { status: 403 });
+  const { data: approved, error: approvalError } = await account.client.rpc("marketplace_approved", { account_id: account.user.id });
+  if (approvalError || !approved) return NextResponse.json({ error: "Verify a social profile with at least 10,000 followers before publishing.", verifyUrl: "/verify" }, { status: 403 });
+  const { data: verification } = await account.client.from("verification_applications").select("payload").eq("user_id", account.user.id).eq("status", "approved").single();
+  const evidence = verification?.payload || {};
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") return NextResponse.json({ error: "Invalid listing." }, { status: 400 });
 
@@ -50,7 +54,8 @@ export async function POST(request: Request) {
   const bodyKind = input.bodyKind === "dress" || input.bodyKind === "body"
     ? input.bodyKind
     : slots.length ? "body" : "";
-  const followers = Number.isFinite(Number(input.followers)) ? Math.max(0, Math.round(Number(input.followers))) : 0;
+  const followers = Number(evidence.fetchedFollowers ?? evidence.followers);
+  if (!Number.isSafeInteger(followers) || followers < 10000) return NextResponse.json({ error: "Your verified audience must be at least 10,000 followers. Verify your profile again.", verifyUrl: "/verify" }, { status: 403 });
   const fields = {
     event,
     city,
@@ -100,8 +105,12 @@ export async function POST(request: Request) {
       proof: str("deliverableDetails"), production: str("production"), exclusivity: str("exclusivity"),
       exposure: str("reach", 100), industry: str("industry", 30),
       slots, template: str("template", 40), bodyKind, priceMode,
+      socialUrl: evidence.verifiedProfileUrl || evidence.profileUrl,
+      portraitUrl: evidence.fetchedPhoto || evidence.portraitUrl || "",
+      audienceSource: "Verified social profile",
     },
   }).select("id").single();
   if (dbError) return NextResponse.json({ error: "Could not publish the placement. Check your dates and try again." }, { status: 400 });
   return NextResponse.json({ reference: data.id, listingUrl: "/placements/" + data.id }, { status: 201 });
 }
+

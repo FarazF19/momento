@@ -7,7 +7,8 @@ export const revalidate = 60;
 
 export default async function DiscoverPage() {
   const examples = moments.filter((item) => item.bodyKind);
-  const { placements, unavailable } = await publishedPlacements(600);
-  const catalog = [...placements, ...examples.filter((item) => !placements.some((live) => live.slug === item.slug))];
-  return <><Header /><Discovery placements={catalog} unavailable={unavailable} /></>;
+  const { placements, unavailable } = await publishedPlacements(2500);
+  const catalog = placements;
+  return <><Header /><Discovery placements={catalog} examples={examples} unavailable={unavailable} /></>;
 }
+

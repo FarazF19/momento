@@ -11,14 +11,14 @@ export default function BrandsPage() {
       <Header />
       <main className="audience-page shell">
         <div className="eyebrow"><span /> For brands</div>
-        <h1>Buy a numbered slot<br /><em>on a real person.</em></h1>
-        <p className="audience-lede">Choose a creator, pick a numbered zone, and send an offer on this site. Dated photos come back on the same page. This is physical placement, not a banner buy.</p>
+        <h1>Your audience is out there.<br /><em>Show up with a creator.</em></h1>
+        <p className="audience-lede">Find creators heading to events your customers care about. Sponsor a placement on their outfit, laptop, or bag, with the dates and photo requirements agreed upfront.</p>
         <div className="hero-actions">
-          <Link href="/discover" className="button button-primary button-large">Browse open slots</Link>
+          <Link href="/discover" className="button button-primary button-large">Find creators</Link>
           <Link href="/login?mode=signup&role=brand&next=/discover" className="button button-outline button-large">Create a brand account</Link>
         </div>
         <div className="stat-strip">
-          <span><b>~1 min</b><small>to verify the brand</small></span>
+          <span><b>Your business</b><small>ownership checked</small></span>
           <span><b>{industries.length - 1}</b><small>niches to filter</small></span>
           <span><b>1 price</b><small>per slot, written down</small></span>
           <span><b>Photos</b><small>agreed before you pay</small></span>
@@ -44,9 +44,9 @@ export default function BrandsPage() {
             <h2>Clear terms</h2>
             <ul>
               <li><CheckIcon /> One price for the slot and the dates</li>
-              <li><CheckIcon /> Audience size from a live profile, not a screenshot</li>
+              <li><CheckIcon /> Creator profile ownership and 10K+ audience checked</li>
               <li><CheckIcon /> Visibility and photo proof written first</li>
-              <li><CheckIcon /> Accepting a slot declines competing offers</li>
+              <li><CheckIcon /> Agree on exclusivity before accepting</li>
             </ul>
           </article>
         </div>
@@ -60,10 +60,11 @@ export default function BrandsPage() {
         </section>
 
         <section className="audience-cta">
-          <div><h2>Choose a person,<br />then a slot.</h2><p>Browse open slots and send an offer when the zone is right.</p></div>
-          <Link href="/discover" className="button button-primary button-large">Browse open slots</Link>
+          <div><h2>Choose a person,<br />then a slot.</h2><p>Find creators and send an offer when the zone is right.</p></div>
+          <Link href="/discover" className="button button-primary button-large">Find creators</Link>
         </section>
       </main>
     </>
   );
 }
+

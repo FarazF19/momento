@@ -1,7 +1,7 @@
 import Link from "next/link";
 export function GettingStarted({ creator, listed, offered, accepted }: { creator: boolean; listed: boolean; offered: boolean; accepted: boolean }) {
   const steps = creator ? [
-    { title: "List your slots", text: "Open the studio, map numbered zones, and publish. A social-bio check is optional later — not required to list.", done: listed, href: "/studio", action: "List your slots" },
+    { title: "List your slots", text: "Verify ownership of a social profile with 10,000+ followers, then publish your event and placements.", done: listed, href: "/verify", action: "Verify your creator profile" },
     { title: "Review brand offers", text: "Compare the brand, brief, and price. You decide which offers fit.", done: offered, href: "#offers", action: "View incoming offers" },
     { title: "Agree the placement", text: "Accept the right fit to reserve the space. Payment is not enabled yet—do not start paid work.", done: accepted, href: "#offers", action: "Review terms" },
   ] : [
@@ -11,3 +11,4 @@ export function GettingStarted({ creator, listed, offered, accepted }: { creator
   ];
   return <section className="getting-started" aria-labelledby="getting-started-title"><div className="guide-heading"><div><span className="eyebrow">Your next steps</span><h2 id="getting-started-title">{creator ? "Turn one item into an opportunity." : "Start with one well-placed brand."}</h2></div><span>Email confirmed ✓</span></div><ol>{steps.map((step, i) => <li key={step.title}><span className={step.done ? "step-number complete" : "step-number"}>{step.done ? "✓" : `0${i + 1}`}</span><h3>{step.title}</h3><p>{step.text}</p><Link href={step.href}>{step.action} →</Link></li>)}</ol></section>;
 }
+

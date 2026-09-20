@@ -15,7 +15,7 @@ function listHref(role: "creator" | "brand" | null) {
 export function HeaderNav({ role }: { role: "creator" | "brand" | null }) {
   const [open, setOpen] = useState(false);
   const primaryHref = listHref(role);
-  const primaryLabel = role === "brand" ? "Browse open slots" : "List your slots";
+  const primaryLabel = role === "brand" ? "Find creators" : "Create a listing";
   const signInHref = role ? "/dashboard" : "/login";
   const signInLabel = role ? "Dashboard" : "Sign in";
 
@@ -24,7 +24,7 @@ export function HeaderNav({ role }: { role: "creator" | "brand" | null }) {
       <div className="header-inner shell">
         <Logo />
         <nav className={open ? "nav-links nav-open" : "nav-links"} aria-label="Primary navigation">
-          <Link href="/discover" onClick={() => setOpen(false)}>Browse slots</Link>
+          <Link href="/discover" onClick={() => setOpen(false)}>Find creators</Link>
           <Link href="/#how-it-works" onClick={() => setOpen(false)}>How it works</Link>
           <Link href="/brands" onClick={() => setOpen(false)}>For brands</Link>
           <Link href="/creators" onClick={() => setOpen(false)}>For creators</Link>
@@ -60,3 +60,4 @@ export function HeaderNav({ role }: { role: "creator" | "brand" | null }) {
     </header>
   );
 }
+

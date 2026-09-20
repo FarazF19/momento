@@ -12,7 +12,7 @@ export function BookingPanel({ moment }: { moment: Moment }) {
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
-  const price = moment.inventory[0].price;
+  const price = Math.min(...moment.inventory.map(item => item.price));
   useEffect(() => {
     if (open) dialog.current?.showModal();
     else dialog.current?.close();
@@ -54,18 +54,19 @@ export function BookingPanel({ moment }: { moment: Moment }) {
         <div className="summary-item"><span>City</span><b>{moment.city}</b></div>
         <div className="summary-item"><span>Proof</span><b>Photos on this page</b></div>
       </div>
-      <div className="booking-total"><span>{moment.raisedLabel ? "Slot range" : "Asking price"}</span><b>{moment.raisedLabel || formatPrice(price)}</b></div>
+      <div className="booking-total"><span>{moment.raisedLabel ? "Slot range" : "Asking price"}</span><b>{moment.isDemo ? "Illustrative pricing" : formatPrice(price)}</b></div>
       <button type="button" className="button button-primary booking-button" onClick={() => { setMessage(""); setOpen(true); }}>
         Make an offer <ArrowIcon />
       </button>
-      <p className="sample-disclaimer">{moment.isDemo ? "Offers stay on Momento. On this public example the form does not send a bid." : "No charge to offer. Terms are agreed before payment is taken."}</p>
+      <p className="sample-disclaimer">{moment.isDemo ? "Offers stay on Momento. On this public example the form does not send a bid." : "Early access: no payment is taken. Accepting an offer is not a paid booking. Checkout and payouts are not enabled."}</p>
+      <div className="booking-terms"><p><strong>Production &amp; shipping:</strong> {moment.production || "Agree responsibility and costs with the creator."}</p><p><strong>Exclusivity:</strong> {moment.exclusivity || "Agree this before accepting."}</p><p><strong>Photo requirements:</strong> {moment.proof || "Agree the number of photos and deadline."}</p><p><strong>Total cost:</strong> confirm production, shipping, any platform fee, and cancellation terms before paid checkout. Current prices are proposals; no funds are held.</p></div>
       <dialog ref={dialog} className="booking-modal" onClose={() => setOpen(false)} aria-labelledby="booking-title">
         <button className="modal-close" type="button" onClick={() => setOpen(false)} aria-label="Close offer form"><CloseIcon /></button>
         <div className="eyebrow"><span /> {moment.isDemo ? "Preview · not sent" : "Brand offer"}</div>
         <h2 id="booking-title">Offer on a slot.</h2>
         <p>Propose a price and say which zone you want. This stays on Momento.</p>
         <form onSubmit={submit}>
-          {!moment.isDemo && <p>Verify the brand in about a minute, then send. <Link className="underlined-link" href="/login?mode=signup&role=brand">Create an account</Link></p>}
+          {!moment.isDemo && <p>Create your brand account and verify your business before sending. <Link className="underlined-link" href="/login?mode=signup&role=brand">Create an account</Link></p>}
           <label><span>Your offer (USD)</span><input name="offerAmount" type="number" min="1" max="100000" step="0.01" required defaultValue={price} /></label>
           <label><span>Brand and which slot</span><textarea name="campaign" required minLength={10} maxLength={1500} rows={4} placeholder="Which numbered zone, and what should be printed there?" /></label>
           {message && <div className="form-message" role="status">{message}</div>}
@@ -75,3 +76,4 @@ export function BookingPanel({ moment }: { moment: Moment }) {
     </aside>
   );
 }
+

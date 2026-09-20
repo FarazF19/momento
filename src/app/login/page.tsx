@@ -36,7 +36,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
             <h1>{signup ? "Join Momento." : verify ? "Confirm your inbox." : "Welcome back."}</h1>
             <CardDescription className="login-lede">
               {signup
-                ? "Continue with Google — we take your name and email. Or use a password. Creators can list slots right after."
+                ? "Continue with Google — we take your name and email. Or use a password. Creators verify a social profile with 10,000+ followers before publishing. Brands verify their business before making offers."
                 : verify
                   ? "A confirmation link was sent to your inbox. Open it, then sign in with the same password. Check spam and promotions if it is not in the primary inbox."
                   : "Continue with Google, or sign in with email."}
@@ -52,7 +52,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
               <aside className="verify-banner" role="status">
                 <strong>Confirm the email to sign in.</strong>
                 <p>
-                  Look for a message from Momento{email ? <> at <b>{email}</b></> : ""}. If nothing arrives within a few minutes, resend below and check spam. On this development machine, resending can confirm the address so you can continue without the inbox.
+                  Look for a message from Momento{email ? <> at <b>{email}</b></> : ""}. If nothing arrives within a few minutes, resend below and check spam. Open the newest confirmation email if you requested more than one.
                 </p>
                 <form action={resendConfirmation} className="verify-resend">
                   <input type="hidden" name="email" value={email || ""} />
@@ -74,7 +74,7 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
                     <input type="radio" name="role" value="creator" defaultChecked={role !== "brand"} />
                     <span>
                       <strong>A creator</strong>
-                      <small>List numbered ad slots on clothing, kits, or event outfits.</small>
+                      <small>Offer space on what you wear or carry. 10K+ followers on one platform required to publish.</small>
                     </span>
                   </label>
                   <label>
@@ -167,3 +167,4 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
     </>
   );
 }
+

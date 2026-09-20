@@ -23,8 +23,8 @@ export default async function Verify({ searchParams }: { searchParams: Promise<{
   const approved = application?.status === "approved";
   return <><Header /><main className="verification-page shell"><Link className="underlined-link" href="/dashboard">← Dashboard</Link>
     <div className="eyebrow"><span /> {creator ? "Creator" : "Brand"} verification</div>
-    <h1>{creator ? <>Link your profile.<br />Get verified in about a minute.</> : <>Link your business.<br />Get verified in about a minute.</>}</h1>
-    <p className="verification-lede">{creator ? "Paste one code into your public bio and we do the rest — your name, photo, and audience size are read straight from your profile. No forms about follower counts, no waiting for a reviewer." : "Put one code on your website or public business page and we confirm it automatically. Most decisions land in under a minute."}</p>
+    <h1>{creator ? <>Link your profile.<br />Confirm it’s yours.</> : <>Link your business.<br />Confirm it’s yours.</>}</h1>
+    <p className="verification-lede">{creator ? "You need at least 10,000 followers on one public Instagram, TikTok, or X profile. Add your code to its bio so we can confirm ownership and read the audience count. Counts across accounts are not combined." : "Add your code to your website or public business page so we can check you control it. Confirm you are authorized to represent the business."}</p>
     <p>Email confirmed ✓ · <Link href="/trust" className="underlined-link">How verification works</Link></p>
     {message && <p className="form-message" role="status">{message}</p>}
     {error ? <p role="alert">We couldn’t load your application. Please try again shortly.</p> : !application ? (
@@ -36,7 +36,7 @@ export default async function Verify({ searchParams }: { searchParams: Promise<{
     ) : <>
       <div className={approved ? "verification-status status-approved" : "verification-status"}>
         <strong>{STATUS_TITLES[application.status]}</strong>
-        <p>{application.review_note || (application.status === "pending" ? "Your application is in. The automatic check usually finishes in under a minute — refresh to see your result." : "Three quick steps below and you’re in.")}</p>
+        <p>{application.review_note || (application.status === "pending" ? "Your application is in. Refresh to see your result once the check is complete." : "Three quick steps below and you’re in.")}</p>
         {application.reviewed_at && <small>Decision at {new Date(application.reviewed_at).toLocaleTimeString("en-GB")} · {new Date(application.reviewed_at).toLocaleDateString("en-GB")}</small>}
       </div>
       {approved && <section className="verification-panel identity-card">
@@ -52,7 +52,7 @@ export default async function Verify({ searchParams }: { searchParams: Promise<{
       </section>}
       {editable && <form action={submitVerification} className="verification-panel verification-form">
         <h2>01 · Put your code in your {creator ? "bio" : "page"}</h2>
-        <p>Copy this exact code into your public {creator ? "social profile bio" : "website footer, homepage, or business social bio"}. Keep it there until you see “You’re verified” — usually under a minute.</p>
+        <p>Copy this exact code into your public {creator ? "social profile bio" : "website footer, homepage, or business social bio"}. Keep it there until you see “You’re verified”.</p>
         <code className="ownership-code">{application.ownership_code}</code>
         <h2>02 · Paste your link</h2>
         {creator && <label>Platform<select name="platform" defaultValue={p.platform || "instagram"}>{Object.entries(creatorPlatforms).map(([value, { label }]) => <option key={value} value={value}>{label}</option>)}</select></label>}
@@ -64,8 +64,9 @@ export default async function Verify({ searchParams }: { searchParams: Promise<{
         <label className="check-label"><input name="adult" type="checkbox" value="yes" required defaultChecked={p.adult === "yes"} /> I am at least 18.</label>
         <label className="check-label"><input name="accurate" type="checkbox" value="yes" required defaultChecked={p.accurate === "yes"} /> These details are accurate, and my code is live on the page above.</label>
         <p className="sample-disclaimer">Only you (and Momento reviewers, if ever needed) can see this application. Never submit passwords, ID documents, or payment details — we only look at your public page. Marketplace verification is separate from payment-provider identity checks.</p>
-        <button className="button button-primary button-large" type="submit">Verify me now — about a minute</button>
+        <button className="button button-primary button-large" type="submit">Check my profile</button>
       </form>}
     </>}
   </main></>;
 }
+

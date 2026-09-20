@@ -18,9 +18,9 @@ function BrandDot({ name, color }: { name: string; color: string }) {
 
 export function MomentCard({ moment }: { moment: Moment; featured?: boolean }) {
   const href = `/placements/${moment.slug}`;
-  const photo = moment.photoUrl || moment.creator.portraitUrl;
+  const photo = moment.creator.portraitUrl || moment.photoUrl;
   const slots = Number(moment.surface.match(/\d+/)?.[0]) || moment.slots?.length || moment.inventory.length;
-  const price = moment.raisedLabel || formatPrice(Math.min(...moment.inventory.map((item) => item.price)));
+  const price = moment.isDemo ? "Sample campaign" : moment.raisedLabel || `From ${formatPrice(Math.min(...moment.inventory.map((item) => item.price)))}`;
   const brands = [...new Map((moment.slots ?? []).map((slot) => [slot.brand, slot])).values()].slice(0, 6);
   const face = moment.creator.portraitUrl;
 
@@ -33,7 +33,7 @@ export function MomentCard({ moment }: { moment: Moment; featured?: boolean }) {
         ) : (
           <span className="campaign-initials" style={{ background: moment.color }}>{moment.creator.avatar}</span>
         )}
-        <Badge className="space-zone landing-slot-badge">{slots} slots</Badge>
+        <Badge className="space-zone landing-slot-badge">{moment.isDemo ? "Example · not bookable" : `${slots} placements`}</Badge>
       </Link>
       <div className="campaign-who">
         {face ? (
@@ -49,11 +49,12 @@ export function MomentCard({ moment }: { moment: Moment; featured?: boolean }) {
       </div>
       <div className="campaign-meta">
         <p className="space-kicker">{moment.creator.niche}</p>
+        {!moment.isDemo && <div className="campaign-audience"><span>{moment.creator.followers} followers</span>{moment.creator.socialUrl && <a href={moment.creator.socialUrl} target="_blank" rel="noreferrer">View social profile ↗</a>}</div>}
         <h3>
           <Link href={href}>{moment.title}</Link>
         </h3>
         <p className="space-where">{moment.tagline}</p>
-        {brands.length > 0 ? (
+        {!moment.isDemo && brands.length > 0 ? (
           <div className="campaign-brands" aria-label="Brands on this page">
             {brands.map((slot) => (
               <BrandDot key={slot.brand} name={slot.brand} color={slot.color} />
@@ -63,8 +64,10 @@ export function MomentCard({ moment }: { moment: Moment; featured?: boolean }) {
       </div>
       <div className="campaign-meta-row">
         <div><strong>{price}</strong><small>{moment.dates}</small></div>
-        <Link className="space-cta" href={href}>Open campaign <ArrowIcon /></Link>
+        <Link className="space-cta" href={href}>{moment.isDemo ? "View example" : "View creator"} <ArrowIcon /></Link>
       </div>
+      {moment.isDemo && <p className="campaign-sample-note">Format illustration. No affiliation, availability, or earnings on Momento implied.</p>}
     </article>
   );
 }
+

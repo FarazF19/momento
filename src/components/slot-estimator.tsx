@@ -66,9 +66,9 @@ export function LandingEyebrow() {
 export function LandingTrust() {
   return (
     <div className="trust-row">
-      <Badge variant="secondary" className="landing-trust"><CheckIcon /> Offers stay here</Badge>
+      <Badge variant="secondary" className="landing-trust"><CheckIcon /> You approve every brand</Badge>
       <Badge variant="secondary" className="landing-trust"><CheckIcon /> Dated photos required</Badge>
-      <Badge variant="secondary" className="landing-trust"><CheckIcon /> No follower minimum</Badge>
+      <Badge variant="secondary" className="landing-trust"><CheckIcon /> 10K+ on one social platform</Badge>
     </div>
   );
 }
@@ -100,8 +100,8 @@ export function LandingCta({
 export function LandingHeroActions({ listHref, browseHref }: { listHref: string; browseHref: string }) {
   return (
     <div className="hero-actions">
-      <LandingCta href={listHref} tone="primary" size="lg">List your slots <ArrowIcon /></LandingCta>
-      <LandingCta href={browseHref} tone="outline" size="lg">Browse open slots</LandingCta>
+      <LandingCta href={listHref} tone="primary" size="lg">I’m a creator <ArrowIcon /></LandingCta>
+      <LandingCta href={browseHref} tone="outline" size="lg">Find creators</LandingCta>
     </div>
   );
 }
@@ -110,20 +110,22 @@ export function LandingFaq() {
   return (
     <Accordion type="single" collapsible variant="contained" className="landing-faq reveal">
       <Accordion.Item value="pay" title="How does payment work?">
-        An accepted offer locks the slot and the terms. Checkout is not live, so no money is taken. Do not start paid work until payment is on.
+        You can create a listing and discuss offers during early access. Checkout and automatic payouts are not enabled yet. Accepting an offer does not take payment or confirm a paid booking. Do not start paid work until payment is available and confirmed.
       </Accordion.Item>
       <Accordion.Item value="proof" title="What if photos never land?">
-        Every listing requires dated photos on the same campaign page. If they do not land, the brand can stop and raise it from the dashboard. We do not hold funds until checkout is live.
+        Agree on the photo requirements and deadline before a campaign. Photos document where the branding appeared; they do not measure impressions or guarantee sales. Payment, cancellation, and refund terms must be shown before paid checkout launches.
       </Accordion.Item>
       <Accordion.Item value="size" title="Do I need a big following?">
-        No. There is no follower minimum. Brands buy the zone and the room you walk into.
+        Creators need at least 10,000 followers on one public Instagram, TikTok, or X account. Counts across accounts are not combined. We check profile ownership and audience size before publishing.
       </Accordion.Item>
       <Accordion.Item value="list" title="How do I list my slots?">
-        Create a creator account. Add the event, a photo, how many spots, and a price. Publish. Brands offer on that page.
+        Create a creator account, confirm your email, and verify your social profile. Add your event, an original photo, placement details, asking price, and required proof. Then publish your page.
       </Accordion.Item>
+      <Accordion.Item value="production" title="Who prints and ships the branding?">Agree this in the listing: who supplies the artwork, who produces and ships the patch or sticker, the deadline, and whether those costs are included in the asking price. The creator approves the design before wearing it.</Accordion.Item>
       <Accordion.Item value="site" title="Do I need my own website?">
-        No. The campaign URL lives on Momento. Brands open it, pick a slot, and send an offer here.
+        No. Your listing has its own Momento URL. Share it with brands so they can review the creator, event, placement, and proposed terms.
       </Accordion.Item>
     </Accordion>
   );
 }
+

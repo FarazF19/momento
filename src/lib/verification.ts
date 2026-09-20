@@ -11,9 +11,7 @@ export function safePublicUrl(value: string) {
   try { const u = new URL(value); return u.protocol === "https:" && !u.username && !u.password && !u.hash && u.hostname.includes(".") && !u.hostname.endsWith(".local") && !BLOCKED_HOSTS.has(u.hostname) && !/^(localhost|0\.|127\.|10\.|192\.168\.|169\.254\.|198\.1[89]\.|100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.|172\.(1[6-9]|2\d|3[01])\.)/.test(u.hostname); } catch { return false; }
 }
 
-// Relaxed launch criteria: identity and audience details are read from the live
-// public profile during the automatic check, so applicants only provide a link
-// and a short plan. No follower minimum.
+// Profile ownership and the 10K single-platform audience threshold are checked server-side.
 export function validateVerification(role: "creator" | "brand", data: VerificationPayload): string | null {
   if (data.adult !== "yes" || data.accurate !== "yes") return "Confirm your age and that these details are accurate.";
   if (!safePublicUrl(data.profileUrl || "")) return "Add a public HTTPS profile or business link without credentials.";
@@ -24,4 +22,11 @@ export function validateVerification(role: "creator" | "brand", data: Verificati
     if (!platform?.hosts.includes(u.hostname) || !/^\/@?[a-zA-Z0-9_.]+\/?$/.test(u.pathname)) return "Choose Instagram, TikTok, or X and link directly to your public profile.";
   } else if (!data.businessName || data.businessName.trim().length < 2 || data.businessName.length > 150 || data.authority !== "yes") return "Add your business name and confirm you can represent it.";
   return null;
+}
+
+
+export const MIN_CREATOR_FOLLOWERS = 10_000;
+export function creatorAudienceError(followers: number | null): string | null {
+  if (followers === null || !Number.isSafeInteger(followers) || followers < 0) return "We could not confirm your follower count. Try another supported public profile or request a review; publishing stays unavailable until the count is confirmed.";
+  return followers < MIN_CREATOR_FOLLOWERS ? "Creators need at least 10,000 followers on one Instagram, TikTok, or X profile. Counts across accounts are not combined." : null;
 }

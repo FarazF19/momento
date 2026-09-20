@@ -14,7 +14,7 @@ export function CampaignView({ moment, generated = false }: { moment: Moment; ge
           <h1>{moment.creator.name}</h1>
           <p className="campaign-page-lede">{moment.title}</p>
           {moment.isDemo && !generated && (
-            <p className="campaign-format-note">This is a public example of the format. Real campaigns work the same way.</p>
+            <p className="campaign-format-note">This sample illustrates the format. It is not a live listing or a Momento customer. Prices, dates, and sponsors shown are illustrative and not booking terms.</p>
           )}
           <div className="detail-meta">
             <span><CalendarIcon /> {moment.dates}</span>
@@ -37,6 +37,7 @@ export function CampaignView({ moment, generated = false }: { moment: Moment; ge
             <p>{moment.tagline}</p>
             <p>{moment.visibility}</p>
             <p>{moment.proof}</p>
+            {moment.creator.socialUrl && <a className="underlined-link" href={moment.creator.socialUrl} target="_blank" rel="noreferrer">View creator’s public profile ↗</a>}
           </section>
           {generated && (
             <div className="campaign-publish">
@@ -51,3 +52,4 @@ export function CampaignView({ moment, generated = false }: { moment: Moment; ge
     </main>
   );
 }
+

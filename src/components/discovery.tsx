@@ -1,11 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { MomentCard } from "@/components/moment-card";
 import { SearchIcon } from "@/components/icons";
 import { categories, industries, type Moment } from "@/lib/moments";
 
-export default function Discovery({ placements, unavailable }: { placements: Moment[]; unavailable: boolean }) {
+export default function Discovery({ placements, examples = [], unavailable }: { placements: Moment[]; examples?: Moment[]; unavailable: boolean }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const [industry, setIndustry] = useState<(typeof industries)[number]>("All");
@@ -36,15 +37,15 @@ export default function Discovery({ placements, unavailable }: { placements: Mom
         <div className="page-hero compact">
           <div className="eyebrow"><span /> People with slots</div>
           <div className="page-hero-row">
-            <h1>Find a person.<br />Pick a zone.</h1>
-            <p>Every campaign is a Momento page: photo, numbered slots, offer box. Nothing sends you off-site.</p>
+            <h1>Meet your next<br />brand partner.</h1>
+            <p>Explore creators by niche, event, location, and asking price. Review the person and placement before you send an offer.</p>
           </div>
         </div>
 
         <div className="discovery-tools">
           <label className="search-field">
             <SearchIcon />
-            <input value={query} onChange={(event) => setQuery(event.target.value)} aria-label="Search ad spaces" placeholder="Search a person, city, or slot — try “Marc” or “dress”" />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} aria-label="Search ad spaces" placeholder="Search a creator, event, or city" />
           </label>
           <div className="filter-row niche-row">
             <span className="filter-label">Niche</span>
@@ -79,9 +80,11 @@ export default function Discovery({ placements, unavailable }: { placements: Mom
             {filtered.map((moment) => <MomentCard key={moment.slug} moment={moment} />)}
           </div>
         ) : (
-          <div className="empty-state"><b>No ad spaces found.</b><p>Try a broader niche or surface, or another city.</p><button type="button" className="button button-outline" onClick={() => { setQuery(""); setCategory("All"); setIndustry("All"); }}>Clear filters</button></div>
+          <div className="empty-state"><b>{placements.length ? "No matching creators." : unavailable ? "Listings are temporarily unavailable." : "Our first creator listings are on their way."}</b><p>{placements.length ? "Try a broader niche or another city." : unavailable ? "Please try again shortly." : "Going to an event? Join as a founding creator and publish your first placement after verification."}</p>{!placements.length && <Link className="button button-primary" href="/login?mode=signup&role=creator&next=/studio">Create your creator profile</Link>}<button type="button" className="button button-outline" onClick={() => { setQuery(""); setCategory("All"); setIndustry("All"); }}>Clear filters</button></div>
         )}
+        {examples.length > 0 && <section className="launch-examples"><div className="landing-heading"><span className="eyebrow">Examples only</span><h2>See how a campaign looks.</h2><p>These illustrations are separate from live listings. They are not bookable and do not imply a partnership with Momento.</p></div><div className="campaign-grid">{examples.map(moment => <MomentCard key={moment.slug} moment={moment} />)}</div></section>}
       </main>
     </>
   );
 }
+
