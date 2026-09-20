@@ -11,12 +11,11 @@ import {
   LandingTheme,
   SurfaceExplorer,
 } from "@/components/surface-explorer";
-import { LandingCta, LandingEyebrow, LandingFaq, LandingHeroActions, LandingTrust, SlotEstimator } from "@/components/slot-estimator";
+import { LandingCta, LandingFaq, LandingHeroActions, LandingTrust, SlotEstimator } from "@/components/slot-estimator";
+import { ProofTicker } from "@/components/proof-ticker";
 import { moments } from "@/lib/moments";
 
 export const revalidate = 300;
-
-const ticker = ["Chest", "Sleeve", "Dress", "Race kit", "Jersey", "Thigh", "Back", "Hem", "Collar", "Arm"];
 
 export default async function Home() {
   const examples = moments.filter((item) => item.bodyKind);
@@ -33,10 +32,10 @@ export default async function Home() {
       <main>
         <section className="hero shell">
           <div className="hero-copy">
-            <LandingEyebrow />
+            <div className="eyebrow"><span /> Physical ads on real people</div>
             <h1>Sell ad space on your body &amp; clothes<br /><em>at real events.</em></h1>
             <p className="hero-lede">
-              Creators publish a campaign with numbered zones — chest, arm, jersey, dress. Brands send offers on this site. Proof lives on the same page.
+              Number the zones on what you wear. Brands send offers here. Dated photos of the wear stay on the same page.
             </p>
             <LandingHeroActions listHref={listHref} browseHref={browseHref} />
             <LandingTrust />
@@ -56,19 +55,13 @@ export default async function Home() {
           )}
         </section>
 
-        <div className="slot-ticker" aria-hidden="true">
-          <div className="slot-ticker-track">
-            {[...ticker, ...ticker].map((item, index) => (
-              <span key={`${item}-${index}`}>{item}</span>
-            ))}
-          </div>
-        </div>
+        <ProofTicker />
 
         <section className="how-now shell" id="how-it-works">
           <div className="landing-heading reveal">
-            <div className="eyebrow"><span /> Three steps</div>
-            <h2>How it works</h2>
-            <p>List the zones. Take the offer. Wear it and prove it on the same page.</p>
+            <div className="eyebrow"><span /> How it works</div>
+            <h2>List. Offer. Wear.</h2>
+            <p>Three steps. One URL. The deal stays on this site.</p>
           </div>
           <LandingHow />
         </section>
@@ -76,8 +69,8 @@ export default async function Home() {
         <section className="surfaces-now shell" id="surfaces">
           <div className="landing-heading reveal">
             <div className="eyebrow"><span /> The inventory</div>
-            <h2>Numbered zones on real things.</h2>
-            <p>Pick a surface. Hover a number. That is the ad unit — not a follower count, not a banner.</p>
+            <h2>Click a number. That is the ad.</h2>
+            <p>Chest, sleeve, dress, jersey — not a follower count, not a banner.</p>
           </div>
           <div className="reveal">
             <SurfaceExplorer />
@@ -86,17 +79,18 @@ export default async function Home() {
 
         <section className="include-now shell">
           <div className="landing-heading reveal">
-            <div className="eyebrow"><span /> What is in a slot</div>
-            <h2>One price. One zone. Clear terms.</h2>
+            <div className="eyebrow"><span /> What you sell</div>
+            <h2>A square. A date. A photo.</h2>
+            <p>That is a slot — fabric, a window of days, and proof on the same page.</p>
           </div>
           <LandingInclude />
         </section>
 
         <section className="moments-section shell" id="campaigns">
           <div className="landing-heading reveal">
-            <div className="eyebrow"><span /> Campaigns</div>
-            <h2>This is the format.</h2>
-            <p>Marc Lou’s HYROX kit and Vanshu’s TOKEN2049 dress show how numbered slots look on a real person. Listings you publish work the same way, on this site.</p>
+            <div className="eyebrow"><span /> The format</div>
+            <h2>This is what a listing looks like.</h2>
+            <p>Marc Lou’s HYROX kit and Vanshu’s TOKEN2049 dress. Your page works the same way, on this site.</p>
           </div>
           <div className="campaign-grid reveal-stagger">
             {catalog.map((moment) => <MomentCard key={moment.slug} moment={moment} />)}
@@ -106,8 +100,8 @@ export default async function Home() {
         <section className="compare-now shell">
           <div className="landing-heading reveal">
             <div className="eyebrow"><span /> Why this exists</div>
-            <h2>Not another sponsored post.</h2>
-            <p>A brand can already buy a story. Here they buy a square they can point at in a room.</p>
+            <h2>A post disappears. A slot is in the room.</h2>
+            <p>Brands can already buy a story. Here they buy a square they can point at.</p>
           </div>
           <LandingCompare />
         </section>
@@ -115,7 +109,8 @@ export default async function Home() {
         <section className="proof-now shell">
           <div className="landing-heading reveal">
             <div className="eyebrow"><span /> After the event</div>
-            <h2>The page does not go quiet.</h2>
+            <h2>The page stays useful.</h2>
+            <p>Artwork, wear, and photos live on one campaign URL.</p>
           </div>
           <LandingProof />
         </section>
@@ -123,8 +118,8 @@ export default async function Home() {
         <section className="split-audience shell" id="for-who">
           <article className="reveal">
             <div className="eyebrow"><span /> For creators</div>
-            <h2>List your event. Sell the spots.</h2>
-            <p>If you are walking into a race, a conference, or a week of city days, number the zones and set a price. You approve every brand.</p>
+            <h2>Walking into an event? Number the kit.</h2>
+            <p>Race, conference, or a week of city days. You set the price. You approve every brand.</p>
             <ul>
               <li><CheckIcon /> No follower minimum</li>
               <li><CheckIcon /> You keep the clothes</li>
@@ -136,7 +131,7 @@ export default async function Home() {
           <article className="reveal">
             <div className="eyebrow"><span /> For brands</div>
             <h2>Buy a zone you can point to.</h2>
-            <p>You are not buying a banner. You are renting a numbered spot on someone at an event — chest, arm, dress, jersey.</p>
+            <p>Not a banner. A numbered spot on someone in the room — chest, arm, dress, jersey.</p>
             <ul>
               <li><CheckIcon /> One price per numbered slot</li>
               <li><CheckIcon /> Offers stay on Momento</li>
@@ -150,8 +145,8 @@ export default async function Home() {
         <section className="speed-now shell">
           <div className="speed-now-copy reveal">
             <div className="eyebrow"><span /> Time</div>
-            <h2>Live campaign page in under five minutes.</h2>
-            <p>Account, event, photo, number of slots, price. Preview while you fill. Publish. Share the link.</p>
+            <h2>A live page in under five minutes.</h2>
+            <p>Account, event, photo, slots, price. Preview as you type. Publish. Share the link.</p>
             <LandingCta href={listHref} tone="primary" size="lg">Start a listing <ArrowIcon /></LandingCta>
           </div>
           <div className="reveal">
@@ -161,7 +156,7 @@ export default async function Home() {
 
         <section className="faq-section shell">
           <div className="landing-heading reveal">
-            <h2>What people ask first</h2>
+            <h2>Common questions</h2>
           </div>
           <LandingFaq />
         </section>

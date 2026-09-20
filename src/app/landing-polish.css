@@ -1,0 +1,305 @@
+/* Landing type + branded cards + proof ticker */
+
+.hero-copy h1,
+.hero-stage strong,
+.landing-heading h2,
+.moments-section .landing-heading h2,
+.how-section .landing-heading h2,
+.faq-section .landing-heading h2,
+.split-audience h2,
+.speed-now h2,
+.final-cta h2 {
+  font-family: var(--display) !important;
+  letter-spacing: 0 !important;
+  word-spacing: 0.12em !important;
+}
+.landing-heading h2,
+.moments-section .landing-heading h2,
+.how-section .landing-heading h2,
+.faq-section .landing-heading h2,
+.split-audience h2,
+.speed-now h2,
+.final-cta h2 {
+  font-size: clamp(30px, 3.4vw, 42px) !important;
+  line-height: 1.18 !important;
+}
+.hero-lede,
+.nav-links a,
+.landing-btn,
+.header-cta,
+.header-btn-outline {
+  letter-spacing: 0.01em !important;
+  word-spacing: 0.05em !important;
+}
+.landing-heading p,
+.split-audience p,
+.speed-now p {
+  font-size: 17px !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.01em !important;
+  word-spacing: 0.04em !important;
+  color: #3f3c36 !important;
+}
+.speed-now h2 { max-width: 18ch; }
+
+.momento-card {
+  position: relative;
+  height: 100%;
+  background: #fffdf8 !important;
+  border: 1px solid #0b0d10 !important;
+  border-width: 1px !important;
+  border-radius: 12px !important;
+  padding: 22px 20px 20px !important;
+  box-shadow: 4px 4px 0 #0b0d10 !important;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.momento-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0 #0b0d10 !important;
+}
+.momento-card.is-on { background: #ffe04d !important; }
+
+.momento-card-index,
+.include-grid span.momento-card-index,
+.how-now-grid span.momento-card-index,
+.proof-line span.momento-card-index,
+.include-grid .momento-card-index,
+.how-now-grid .momento-card-index,
+.proof-line .momento-card-index {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box !important;
+  flex: 0 0 36px !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  margin: 0 0 16px !important;
+  background: #ffe04d !important;
+  color: #0b0d10 !important;
+  border: 1px solid #0b0d10 !important;
+  border-width: 1px !important;
+  border-radius: 50% !important;
+  box-shadow: 2px 2px 0 #0b0d10;
+  font-family: var(--display);
+  font-size: 13px !important;
+  font-weight: 850;
+  letter-spacing: 0.02em;
+  word-spacing: 0;
+  line-height: 1;
+}
+.momento-card.is-on .momento-card-index {
+  background: #ff5b3a !important;
+  color: #fffdf8 !important;
+}
+
+.momento-card h3 {
+  font-family: var(--display);
+  font-size: 22px !important;
+  letter-spacing: 0 !important;
+  word-spacing: 0.1em !important;
+  line-height: 1.25;
+  margin: 0 0 10px;
+}
+.momento-card-body {
+  color: #3f3c36;
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  word-spacing: 0.03em;
+}
+.momento-card-body ul { margin: 0; padding-left: 18px; line-height: 1.7; }
+.momento-card-body li { margin: 6px 0; }
+
+.how-now-grid article,
+.include-grid article {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.how-now-grid article:hover,
+.include-grid article:hover { transform: none; box-shadow: none !important; }
+.include-grid span.momento-card-index { display: inline-flex !important; }
+
+.include-grid .momento-card,
+.how-now-grid .momento-card,
+.proof-line .momento-card,
+.compare-table .momento-card {
+  background: #fffdf8 !important;
+  border: 1px solid #0b0d10 !important;
+  border-width: 1px !important;
+  box-shadow: 4px 4px 0 #0b0d10 !important;
+  padding: 22px 20px 20px !important;
+}
+.include-grid .momento-card:hover,
+.how-now-grid .momento-card:hover,
+.proof-line .momento-card:hover,
+.compare-table .momento-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0 #0b0d10 !important;
+}
+.include-grid .momento-card.is-on,
+.how-now-grid .momento-card.is-on,
+.proof-line .momento-card.is-on,
+.compare-table .momento-card.is-on { background: #ffe04d !important; }
+
+.split-audience article {
+  border: 1px solid #0b0d10 !important;
+  border-width: 1px !important;
+  box-shadow: 6px 6px 0 #0b0d10 !important;
+  background: #fffdf8 !important;
+}
+
+.proof-ticker {
+  background: #ffe04d;
+  color: #0b0d10;
+  padding: 16px 0 18px;
+  border-block: 1px solid #0b0d10;
+}
+.proof-ticker-kicker {
+  margin: 0 auto 12px;
+  padding: 0 20px;
+  max-width: 1180px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  word-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0b0d10;
+}
+.proof-ticker-mask { overflow: hidden; }
+.proof-ticker-track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  padding-inline: 12px;
+  animation: ticker-x 42s linear infinite;
+}
+.proof-ticker-mask:hover .proof-ticker-track { animation-play-state: paused; }
+.proof-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #fffdf8;
+  color: #0b0d10;
+  border: 1px solid #0b0d10;
+  border-width: 1px;
+  border-radius: 999px;
+  padding: 6px 16px 6px 6px;
+  box-shadow: 3px 3px 0 #0b0d10;
+  text-decoration: none;
+}
+.proof-chip:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 #ff5b3a;
+}
+.proof-chip.is-brand { box-shadow: 3px 3px 0 #ff5b3a; }
+.proof-chip.is-brand:hover { box-shadow: 4px 4px 0 #0b0d10; }
+.proof-chip img,
+.proof-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  object-fit: cover;
+  border: 1px solid #0b0d10;
+}
+.proof-mark {
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0;
+}
+.proof-chip span { display: grid; line-height: 1.25; }
+.proof-chip b { font-size: 13px; letter-spacing: 0; word-spacing: 0.03em; }
+.proof-chip small { color: #6d6a62; font-size: 11px; letter-spacing: 0.01em; }
+
+.campaign-who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px 0;
+}
+.campaign-who img,
+.campaign-who-fallback {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid var(--ink);
+  background: #efe8d8;
+}
+.campaign-who-fallback { display: grid; place-items: center; font-size: 12px; font-weight: 850; }
+.campaign-who strong { display: block; font-size: 15px; letter-spacing: 0; }
+.campaign-who small { color: var(--muted); font-size: 12px; }
+.campaign-brands { display: flex; flex-wrap: wrap; gap: 6px; }
+.campaign-brand {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  font-weight: 850;
+  border: 1px solid #0b0d10;
+}
+.landing-campaign-card {
+  border: 1px solid #0b0d10 !important;
+  border-width: 1px !important;
+  box-shadow: 4px 4px 0 #0b0d10 !important;
+}
+.landing-campaign-card .campaign-photo { aspect-ratio: 5 / 4; }
+.landing-campaign-card .campaign-meta { padding-top: 10px; }
+.landing-campaign-card .campaign-meta h3,
+.landing-campaign-card h3 {
+  font-size: 22px !important;
+  letter-spacing: -0.015em !important;
+  word-spacing: 0.04em !important;
+  margin: 4px 0 6px;
+}
+.landing-campaign-card .space-where { margin-bottom: 4px; font-size: 14px; }
+.landing-campaign-card .campaign-meta-row {
+  padding: 14px 18px 16px;
+  margin-top: 0;
+}
+
+.landing-faq {
+  border: 1px solid #0b0d10 !important;
+  border-width: 1px !important;
+  background: #fffdf8 !important;
+  box-shadow: 6px 6px 0 #0b0d10 !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+.landing-faq button {
+  font-family: var(--display) !important;
+  font-size: 16px !important;
+  letter-spacing: 0 !important;
+  word-spacing: 0.04em !important;
+  color: #0b0d10 !important;
+  background: #fffdf8 !important;
+  min-height: 56px;
+}
+.landing-faq button span {
+  font-size: 16px !important;
+  letter-spacing: 0 !important;
+  word-spacing: 0.04em !important;
+}
+.landing-faq [data-state="open"] > div,
+.landing-faq [data-state="open"] p,
+.landing-faq [class*="leading-relaxed"] {
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.01em !important;
+  word-spacing: 0.03em !important;
+  color: #3f3c36 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proof-ticker-track { animation: none; }
+}

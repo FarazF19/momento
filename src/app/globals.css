@@ -2,6 +2,7 @@
 @import "@geomak/ui/styles";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./landing-polish.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -1257,14 +1258,17 @@ h1, h2, h3 { text-wrap: balance; }
 }
 .hero-copy h1 {
   font-size: clamp(40px, 4.8vw, 64px) !important;
-  line-height: 0.98 !important;
-  letter-spacing: -.05em !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+  word-spacing: .12em !important;
   margin: 14px 0 18px !important;
   text-wrap: pretty;
 }
 .hero-lede {
   font-size: 18px !important;
   line-height: 1.55 !important;
+  letter-spacing: .01em !important;
+  word-spacing: .06em !important;
   max-width: 36rem !important;
   margin: 0 0 24px !important;
 }
@@ -1325,8 +1329,9 @@ h1, h2, h3 { text-wrap: balance; }
 .faq-section .landing-heading h2,
 .final-cta h2 {
   font-size: clamp(30px, 3.8vw, 46px) !important;
-  line-height: 1.12 !important;
-  letter-spacing: -.04em !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+  word-spacing: .12em !important;
   margin: 0 !important;
   text-wrap: balance;
 }
@@ -1421,8 +1426,8 @@ html.landing-fx .reveal.is-in, html.landing-fx .reveal-stagger > *.is-in { opaci
 }
 .include-grid article { padding: 22px 20px; transition: transform .2s ease, box-shadow .2s ease; }
 .include-grid article:hover { transform: translateY(-3px); box-shadow: 5px 5px 0 #292820; }
-.include-grid span { display: block; color: var(--red); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
-.include-grid h3 { font-family: var(--display); font-size: 22px; letter-spacing: -.03em; margin: 14px 0 8px; }
+.include-grid span:not(.momento-card-index) { display: block; color: var(--red); font-size: 12px; font-weight: 800; letter-spacing: .12em; }
+.include-grid h3 { font-family: var(--display); font-size: 22px; letter-spacing: -.015em; word-spacing: .05em; margin: 14px 0 8px; }
 .include-grid p { margin: 0; color: var(--muted); line-height: 1.55; }
 
 .surface-explorer { display: grid; gap: 18px; }
@@ -2042,4 +2047,31 @@ html:root {
 .account-page .verify-banner { box-shadow: 4px 4px 0 var(--red); }
 @media (max-width: 720px) {
   .account-page .login-card { box-shadow: 5px 5px 0 var(--ink); }
+}
+
+/* Last: landing type and chips beat earlier !important wars. */
+.hero-copy h1,
+.hero-stage strong,
+.landing-heading h2,
+.moments-section .landing-heading h2,
+.how-section .landing-heading h2,
+.faq-section .landing-heading h2,
+.split-audience h2,
+.speed-now h2,
+.final-cta h2 {
+  letter-spacing: 0 !important;
+  word-spacing: .12em !important;
+}
+.hero-lede {
+  letter-spacing: .01em !important;
+  word-spacing: .06em !important;
+}
+.include-grid .momento-card > .momento-card-index,
+.how-now-grid .momento-card > .momento-card-index,
+.proof-line .momento-card > .momento-card-index {
+  display: inline-flex !important;
+  width: 36px !important;
+  max-width: 36px !important;
+  background: #ffe04d !important;
+  color: #0b0d10 !important;
 }

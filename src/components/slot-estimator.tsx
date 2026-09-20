@@ -66,8 +66,8 @@ export function LandingEyebrow() {
 export function LandingTrust() {
   return (
     <div className="trust-row">
-      <Badge variant="secondary" className="landing-trust"><CheckIcon /> Offers stay on Momento</Badge>
-      <Badge variant="secondary" className="landing-trust"><CheckIcon /> Photo proof required</Badge>
+      <Badge variant="secondary" className="landing-trust"><CheckIcon /> Offers stay here</Badge>
+      <Badge variant="secondary" className="landing-trust"><CheckIcon /> Dated photos required</Badge>
       <Badge variant="secondary" className="landing-trust"><CheckIcon /> No follower minimum</Badge>
     </div>
   );
@@ -110,16 +110,16 @@ export function LandingFaq() {
   return (
     <Accordion type="single" collapsible variant="contained" className="landing-faq reveal">
       <Accordion.Item value="pay" title="How does payment work?">
-        An accepted offer reserves the slot and the terms. Checkout is not live in this preview, so no money is taken yet. Do not start paid work until payment is on.
+        An accepted offer locks the slot and the terms. Checkout is not live, so no money is taken. Do not start paid work until payment is on.
       </Accordion.Item>
-      <Accordion.Item value="proof" title="What if the creator does not deliver proof?">
-        Every listing writes the proof up front: dated photos uploaded to the same campaign page. If a creator does not deliver, the brand can decline to proceed and raise it from the dashboard. We do not hold funds until checkout is live.
+      <Accordion.Item value="proof" title="What if photos never land?">
+        Every listing requires dated photos on the same campaign page. If they do not land, the brand can stop and raise it from the dashboard. We do not hold funds until checkout is live.
       </Accordion.Item>
-      <Accordion.Item value="size" title="Is this only for big influencers?">
-        No. There is no follower minimum. Brands buy the zone and the room you walk into. Audience size is shown as context, never as a gate.
+      <Accordion.Item value="size" title="Do I need a big following?">
+        No. There is no follower minimum. Brands buy the zone and the room you walk into.
       </Accordion.Item>
       <Accordion.Item value="list" title="How do I list my slots?">
-        Create a creator account, then describe the event, the number of spots, and a price range. We build the campaign page on Momento. Brands offer there.
+        Create a creator account. Add the event, a photo, how many spots, and a price. Publish. Brands offer on that page.
       </Accordion.Item>
       <Accordion.Item value="site" title="Do I need my own website?">
         No. The campaign URL lives on Momento. Brands open it, pick a slot, and send an offer here.
