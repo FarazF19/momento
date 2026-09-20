@@ -1,4 +1,5 @@
 import { safePublicUrl } from "@/lib/verification";
+import { PlacementArt } from "@/components/placement-art";
 import { CreatorPortrait } from "@/components/creator-portrait";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/header";
@@ -36,7 +37,7 @@ export default async function MomentDetailPage({ params }: { params: Promise<{ s
               {moment.fit.length > 0 && <div className="creator-fit"><span>Good fit for</span><div>{moment.fit.map((item) => <b key={item}>{item}</b>)}</div></div>}
               <div className="creator-context"><h3>Where your brand goes</h3><p>{moment.itinerary}</p><h3>What this creator commits to</h3><p>{moment.visibility}</p></div>
             </section>
-            <section className="placement-terms"><h2>{moment.title}</h2><p>{moment.tagline}</p><dl>{[
+            <section className="placement-terms"><h2>{moment.title}</h2><p>{moment.tagline}</p>{moment.photoUrl && <figure style={{ margin: "24px 0", maxWidth: 480 }}><PlacementArt category={moment.category} photoUrl={moment.photoUrl} title={moment.surface} /><figcaption>Creator’s item and available ad space</figcaption></figure>}<dl>{[
               ["Ad surface", moment.surface], ["Size", moment.dimensions], ["Duration", moment.duration],
               ["Where it goes", moment.itinerary], ["Visibility commitment", moment.visibility],
               ["Proof of completion", moment.proof], ["Artwork & delivery", moment.production], ["Exclusivity", moment.exclusivity],
