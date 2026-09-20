@@ -55,15 +55,15 @@ export function asPlacement(row: ListingRow): Moment {
       : [{ id: "placement", name: surface, description: dimensions, timing: duration, reach: "No guaranteed impressions", price: row.asking_price_minor / 100, remaining: 1 }],
   };
 }
-export async function publishedPlacements() {
+export async function publishedPlacements(timeoutMs = 800) {
   const client = publicClient();
   if (!client) return { placements: [] as Moment[], unavailable: false };
-  const query = client.from("placements").select("*").eq("status", "published").gte("end_date", new Date().toISOString().slice(0, 10)).order("start_date").limit(24);
+  const query = client.from("placements").select("id, title, category, creator_name, handle, audience, followers, city, country, start_date, end_date, asking_price_minor, details").eq("status", "published").gte("end_date", new Date().toISOString().slice(0, 10)).order("start_date").limit(12);
   const { data, error } = await Promise.race([
     query,
-    new Promise<{ data: null; error: { message: string } }>((resolve) => setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 2500)),
+    new Promise<{ data: null; error: { message: string } }>((resolve) => setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), timeoutMs)),
   ]);
-  return { placements: error || !data ? [] : (data as ListingRow[]).map(asPlacement), unavailable: Boolean(error) };
+  return { placements: error || !data ? [] : (data as ListingRow[]).map(asPlacement), unavailable: Boolean(error && error.message !== "timeout") };
 }
 export async function publishedPlacement(id: string) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
