@@ -1,27 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useMemo, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { CampaignView } from "./campaign-view";
 import { CAMPAIGN_NAME_STORE, CAMPAIGN_STORE } from "./prompt-builder";
+import { CAMPAIGN_DRAFT_STORE, draftToMoment, parseDraft } from "@/lib/campaign-draft";
 import { generateCampaign } from "@/lib/campaign-prompt";
-import type { Moment } from "@/lib/moments";
+
+function readKey(key: string) {
+  return () => sessionStorage.getItem(key) ?? "";
+}
 
 export function GeneratedCampaign() {
-  const { id } = useParams<{ id: string }>();
-  const [moment, setMoment] = useState<Moment | null>(null);
-  const [error, setError] = useState("");
+  const rawDraft = useSyncExternalStore(() => () => {}, readKey(CAMPAIGN_DRAFT_STORE), () => null);
+  const rawPrompt = useSyncExternalStore(() => () => {}, readKey(CAMPAIGN_STORE), () => "");
+  const rawName = useSyncExternalStore(() => () => {}, readKey(CAMPAIGN_NAME_STORE), () => "");
 
-  useEffect(() => {
+  const { moment, error } = useMemo(() => {
     try {
-      const prompt = sessionStorage.getItem(CAMPAIGN_STORE) || "";
-      const name = sessionStorage.getItem(CAMPAIGN_NAME_STORE) || "";
-      setMoment(generateCampaign(prompt, name ? { name } : undefined));
+      const draft = parseDraft(rawDraft);
+      if (draft) return { moment: draftToMoment(draft), error: "" };
+      if (rawDraft === null) return { moment: null, error: "" };
+      return { moment: generateCampaign(rawPrompt, rawName ? { name: rawName } : undefined), error: "" };
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not build that page.");
+      return { moment: null, error: err instanceof Error ? err.message : "Could not build that page." };
     }
-  }, [id]);
+  }, [rawDraft, rawPrompt, rawName]);
 
   if (moment) return <CampaignView moment={moment} generated />;
   return (

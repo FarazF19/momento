@@ -21,10 +21,10 @@ export function CampaignView({ moment, generated = false }: { moment: Moment; ge
             <CampaignStage kind={moment.bodyKind || "body"} slots={moment.slots} photo={moment.photoUrl} />
           </div>
           <ul className="slot-list">
-            {(moment.slots ?? []).map((slot) => (
+            {(moment.slots ?? []).map((slot, index) => (
               <li key={slot.id}>
                 <i style={{ background: slot.color }} />
-                <b>{slot.name}</b>
+                <b>{slot.brand === "Open" ? `${String(index + 1).padStart(2, "0")} ${slot.name}` : slot.name}</b>
                 <span>{slot.brand}</span>
                 <strong>{formatPrice(slot.price)}</strong>
               </li>
@@ -37,9 +37,9 @@ export function CampaignView({ moment, generated = false }: { moment: Moment; ge
           </section>
           {generated && (
             <div className="campaign-publish">
-              <p>This is your campaign preview on Momento. Publish it so brands can offer on these slots.</p>
-              <Link href="/list" className="button button-primary">Publish this page</Link>
-              <Link href="/studio" className="button button-outline">Edit the description</Link>
+              <p>This is your campaign preview on Momento. Return to the studio to publish so brands can offer on these slots.</p>
+              <Link href="/studio" className="button button-primary">Publish this page</Link>
+              <Link href="/studio" className="button button-outline">Edit campaign</Link>
             </div>
           )}
         </div>
