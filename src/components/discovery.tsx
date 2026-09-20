@@ -34,8 +34,8 @@ export default function Discovery({ placements, unavailable }: { placements: Mom
         <div className="page-hero compact">
           <div className="eyebrow"><span /> Ad space in real life</div>
           <div className="page-hero-row">
-            <h1>Find a space.<br />Make it yours.</h1>
-            <p>Choose the item, location, and dates. Rent a patch, sticker, or printed surface—not a generic content package.</p>
+            <h1>Find your brand’s<br />next companion.</h1>
+            <p>Meet the creator, explore their plans, and choose a space for your brand. Send an offer when you find the right fit.</p>
           </div>
         </div>
 

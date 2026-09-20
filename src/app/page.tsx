@@ -16,17 +16,17 @@ export default async function Home() {
       <main>
         <section className="hero shell">
           <div className="hero-copy">
-            <div className="eyebrow"><span /> The real-world creator ad marketplace</div>
-            <h1>Good brands.<br /><em>Going places.</em></h1>
-            <p className="hero-lede">Put your brand on the clothes, laptops, and bags creators already wear and carry. Rent a defined ad space—not another social post.</p>
+            <div className="eyebrow"><span /> Real people. Real-world advertising.</div>
+            <h1>Your brand.<br /><em>Their next adventure.</em></h1>
+            <p className="hero-lede">Meet creators who can take your brand into everyday life. Book space on their hoodie, laptop, or bag—at a café, around the city, or on their next trip.</p>
             <div className="hero-actions">
-              <Link href="/discover" className="button button-primary button-large">Explore ad spaces <ArrowIcon /></Link>
+              <Link href="/discover" className="button button-primary button-large">Find a creator <ArrowIcon /></Link>
               <Link href="/creators" className="button button-outline button-large">I’m a creator</Link>
             </div>
             <div className="trust-row">
-              <span><CheckIcon /> Defined ad space</span>
-              <span><CheckIcon /> Brands make offers</span>
-              <span><CheckIcon /> Creator-approved</span>
+              <span><CheckIcon /> Choose your creator</span>
+              <span><CheckIcon /> Make your offer</span>
+              <span><CheckIcon /> Agree the details</span>
             </div>
           </div>
           <div className="hero-feature">
@@ -42,11 +42,11 @@ export default async function Home() {
           <div className="section-heading">
             <div>
               <div className="eyebrow"><span /> {placements.length ? "Explore the marketplace" : "See the possibilities"}</div>
-              <h2>Everyday items.<br />Available ad space.</h2>
+              <h2>Meet the people.<br />Picture your brand.</h2>
             </div>
             <div className="section-copy">
-              <p>{placements.length ? "Ad spaces listed by creators. Compare the surface, dates, and asking price, then make your offer." : "A hoodie chest patch. A laptop sticker. A backpack on a trip. These fictional examples show exactly what a brand could rent."}</p>
-              <Link href="/discover" className="underlined-link">Browse all ad spaces <ArrowIcon /></Link>
+              <p>{placements.length ? "Find a creator whose everyday fits your brand. See where they’re headed, what space they offer, and what it costs." : "From café regulars to frequent flyers, imagine who could carry your brand next. These fictional profiles show how a placement works."}</p>
+              <Link href="/discover" className="underlined-link">Explore the marketplace <ArrowIcon /></Link>
             </div>
           </div>
           <div className="moment-grid home-grid">
@@ -58,13 +58,13 @@ export default async function Home() {
           <div className="shell">
             <div className="eyebrow light"><span /> One simple marketplace</div>
             <div className="how-heading">
-              <h2>List it. Agree it.<br />Wear it out.</h2>
-              <p>Brands rent the advertising space—not the item. Creators keep wearing, carrying, and using their own things.</p>
+              <h2>A creator you like.<br />A placement you agree on.</h2>
+              <p>Creators share their plans and available space. Find your fit. Together, you decide how the brand shows up.</p>
             </div>
             <div className="steps-grid">
-              <article><b>01</b><h3>Creators list their space</h3><p>Show the item, mark the ad area, and set the dates, locations, and asking price.</p></article>
-              <article><b>02</b><h3>Brands make an offer</h3><p>Choose a placement and propose a price. Agree the design, visibility, and proof before payment.</p></article>
-              <article><b>03</b><h3>Creators show the proof</h3><p>Wear or carry the approved placement for the agreed period, then submit photo proof for review.</p></article>
+              <article><b>01</b><h3>Show where you’re going</h3><p>Creators add their plans, photos, available ad space, and price. A hoodie around town? A laptop at a coworking space? Start there.</p></article>
+              <article><b>02</b><h3>Find your fit</h3><p>Brands choose a creator and send a brief with an offer. Creators choose the brands they want to work with.</p></article>
+              <article><b>03</b><h3>Bring the brand along</h3><p>Agree the artwork, dates, and photo proof before starting. The creator wears or carries the placement as planned.</p></article>
             </div>
           </div>
         </section>
@@ -73,29 +73,29 @@ export default async function Home() {
           <div className="brand-poster"><span>SMALL<br />SPACE.<br />REAL LIFE.</span><i>✦</i></div>
           <div className="brand-copy">
             <div className="eyebrow"><span /> For brands</div>
-            <h2>Be part of<br />their everyday.</h2>
-            <p>Start with a place your audience spends time. Find a creator going there, then rent a clearly defined space on what they wear or carry.</p>
+            <h2>Go where your<br />customers go.</h2>
+            <p>The coworking crowd. The weekend travellers. The local café regulars. Find a creator who spends time in your world, and give your brand a place in theirs.</p>
             <ul>
-              <li><CheckIcon /> See the exact surface, size, and duration</li>
-              <li><CheckIcon /> Agree visibility and photo proof upfront</li>
-              <li><CheckIcon /> Creator approves the brand and terms</li>
+              <li><CheckIcon /> Choose the creator, place, and dates</li>
+              <li><CheckIcon /> Know where your logo will appear</li>
+              <li><CheckIcon /> Agree a price and the photos you’ll receive</li>
             </ul>
-            <Link href="/discover" className="button button-primary button-large">Find an ad space <ArrowIcon /></Link>
+            <Link href="/discover" className="button button-primary button-large">Meet your next creator <ArrowIcon /></Link>
           </div>
         </section>
 
         <section className="faq-section shell">
-          <h2>A few things, made clear.</h2>
+          <h2>Before your first placement.</h2>
           <details><summary>Am I renting the item or advertising space?</summary><p>You rent a defined advertising surface for agreed dates: a hoodie patch, laptop sticker, or bag panel. The creator keeps their item and wears or carries your branding.</p></details>
           <details><summary>Who sets the price?</summary><p>Creators publish an asking price for the full placement period. Brands propose an offer with their requirements. The creator chooses whether to accept.</p></details>
           <details><summary>Does a travel placement include flights or social posts?</summary><p>A travel listing describes where the creator will carry your ad. Flights, trip expenses, and social posts are only included if the placement terms explicitly say so.</p></details>
           <details><summary>How do we know what was delivered?</summary><p>Each listing defines visibility and completion evidence, such as dated placement photos. Agree the artwork, delivery responsibilities, dates, and proof before starting.</p></details>
         </section>
         <section className="final-cta shell">
-          <div><span className="eyebrow"><span /> Have a hoodie, laptop, bag, or upcoming trip?</span><h2>Make space.</h2></div>
+          <div><span className="eyebrow"><span /> For creators and brands going places</span><h2>Who’s coming<br />along?</h2></div>
           <div className="final-actions">
-            <Link href="/discover" className="button button-primary button-large">Explore ad spaces <ArrowIcon /></Link>
-            <Link href="/list" className="button button-outline button-large">List yours</Link>
+            <Link href="/discover" className="button button-primary button-large">Find a creator <ArrowIcon /></Link>
+            <Link href="/list" className="button button-outline button-large">Offer my ad space</Link>
           </div>
         </section>
       </main>
