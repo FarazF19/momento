@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { formatPrice } from "@/lib/moments";
 import {
@@ -74,6 +74,19 @@ async function resizePhoto(file: File): Promise<string> {
   }
 }
 
+function readSessionDraft() {
+  return sessionStorage.getItem(CAMPAIGN_DRAFT_STORE) ?? "";
+}
+
+function mergeDraft(saved: CampaignDraft, creatorName: string, handle: string, niche: string): CampaignDraft {
+  return {
+    ...saved,
+    creatorName: saved.creatorName || creatorName,
+    handle: saved.handle || handle,
+    niche: saved.niche || niche || "Lifestyle",
+  };
+}
+
 function missingFields(draft: CampaignDraft) {
   if (!draft.eventName.trim()) return "Add the event name.";
   if (!draft.startDate) return "Choose a start date.";
@@ -97,32 +110,22 @@ export function CampaignBuilder({
   signedIn: boolean;
 }) {
   const router = useRouter();
-  const [draft, setDraft] = useState<CampaignDraft>(() => starterDraft(creatorName, handle, niche));
-  const [ready, setReady] = useState(false);
+  const stored = useSyncExternalStore(() => () => {}, readSessionDraft, () => null);
+  const [local, setLocal] = useState<CampaignDraft | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [shareUrl, setShareUrl] = useState("");
   const [copied, setCopied] = useState(false);
+  const draft = useMemo(() => {
+    if (local) return local;
+    const saved = parseDraft(stored);
+    return saved ? mergeDraft(saved, creatorName, handle, niche) : starterDraft(creatorName, handle, niche);
+  }, [local, stored, creatorName, handle, niche]);
 
   useEffect(() => {
-    const saved = parseDraft(sessionStorage.getItem(CAMPAIGN_DRAFT_STORE));
-    if (saved) {
-      setDraft({
-        ...saved,
-        creatorName: saved.creatorName || creatorName,
-        handle: saved.handle || handle || saved.handle,
-        niche: saved.niche || niche || "Lifestyle",
-      });
-    } else {
-      setDraft(starterDraft(creatorName, handle, niche));
-    }
-    setReady(true);
-  }, [creatorName, handle, niche]);
-
-  useEffect(() => {
-    if (!ready) return;
+    if (stored === null) return;
     sessionStorage.setItem(CAMPAIGN_DRAFT_STORE, JSON.stringify(draft));
-  }, [draft, ready]);
+  }, [draft, stored]);
 
   const moment = useMemo(() => draftToMoment(draft), [draft]);
   const slots = moment.slots ?? [];
@@ -131,15 +134,15 @@ export function CampaignBuilder({
     setShareUrl("");
     setCopied(false);
     setMessage("");
-    setDraft((current) => ({ ...current, ...update }));
+    setLocal({ ...draft, ...update });
   }
 
   function setStartDate(startDate: string) {
-    setDraft((current) => ({
-      ...current,
+    setLocal({
+      ...draft,
       startDate,
-      endDate: !current.endDate || current.endDate === current.startDate ? startDate : current.endDate,
-    }));
+      endDate: !draft.endDate || draft.endDate === draft.startDate ? startDate : draft.endDate,
+    });
     setShareUrl("");
     setMessage("");
   }
