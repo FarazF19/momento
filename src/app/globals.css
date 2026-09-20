@@ -889,9 +889,9 @@ h1, h2, h3, .logo, .final-cta h2, .account-card h1, .audience-page h1, .audience
 .campaign-cover { transform: rotateY(0deg); }
 .campaign-inside { transform: rotateY(180deg); background: #071018; }
 .campaign-card.is-open .campaign-cover,
-.campaign-card:hover .campaign-cover { transform: rotateY(-180deg); }
+.campaign-card:hover .campaign-cover { transform: none; }
 .campaign-card.is-open .campaign-inside,
-.campaign-card:hover .campaign-inside { transform: rotateY(0deg); }
+.campaign-card:hover .campaign-inside { transform: rotateY(180deg); }
 .campaign-cover-photo, .campaign-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 .campaign-card.is-dark .campaign-cover { background: #071018; }
 .campaign-card.is-dark .campaign-cover-photo { object-fit: cover; }

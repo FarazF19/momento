@@ -2,24 +2,20 @@ import Link from "next/link";
 import { Header } from "@/components/header";
 import { MomentCard } from "@/components/moment-card";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
-import { LandingMotion } from "@/components/landing-motion";
 import { moments } from "@/lib/moments";
-import { publishedPlacements } from "@/lib/marketplace";
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export default async function Home() {
-  const { placements } = await publishedPlacements();
   const examples = moments.filter((item) => item.bodyKind);
   const featured = examples[0];
-  const catalog = [...placements, ...examples.filter((item) => !placements.some((live) => live.slug === item.slug))].slice(0, 4);
+  const catalog = examples.slice(0, 2);
   const listHref = "/login?mode=signup&role=creator&next=/studio";
   const browseHref = "/discover";
 
   return (
     <>
       <Header />
-      <LandingMotion />
       <main>
         <section className="hero shell">
           <div className="hero-copy">
@@ -42,7 +38,7 @@ export default async function Home() {
             <div className="hero-feature">
               <figure className="hero-stage">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={featured.photoUrl} alt="" />
+                <img src={featured.photoUrl} alt="" fetchPriority="high" decoding="async" />
                 <figcaption>
                   <span className="hero-stage-kicker">{featured.creator.name} · {featured.city}</span>
                   <strong>{featured.slots?.length ?? featured.inventory.length} numbered slots</strong>
@@ -68,7 +64,7 @@ export default async function Home() {
           <div className="landing-heading reveal">
             <div className="eyebrow"><span /> Campaigns</div>
             <h2>Open slots you can book.</h2>
-            <p>A public campaign shows the person, the numbered zones, and the price. {placements.length > 0 ? "Live listings sit first." : "Marc Lou’s HYROX kit and Vanshu’s TOKEN2049 dress show the format — real listings work the same way."}</p>
+            <p>A public campaign shows the person, the numbered zones, and the price. Marc Lou’s HYROX kit and Vanshu’s TOKEN2049 dress show the format — real listings work the same way.</p>
           </div>
           <div className="campaign-grid reveal-stagger">
             {catalog.map((moment) => <MomentCard key={moment.slug} moment={moment} />)}

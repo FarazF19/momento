@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { ScrollFx } from "@/components/scroll-fx";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body><ScrollFx />{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
