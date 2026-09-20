@@ -18,7 +18,7 @@ export default async function CreatorsPage() {
         <h1>List numbered slots<br /><em>on what you wear.</em></h1>
         <p className="audience-lede">Create an account, describe your campaign, and publish a Momento page with priced zones. Brands send offers here. You keep the clothes.</p>
         <div className="hero-actions">
-          <Link href={buildHref} className="button button-primary button-large">Build my page</Link>
+          <Link href={buildHref} className="button button-primary button-large">List your slots</Link>
           <Link href="/#campaigns" className="button button-outline button-large">See example campaigns</Link>
         </div>
         <div className="stat-strip">
@@ -65,7 +65,7 @@ export default async function CreatorsPage() {
 
         <section className="audience-cta">
           <div><h2>Create an account,<br />then build your page.</h2><p>Verification takes about a minute after you confirm your email.</p></div>
-          <Link href={buildHref} className="button button-primary button-large">Build my page</Link>
+          <Link href={buildHref} className="button button-primary button-large">List your slots</Link>
         </section>
       </main>
     </>

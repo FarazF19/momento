@@ -14,4 +14,5 @@ test('safe next paths stay inside the app', () => {
   assert.equal(safeNext('https://evil.example'), '/dashboard');
   assert.equal(safeNext('//evil.example'), '/dashboard');
   assert.equal(authCallbackUrl('http://localhost:3000', '/studio'), 'http://localhost:3000/auth/callback?next=%2Fstudio');
+  assert.equal(authCallbackUrl('http://localhost:3000', '/studio', 'creator'), 'http://localhost:3000/auth/callback?next=%2Fstudio&role=creator');
 });

@@ -11,10 +11,10 @@ export default function BrandsPage() {
       <Header />
       <main className="audience-page shell">
         <div className="eyebrow"><span /> For brands</div>
-        <h1>Book a zone<br /><em>on a real person.</em></h1>
-        <p className="audience-lede">Choose a creator on Momento, pick a numbered slot, and send an offer on the same page. Dated photos come back here. This is physical placement, not a banner buy.</p>
+        <h1>Buy a numbered slot<br /><em>on a real person.</em></h1>
+        <p className="audience-lede">Choose a creator, pick a numbered zone, and send an offer on this site. Dated photos come back on the same page. This is physical placement, not a banner buy.</p>
         <div className="hero-actions">
-          <Link href="/discover" className="button button-primary button-large">Browse campaigns</Link>
+          <Link href="/discover" className="button button-primary button-large">Browse open slots</Link>
           <Link href="/login?mode=signup&role=brand&next=/discover" className="button button-outline button-large">Create a brand account</Link>
         </div>
         <div className="stat-strip">
@@ -60,8 +60,8 @@ export default function BrandsPage() {
         </section>
 
         <section className="audience-cta">
-          <div><h2>Choose a person,<br />then a slot.</h2><p>Browse campaigns and send an offer when the zone is right.</p></div>
-          <Link href="/discover" className="button button-primary button-large">Browse campaigns</Link>
+          <div><h2>Choose a person,<br />then a slot.</h2><p>Browse open slots and send an offer when the zone is right.</p></div>
+          <Link href="/discover" className="button button-primary button-large">Browse open slots</Link>
         </section>
       </main>
     </>

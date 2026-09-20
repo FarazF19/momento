@@ -18,8 +18,9 @@ export function safeNext(value: string | null | undefined, fallback = "/dashboar
   return (AUTH_NEXT_PATHS as readonly string[]).includes(pathname) ? pathname : fallback;
 }
 
-export function authCallbackUrl(origin: string, next?: string) {
+export function authCallbackUrl(origin: string, next?: string, role?: string) {
   const url = new URL("/auth/callback", origin);
   if (next && next !== "/dashboard") url.searchParams.set("next", next);
+  if (role === "brand" || role === "creator") url.searchParams.set("role", role);
   return url.toString();
 }

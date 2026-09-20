@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Header } from "@/components/header";
 import { authenticate, requestPasswordReset, resendConfirmation } from "@/app/auth/actions";
+import { GoogleAuthButton } from "@/components/google-auth-button";
 import { authConfigured, currentAccount } from "@/lib/supabase/server";
 import { industries } from "@/lib/moments";
 import { safeNext } from "@/lib/app-origin";
@@ -28,10 +29,10 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
           <h1>{signup ? "Join Momento." : verify ? "Confirm your inbox." : "Welcome back."}</h1>
           <p>
             {signup
-              ? "Name, handle, niche, email, and a password. Creators can list slots after email confirmation — no social-bio check first."
+              ? "Continue with Google — we take your name and email. Or use a password. Creators can list slots right after."
               : verify
                 ? "A confirmation link was sent to your inbox. Open it, then sign in with the same password. Check spam and promotions if it is not in the primary inbox."
-                : "Sign in to manage listings, offers, and your campaign page."}
+                : "Continue with Google, or sign in with email."}
           </p>
           {!enabled && (
             <p className="sample-disclaimer">
@@ -54,28 +55,23 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
           {message && !verify && (/confirm|email first|inbox/i.test(message)
             ? <aside className="verify-banner" role="status"><strong>Confirm the email to sign in.</strong><p>{message}</p></aside>
             : <p className="form-message" role="status">{message}</p>)}
+          {!verify && (
+            <>
+              <GoogleAuthButton
+                enabled={enabled}
+                next={next}
+                signup={signup}
+                role={role === "brand" ? "brand" : "creator"}
+              />
+              <p className="auth-divider"><span>or use email</span></p>
+            </>
+          )}
           <form action={authenticate} className="account-form">
             <input type="hidden" name="mode" value={signup ? "signup" : "login"} />
             <input type="hidden" name="next" value={next} />
             {signup && (
               <>
-                <fieldset className="role-choice">
-                  <legend>I am joining as</legend>
-                  <label>
-                    <input type="radio" name="role" value="creator" defaultChecked={role !== "brand"} />
-                    <span>
-                      <strong>A creator</strong>
-                      <small>List numbered ad slots on clothing, kits, or event outfits.</small>
-                    </span>
-                  </label>
-                  <label>
-                    <input type="radio" name="role" value="brand" defaultChecked={role === "brand"} />
-                    <span>
-                      <strong>A brand</strong>
-                      <small>Browse campaigns and send offers on this site.</small>
-                    </span>
-                  </label>
-                </fieldset>
+                <input type="hidden" id="auth-role" name="role" defaultValue={role === "brand" ? "brand" : "creator"} />
                 <label>Your name or company<input name="name" autoComplete="name" required maxLength={100} /></label>
                 <label>Handle<input name="handle" autoComplete="username" required maxLength={32} placeholder="@you" /></label>
                 <label>

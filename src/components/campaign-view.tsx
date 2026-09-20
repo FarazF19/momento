@@ -10,9 +10,12 @@ export function CampaignView({ moment, generated = false }: { moment: Moment; ge
     <main className="campaign-page shell">
       <div className="campaign-page-grid">
         <div className="campaign-page-stage">
-          <div className="eyebrow"><span /> {generated ? "Your Momento page" : "Live on Momento"}</div>
+          <div className="eyebrow"><span /> {generated ? "Your campaign" : moment.isDemo ? "Public format" : "Open for offers"}</div>
           <h1>{moment.creator.name}</h1>
           <p className="campaign-page-lede">{moment.title}</p>
+          {moment.isDemo && !generated && (
+            <p className="campaign-format-note">This is a public example of the format. Real campaigns work the same way.</p>
+          )}
           <div className="detail-meta">
             <span><CalendarIcon /> {moment.dates}</span>
             <span><PinIcon /> {moment.city}</span>

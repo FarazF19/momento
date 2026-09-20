@@ -46,20 +46,19 @@ export function BookingPanel({ moment }: { moment: Moment }) {
 
   return (
     <aside className="booking-card">
-      <div className="booking-card-top"><span>ON MOMENTO</span><b>{moment.duration}</b></div>
-      <h2>Pick a slot.</h2>
-      <p>{moment.surface}</p>
+      <div className="booking-card-top"><span>{moment.isDemo ? "FORMAT" : "OPEN"}</span><b>{moment.duration}</b></div>
+      <h2>Send an offer</h2>
+      <p>Choose a numbered zone. The creator accepts or declines here.</p>
       <div className="selected-summary">
         <div className="summary-item"><span>Dates</span><b>{moment.dates}</b></div>
         <div className="summary-item"><span>City</span><b>{moment.city}</b></div>
         <div className="summary-item"><span>Proof</span><b>Photos on this page</b></div>
       </div>
       <div className="booking-total"><span>{moment.raisedLabel ? "Slot range" : "Asking price"}</span><b>{moment.raisedLabel || formatPrice(price)}</b></div>
-      <p>Offers stay on Momento. The creator accepts or declines here.</p>
       <button type="button" className="button button-primary booking-button" onClick={() => { setMessage(""); setOpen(true); }}>
-        {moment.isDemo ? "Preview an offer" : "Make an offer"} <ArrowIcon />
+        Make an offer <ArrowIcon />
       </button>
-      <p className="sample-disclaimer">{moment.isDemo ? "Example page. The form does not send a bid." : "No charge to offer. Terms are agreed before payment."}</p>
+      <p className="sample-disclaimer">{moment.isDemo ? "Offers stay on Momento. On this public example the form does not send a bid." : "No charge to offer. Terms are agreed before payment is taken."}</p>
       <dialog ref={dialog} className="booking-modal" onClose={() => setOpen(false)} aria-labelledby="booking-title">
         <button className="modal-close" type="button" onClick={() => setOpen(false)} aria-label="Close offer form"><CloseIcon /></button>
         <div className="eyebrow"><span /> {moment.isDemo ? "Preview · not sent" : "Brand offer"}</div>

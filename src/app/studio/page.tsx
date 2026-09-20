@@ -26,7 +26,12 @@ export default async function StudioPage() {
     <>
       <Header />
       <main className="studio-page shell">
-        <CampaignBuilder signedIn creatorName={account.profile.name} />
+        <CampaignBuilder
+          signedIn
+          creatorName={account.profile.name}
+          handle={typeof account.user.user_metadata?.handle === "string" ? account.user.user_metadata.handle : ""}
+          niche={typeof account.user.user_metadata?.niche === "string" ? account.user.user_metadata.niche : ""}
+        />
       </main>
     </>
   );
