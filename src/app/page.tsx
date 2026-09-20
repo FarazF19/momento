@@ -2,9 +2,14 @@ import Link from "next/link";
 import { Header } from "@/components/header";
 import { MomentCard } from "@/components/moment-card";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
+import { LandingFx } from "@/components/landing-fx";
+import { SurfaceExplorer } from "@/components/surface-explorer";
+import { SlotEstimator } from "@/components/slot-estimator";
 import { moments } from "@/lib/moments";
 
 export const revalidate = 300;
+
+const ticker = ["Chest", "Sleeve", "Dress", "Race kit", "Jersey", "Thigh", "Back", "Hem", "Collar", "Arm"];
 
 export default async function Home() {
   const examples = moments.filter((item) => item.bodyKind);
@@ -16,6 +21,7 @@ export default async function Home() {
   return (
     <>
       <Header />
+      <LandingFx />
       <main>
         <section className="hero shell">
           <div className="hero-copy">
@@ -49,26 +55,137 @@ export default async function Home() {
           )}
         </section>
 
+        <div className="slot-ticker" aria-hidden="true">
+          <div className="slot-ticker-track">
+            {[...ticker, ...ticker].map((item, index) => (
+              <span key={`${item}-${index}`}>{item}</span>
+            ))}
+          </div>
+        </div>
+
         <section className="how-now shell" id="how-it-works">
           <div className="landing-heading reveal">
+            <div className="eyebrow"><span /> Three steps</div>
             <h2>How it works</h2>
+            <p>List the zones. Take the offer. Wear it and prove it on the same page.</p>
           </div>
           <div className="how-now-grid reveal-stagger">
-            <article><b>1</b><h3>Creator lists the slots</h3><p>Chest, sleeve, jersey, dress — numbered, priced, and tied to a real event or city.</p></article>
-            <article><b>2</b><h3>Brand sends an offer</h3><p>Pick one zone. Send a brief and a price. The conversation stays on Momento.</p></article>
-            <article><b>3</b><h3>Wear it. Prove it.</h3><p>The creator approves the artwork, wears the mark, and uploads dated photos to the same page.</p></article>
+            <article>
+              <b>1</b>
+              <h3>Creator lists the slots</h3>
+              <p>Chest, sleeve, jersey, dress — numbered, priced, and tied to a real event or city.</p>
+            </article>
+            <article>
+              <b>2</b>
+              <h3>Brand sends an offer</h3>
+              <p>Pick one zone. Send a brief and a price. The conversation stays on Momento.</p>
+            </article>
+            <article>
+              <b>3</b>
+              <h3>Wear it. Prove it.</h3>
+              <p>The creator approves the artwork, wears the mark, and uploads dated photos to the same page.</p>
+            </article>
+          </div>
+        </section>
+
+        <section className="surfaces-now shell" id="surfaces">
+          <div className="landing-heading reveal">
+            <div className="eyebrow"><span /> The inventory</div>
+            <h2>Numbered zones on real things.</h2>
+            <p>Pick a surface. Hover a number. That is the ad unit — not a follower count, not a banner.</p>
+          </div>
+          <div className="reveal">
+            <SurfaceExplorer />
+          </div>
+        </section>
+
+        <section className="include-now shell">
+          <div className="landing-heading reveal">
+            <div className="eyebrow"><span /> What is in a slot</div>
+            <h2>One price. One zone. Clear terms.</h2>
+          </div>
+          <div className="include-grid reveal-stagger">
+            <article>
+              <span>01</span>
+              <h3>The wear</h3>
+              <p>The mark is on the numbered zone for the event dates you list. The clothes stay with the creator.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>The proof</h3>
+              <p>Dated photos go on the same campaign page. Brands do not have to chase a DM for evidence.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>The exclusivity</h3>
+              <p>One brand per numbered slot. Another logo does not sit on the same square of fabric.</p>
+            </article>
+            <article>
+              <span>04</span>
+              <h3>The conversation</h3>
+              <p>Offers, acceptance, and artwork approval stay on Momento. No outbound hop to another site.</p>
+            </article>
           </div>
         </section>
 
         <section className="moments-section shell" id="campaigns">
           <div className="landing-heading reveal">
             <div className="eyebrow"><span /> Campaigns</div>
-            <h2>Open slots you can book.</h2>
-            <p>A public campaign shows the person, the numbered zones, and the price. Marc Lou’s HYROX kit and Vanshu’s TOKEN2049 dress show the format — real listings work the same way.</p>
+            <h2>This is the format.</h2>
+            <p>Marc Lou’s HYROX kit and Vanshu’s TOKEN2049 dress show how numbered slots look on a real person. Listings you publish work the same way, on this site.</p>
           </div>
           <div className="campaign-grid reveal-stagger">
             {catalog.map((moment) => <MomentCard key={moment.slug} moment={moment} />)}
           </div>
+        </section>
+
+        <section className="compare-now shell">
+          <div className="landing-heading reveal">
+            <div className="eyebrow"><span /> Why this exists</div>
+            <h2>Not another sponsored post.</h2>
+            <p>A brand can already buy a story. Here they buy a square they can point at in a room.</p>
+          </div>
+          <div className="compare-table reveal">
+            <div className="compare-col">
+              <h3>Influencer post</h3>
+              <ul>
+                <li>Lives in a feed for a day</li>
+                <li>Reach is a screenshot</li>
+                <li>Hard to say where the logo sat</li>
+                <li>Proof is a link that dies</li>
+              </ul>
+            </div>
+            <div className="compare-col is-on">
+              <h3>Numbered slot</h3>
+              <ul>
+                <li>Worn in a real room, on a real date</li>
+                <li>One zone, one price</li>
+                <li>Chest, sleeve, dress — you can name it</li>
+                <li>Dated photos stay on the campaign page</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className="proof-now shell">
+          <div className="landing-heading reveal">
+            <div className="eyebrow"><span /> After the event</div>
+            <h2>The page does not go quiet.</h2>
+          </div>
+          <ol className="proof-line reveal-stagger">
+            <li>
+              <b>Before</b>
+              <p>Brand sends artwork. Creator approves it. The slot is reserved on the same page.</p>
+            </li>
+            <li>
+              <b>During</b>
+              <p>The mark is worn for the dates on the listing — race, conference, city week.</p>
+            </li>
+            <li>
+              <b>After</b>
+              <p>Dated photos upload to the campaign. Anyone with the link can see the proof.</p>
+            </li>
+          </ol>
         </section>
 
         <section className="split-audience shell" id="for-who">
@@ -96,6 +213,18 @@ export default async function Home() {
             </ul>
             <Link href={browseHref} className="button button-dark">Browse open slots</Link>
           </article>
+        </section>
+
+        <section className="speed-now shell">
+          <div className="speed-now-copy reveal">
+            <div className="eyebrow"><span /> Time</div>
+            <h2>Live campaign page in under five minutes.</h2>
+            <p>Account, event, photo, number of slots, price. Preview while you fill. Publish. Share the link.</p>
+            <Link href={listHref} className="button button-primary button-large">Start a listing <ArrowIcon /></Link>
+          </div>
+          <div className="reveal">
+            <SlotEstimator />
+          </div>
         </section>
 
         <section className="faq-section shell">
