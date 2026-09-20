@@ -36,7 +36,8 @@ async function redirectOrigin() {
     const proto = (headerStore.get("x-forwarded-proto") || (process.env.NODE_ENV === "development" ? "http" : "https")).split(",")[0].trim();
     if (!host) return fallback;
     const origin = new URL(`${proto}://${host}`).origin;
-    const allowed = new Set([fallback, "http://localhost:3000", "http://127.0.0.1:3000"]);
+    const allowed = new Set([fallback, "http://localhost:3000", "http://127.0.0.1:3000", "https://momento-nine-rho.vercel.app"]);
+    if (host.endsWith(".vercel.app") && proto === "https") allowed.add(origin);
     return allowed.has(origin) ? origin : fallback;
   } catch {
     return fallback;
@@ -119,19 +120,15 @@ export async function authenticate(form: FormData) {
     message("Enter a valid email and password.", { next, mode: mode === "signup" ? "signup" : "" });
   }
   if (mode === "signup") {
-    if (password.length < 12) message("Choose a password with at least 12 characters.", { next, mode: "signup" });
-    const role = form.get("role");
+    if (password.length < 8) message("Choose a password with at least 8 characters.", { next, mode: "signup" });
+    const role = form.get("role") === "brand" ? "brand" : "creator";
     const name = String(form.get("name") || "").trim().slice(0, 100);
-    const handle = sanitizeHandle(String(form.get("handle") || ""));
-    const niche = String(form.get("niche") || "").trim();
-    if (!name || (role !== "brand" && role !== "creator")) {
-      message("Enter your name and choose a creator or brand account.", { next, mode: "signup" });
-    }
+    const handle = sanitizeHandle(String(form.get("handle") || ""), name);
+    const nicheRaw = String(form.get("niche") || "Lifestyle").trim();
+    const niche = niches.includes(nicheRaw as (typeof niches)[number]) ? nicheRaw : "Lifestyle";
+    if (!name) message("Enter your name.", { next, mode: "signup" });
     if (!handle) message("Enter a handle like @you (letters and numbers only).", { next, mode: "signup" });
-    if (!niches.includes(niche as (typeof niches)[number])) {
-      message("Choose a niche so brands can find you.", { next, mode: "signup" });
-    }
-    const metadata = { name, role: String(role), handle, niche };
+    const metadata = { name, role, handle, niche };
     const origin = await redirectOrigin();
     const { data, error } = await client.auth.signUp({
       email,

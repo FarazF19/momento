@@ -28,13 +28,6 @@ export function GoogleAuthButton({
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [picked, setPicked] = useState<"creator" | "brand">(role);
-
-  function choose(nextRole: "creator" | "brand") {
-    setPicked(nextRole);
-    const hidden = document.getElementById("auth-role") as HTMLInputElement | null;
-    if (hidden) hidden.value = nextRole;
-  }
 
   async function start() {
     setError("");
@@ -44,10 +37,12 @@ export function GoogleAuthButton({
       return;
     }
     setBusy(true);
+    const chosen = (document.querySelector("input[name=role]:checked") as HTMLInputElement | null)?.value;
+    const nextRole = chosen === "brand" || chosen === "creator" ? chosen : role;
     const { error: oauthError } = await client.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: authCallbackUrl(window.location.origin, next, signup ? picked : undefined),
+        redirectTo: authCallbackUrl(window.location.origin, next, signup ? nextRole : undefined),
         queryParams: { prompt: "select_account" },
       },
     });
@@ -55,7 +50,7 @@ export function GoogleAuthButton({
       setBusy(false);
       setError(
         /provider is not enabled|unsupported provider/i.test(oauthError.message)
-          ? "Google sign-in is not enabled yet. Use email, or ask us to turn Google on in Auth."
+          ? "Google sign-in is not enabled yet. Use email below."
           : oauthError.message || "Google sign-in could not start.",
       );
     }
@@ -63,25 +58,6 @@ export function GoogleAuthButton({
 
   return (
     <div className="google-auth">
-      {signup && (
-        <fieldset className="role-choice">
-          <legend>I am joining as</legend>
-          <label>
-            <input type="radio" name="google-role" value="creator" checked={picked === "creator"} onChange={() => choose("creator")} />
-            <span>
-              <strong>A creator</strong>
-              <small>List numbered ad slots on clothing, kits, or event outfits.</small>
-            </span>
-          </label>
-          <label>
-            <input type="radio" name="google-role" value="brand" checked={picked === "brand"} onChange={() => choose("brand")} />
-            <span>
-              <strong>A brand</strong>
-              <small>Browse campaigns and send offers on this site.</small>
-            </span>
-          </label>
-        </fieldset>
-      )}
       <button className="button button-google" type="button" disabled={!enabled || busy} onClick={start}>
         <GoogleMark />
         {busy ? "Opening Google…" : "Continue with Google"}

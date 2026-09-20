@@ -58,8 +58,12 @@ export function asPlacement(row: ListingRow): Moment {
 export async function publishedPlacements() {
   const client = publicClient();
   if (!client) return { placements: [] as Moment[], unavailable: false };
-  const { data, error } = await client.from("placements").select("*").eq("status", "published").gte("end_date", new Date().toISOString().slice(0, 10)).order("start_date").limit(100);
-  return { placements: error ? [] : (data as ListingRow[]).map(asPlacement), unavailable: Boolean(error) };
+  const query = client.from("placements").select("*").eq("status", "published").gte("end_date", new Date().toISOString().slice(0, 10)).order("start_date").limit(24);
+  const { data, error } = await Promise.race([
+    query,
+    new Promise<{ data: null; error: { message: string } }>((resolve) => setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 2500)),
+  ]);
+  return { placements: error || !data ? [] : (data as ListingRow[]).map(asPlacement), unavailable: Boolean(error) };
 }
 export async function publishedPlacement(id: string) {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;

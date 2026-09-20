@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Header } from "@/components/header";
 import { authenticate, requestPasswordReset, resendConfirmation } from "@/app/auth/actions";
 import { GoogleAuthButton } from "@/components/google-auth-button";
+import { SubmitButton } from "@/components/submit-button";
 import { authConfigured, currentAccount } from "@/lib/supabase/server";
 import { industries } from "@/lib/moments";
 import { safeNext } from "@/lib/app-origin";
@@ -55,29 +56,46 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
           {message && !verify && (/confirm|email first|inbox/i.test(message)
             ? <aside className="verify-banner" role="status"><strong>Confirm the email to sign in.</strong><p>{message}</p></aside>
             : <p className="form-message" role="status">{message}</p>)}
-          {!verify && (
-            <>
-              <GoogleAuthButton
-                enabled={enabled}
-                next={next}
-                signup={signup}
-                role={role === "brand" ? "brand" : "creator"}
-              />
-              <p className="auth-divider"><span>or use email</span></p>
-            </>
-          )}
           <form action={authenticate} className="account-form">
             <input type="hidden" name="mode" value={signup ? "signup" : "login"} />
             <input type="hidden" name="next" value={next} />
             {signup && (
+              <fieldset className="role-choice">
+                <legend>I am joining as</legend>
+                <label>
+                  <input type="radio" name="role" value="creator" defaultChecked={role !== "brand"} />
+                  <span>
+                    <strong>A creator</strong>
+                    <small>List numbered ad slots on clothing, kits, or event outfits.</small>
+                  </span>
+                </label>
+                <label>
+                  <input type="radio" name="role" value="brand" defaultChecked={role === "brand"} />
+                  <span>
+                    <strong>A brand</strong>
+                    <small>Browse campaigns and send offers on this site.</small>
+                  </span>
+                </label>
+              </fieldset>
+            )}
+            {!verify && (
               <>
-                <input type="hidden" id="auth-role" name="role" defaultValue={role === "brand" ? "brand" : "creator"} />
+                <GoogleAuthButton
+                  enabled={enabled}
+                  next={next}
+                  signup={signup}
+                  role={role === "brand" ? "brand" : "creator"}
+                />
+                <p className="auth-divider"><span>or use email</span></p>
+              </>
+            )}
+            {signup && (
+              <>
                 <label>Your name or company<input name="name" autoComplete="name" required maxLength={100} /></label>
-                <label>Handle<input name="handle" autoComplete="username" required maxLength={32} placeholder="@you" /></label>
+                <label>Handle <small>(optional)</small><input name="handle" autoComplete="username" maxLength={32} placeholder="@you" /></label>
                 <label>
                   Niche
-                  <select name="niche" required defaultValue="">
-                    <option value="" disabled>Choose the niche brands should find you in</option>
+                  <select name="niche" defaultValue="Lifestyle">
                     {niches.map((item) => <option key={item} value={item}>{item}</option>)}
                   </select>
                 </label>
@@ -86,10 +104,12 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
             <label>Email<input name="email" type="email" autoComplete="email" required defaultValue={email || ""} /></label>
             <label>
               Password
-              <input name="password" type="password" autoComplete={signup ? "new-password" : "current-password"} minLength={signup ? 12 : 1} maxLength={128} required />
+              <input name="password" type="password" autoComplete={signup ? "new-password" : "current-password"} minLength={signup ? 8 : 1} maxLength={128} required />
             </label>
-            {signup && <small>Use at least 12 characters. We send a confirmation link before you can sign in.</small>}
-            <button disabled={!enabled} className="button button-primary" type="submit">{signup ? "Create account" : "Sign in"}</button>
+            {signup && <small>Use at least 8 characters. Google is faster if you have it.</small>}
+            {enabled
+              ? <SubmitButton idle={signup ? "Create account" : "Sign in"} pending={signup ? "Creating account…" : "Signing in…"} />
+              : <button disabled className="button button-primary" type="submit">{signup ? "Create account" : "Sign in"}</button>}
             {!signup && <small>New here? Create an account first. Unconfirmed addresses cannot sign in yet.</small>}
           </form>
           <p>

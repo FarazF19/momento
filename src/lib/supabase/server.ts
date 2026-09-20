@@ -24,8 +24,14 @@ export async function supabaseServer() {
 export const currentAccount = cache(async function currentAccount() {
   const client = await supabaseServer();
   if (!client) return null;
-  const { data: { user }, error } = await client.auth.getUser();
-  if (error || !user || !user.email_confirmed_at) return null;
-  const { data: profile } = await client.from("profiles").select("id, name, role").eq("id", user.id).single();
-  return profile ? { client, user, profile: profile as { id: string; name: string; role: "creator" | "brand" } } : null;
+  const timed = Promise.race([
+    (async () => {
+      const { data: { user }, error } = await client.auth.getUser();
+      if (error || !user || !user.email_confirmed_at) return null;
+      const { data: profile } = await client.from("profiles").select("id, name, role").eq("id", user.id).single();
+      return profile ? { client, user, profile: profile as { id: string; name: string; role: "creator" | "brand" } } : null;
+    })(),
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), 2500)),
+  ]);
+  return timed;
 });

@@ -5,18 +5,15 @@ import { ArrowIcon, CheckIcon } from "@/components/icons";
 import { LandingMotion } from "@/components/landing-motion";
 import { moments } from "@/lib/moments";
 import { publishedPlacements } from "@/lib/marketplace";
-import { currentAccount } from "@/lib/supabase/server";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function Home() {
-  const [{ placements }, account] = await Promise.all([publishedPlacements(), currentAccount()]);
+  const { placements } = await publishedPlacements();
   const examples = moments.filter((item) => item.bodyKind);
   const featured = examples[0];
   const catalog = [...placements, ...examples.filter((item) => !placements.some((live) => live.slug === item.slug))].slice(0, 4);
-  const listHref = account?.profile.role === "creator"
-    ? "/studio"
-    : "/login?mode=signup&role=creator&next=/studio";
+  const listHref = "/login?mode=signup&role=creator&next=/studio";
   const browseHref = "/discover";
 
   return (
