@@ -5,7 +5,7 @@ export type Moment = {
   slug: string; title: string; city: string; country: string; dates: string; startDate: string; month: string;
   category: PlacementCategory; tagline: string; surface: string; dimensions: string; duration: string;
   itinerary: string; visibility: string; proof: string; production: string; exclusivity: string; isDemo: boolean;
-  creator: { name: string; handle: string; niche: string; followers: string; avatar: string };
+  creator: { name: string; handle: string; niche: string; followers: string; avatar: string; portraitUrl?: string; socialUrl?: string };
   color: string; accent: string; inventory: InventoryItem[]; fit: string[]; photoUrl?: string;
 };
 

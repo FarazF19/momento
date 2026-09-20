@@ -8,5 +8,7 @@ export default async function ListPage() {
   const account = await currentAccount();
   if (!account) redirect("/login?mode=signup&role=creator");
   if (account.profile.role !== "creator") return <><Header /><main className="account-page shell"><h1>This is for creator accounts.</h1><p>Your brand account can browse placements and send offers.</p><Link href="/discover" className="button button-primary">Explore ad spaces</Link></main></>;
+  const { data: approval } = await account.client.from("verification_applications").select("status").eq("user_id",account.user.id).maybeSingle();
+  if (approval?.status !== "approved") redirect("/verify?message=Complete+your+creator+review+before+publishing+your+first+placement.");
   return <><Header /><ListingForm name={account.profile.name} email={account.user.email!} /></>;
 }

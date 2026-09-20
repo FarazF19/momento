@@ -21,7 +21,7 @@ export function asPlacement(row: ListingRow): Moment {
     tagline: d.visibility, surface: d.surface, dimensions: d.dimensions, duration: row.start_date + " – " + row.end_date,
     itinerary: d.itinerary, visibility: d.visibility, proof: d.proof, production: d.production, exclusivity: d.exclusivity,
     isDemo: false, photoUrl: d.photoUrl, creator: { name: row.creator_name, handle: row.handle, niche: row.audience,
-      followers: new Intl.NumberFormat("en", { notation: "compact" }).format(row.followers), avatar: row.creator_name.slice(0, 2).toUpperCase() },
+      portraitUrl: d.portraitUrl, socialUrl: d.socialUrl, followers: new Intl.NumberFormat("en", { notation: "compact" }).format(row.followers), avatar: row.creator_name.slice(0, 2).toUpperCase() },
     color: "#f5d8c4", accent: "#ffe04d", fit: [],
     inventory: [{ id: "placement", name: d.surface, description: d.dimensions, timing: row.start_date + " – " + row.end_date, reach: "No guaranteed impressions", price: row.asking_price_minor / 100, remaining: 1 }],
   };

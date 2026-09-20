@@ -16,11 +16,11 @@ export function HeroVideo() {
   }, []);
   return (
     <figure className="hero-explainer">
-      <video ref={ref} muted loop playsInline controls preload="metadata" poster="/placements/hero-poster.png" aria-label="How Momento works: creators list ad space on everyday items, brands make offers, and creators provide placement proof" aria-describedby="hero-video-caption">
-        <source src="/placements/momento-explainer.mp4" type="video/mp4" />
+      <video ref={ref} muted loop playsInline controls preload="metadata" poster="/creators/film-poster.jpg" aria-label="How Momento works: creators list ad space on everyday items, brands make offers, and creators provide placement proof" aria-describedby="hero-video-caption">
+        <source src="/creators/momento-film.mp4" type="video/mp4" />
         Your browser cannot play this video. Creators list ad space, brands make an offer, and creators provide photo proof.
       </video>
-      <figcaption id="hero-video-caption">16 seconds to get it. List a space → agree an offer → show the placement. Silent, captioned concept film.</figcaption>
+      <figcaption id="hero-video-caption">Your brand. Their everyday. A 16-second concept film with fictional creators and AI-created imagery.</figcaption>
     </figure>
   );
 }

@@ -59,7 +59,7 @@ export default function ListingForm({ name, email }: { name: string; email: stri
               <label><span>Account email (kept private)</span><input name="email" type="email" value={email} readOnly /></label>
               <label><span>Social handle</span><input name="handle" required placeholder="@mayacitynotes" /></label>
               <label><span>Main audience</span><input name="audience" required placeholder="Design & city culture" /></label>
-              <label><span>Audience size</span><input name="followers" type="number" min="0" required placeholder="125000" /></label>
+              <label><span>Audience size</span><input name="followers" type="number" min="10000" required placeholder="125000" /></label>
               <label><span>Country of residence</span><input name="creatorCountry" required placeholder="United Kingdom" /></label>
             </div>
           </div>

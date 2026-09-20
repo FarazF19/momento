@@ -10,7 +10,7 @@ const valid = {
   deliverable: "Three hours per day", reach: "Not measured", deliverableDetails: "Daily dated photos",
   placementCategory: "Bags", item: "Backpack", surface: "Front panel", dimensions: "10 x 8 cm",
   photoUrl: "https://example.com/bag.jpg", production: "Brand supplies patch", exclusivity: "One patch",
-  followers: "0", price: "60.50",
+  followers: "10000", price: "60.50",
 };
 const validate = (body) => validatePlacementSubmission(body, "2026-09-19");
 
@@ -23,7 +23,7 @@ test("all physical categories have explicitly fictional examples", () => {
     assert.ok(item.inventory[0].price > 0);
   }
 });
-test("accepts physical ad space without a minimum following", () => assert.equal(validate(valid), null));
+test("accepts physical ad space from a creator meeting the audience threshold", () => assert.equal(validate(valid), null));
 test("requires surface, dimensions, photo, production, and proof", () => {
   for (const key of ["surface", "dimensions", "photoUrl", "production", "exclusivity", "deliverableDetails"])
     assert.ok(validate({ ...valid, [key]: "" }));
@@ -39,5 +39,5 @@ test("validates email and photo links", () => {
 });
 test("rejects invalid asking prices and audience sizes", () => {
   for (const price of ["", "0", "-10", "100001", "1.001", "Infinity"]) assert.ok(validate({ ...valid, price }));
-  for (const followers of ["", "-1", "1.5", "9999999999"]) assert.ok(validate({ ...valid, followers }));
+  for (const followers of ["", "-1", "1.5", "9999", "9999999999"]) assert.ok(validate({ ...valid, followers }));
 });

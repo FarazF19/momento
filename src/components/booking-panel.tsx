@@ -64,7 +64,7 @@ export function BookingPanel({ moment }: { moment: Moment }) {
           <h2 id="booking-title">Bid on the space.</h2>
           <p>{moment.surface} for {moment.duration}. Propose a price and describe your brand and intended placement.</p>
           <form onSubmit={submit}>
-            {!moment.isDemo && <p>Your offer uses your verified brand account. <Link className="underlined-link" href="/login?mode=signup&role=brand">Create an account</Link> or <Link className="underlined-link" href="/login">sign in</Link>.</p>}
+            {!moment.isDemo && <p>Your brand needs marketplace approval to send an offer. <Link className="underlined-link" href="/login?mode=signup&role=brand">Create an account</Link> or <Link className="underlined-link" href="/verify">check your application</Link>.</p>}
             <label><span>Your offer for the full period (USD)</span><input name="offerAmount" type="number" min="1" max="100000" step="0.01" required defaultValue={price} /></label>
             <label><span>Brand, artwork, and placement requirements</span><textarea name="campaign" required minLength={10} maxLength={1500} rows={4} placeholder="What should appear on the patch or sticker? Confirm dates, shipping, visibility, and any changes you want to propose." /></label>
             {message && <div className="form-message" role="status">{message}</div>}

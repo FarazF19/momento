@@ -6,6 +6,8 @@ export async function POST(request: Request) {
   const account = await currentAccount();
   if (!account) return NextResponse.json({ error: "Sign in with a verified brand account to send an offer." }, { status: 401 });
   if (account.profile.role !== "brand") return NextResponse.json({ error: "Only brand accounts can make offers." }, { status: 403 });
+  const { data: approval } = await account.client.from("verification_applications").select("status").eq("user_id",account.user.id).maybeSingle();
+  if (approval?.status !== "approved") return NextResponse.json({ error: "Complete your brand review at /verify before sending an offer." }, { status: 403 });
   const body = await request.json().catch(() => null);
   const dollars = Number(body?.offerAmount);
   const amount = Math.round(dollars * 100);

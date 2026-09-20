@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Header } from "@/components/header";
 import { MomentCard } from "@/components/moment-card";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
-import { PlacementShowcase } from "@/components/placement-showcase";
+import { HeroVideo } from "@/components/hero-video";
 import { moments } from "@/lib/moments";
 import { publishedPlacements } from "@/lib/marketplace";
 export const dynamic = "force-dynamic";
@@ -30,7 +30,7 @@ export default async function Home() {
             </div>
           </div>
           <div className="hero-feature">
-            <PlacementShowcase />
+            <HeroVideo />
           </div>
         </section>
 
@@ -45,7 +45,7 @@ export default async function Home() {
               <h2>Meet the people.<br />Picture your brand.</h2>
             </div>
             <div className="section-copy">
-              <p>{placements.length ? "Find a creator whose everyday fits your brand. See where they’re headed, what space they offer, and what it costs." : "From café regulars to frequent flyers, imagine who could carry your brand next. These fictional profiles show how a placement works."}</p>
+              <p>{placements.length ? "Find a creator whose everyday fits your brand. See where they’re headed, what space they offer, and what it costs." : "From café regulars to frequent flyers, imagine who could carry your brand next. Fictional profiles and AI-created portraits show how a placement works."}</p>
               <Link href="/discover" className="underlined-link">Explore the marketplace <ArrowIcon /></Link>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default async function Home() {
       <footer className="site-footer">
         <div className="shell footer-inner">
           <div><strong>MOMENTO</strong><p>Your brand. Their everyday.</p></div>
-          <div><Link href="/discover">Explore</Link><Link href="/list">For creators</Link></div>
+          <div><Link href="/discover">Explore</Link><Link href="/creators">For creators</Link><Link href="/trust">How we review members</Link></div>
           <small>© 2026 Momento. MVP preview.</small>
         </div>
       </footer>

@@ -6,7 +6,7 @@ export function validatePlacementSubmission(body: Record<string, unknown>, today
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(body.email))) return "Enter a valid work email.";
   const price = Number(body.price);
   const followers = Number(body.followers);
-  if (body.followers === "" || !Number.isSafeInteger(followers) || followers < 0 || followers > 2147483647) return "Audience size must be a non-negative whole number.";
+  if (body.followers === "" || !Number.isSafeInteger(followers) || followers < 10000 || followers > 2147483647) return "Creators need at least 10,000 followers on one supported social account.";
   if (!Number.isFinite(price) || price < 1 || price > 100000 || Math.abs(price * 100 - Math.round(price * 100)) > 0.000001) return "Enter an asking price between $1 and $100,000 with at most two decimal places.";
   const start = String(body.startDate);
   const end = String(body.endDate);

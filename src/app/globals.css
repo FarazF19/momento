@@ -559,3 +559,56 @@ summary { cursor: pointer; line-height: 1.5; }
   .hero-copy h1 { font-size: clamp(42px, 11vw, 64px); }
   .brand-copy h2 { margin-bottom: 20px; }
 }
+
+/* Creator-first editorial cards */
+.people-card { overflow: hidden; border: 1px solid #e7e1d6; border-radius: 20px; background: #fffdf8; transition: transform .2s, box-shadow .2s; }
+.people-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px #332a1610; }
+.people-photo { position: relative; display: block; aspect-ratio: 1; overflow: hidden; }
+.creator-portrait { display: block; width: 100%; height: 100%; object-fit: cover; background-repeat: no-repeat; }
+.people-label { position: absolute; top: 14px; right: 14px; background: #fffdf5ec; border-radius: 30px; padding: 7px 11px; font-size: 11px; }
+.people-location { position: absolute; left: 16px; bottom: 16px; display: flex; align-items: center; gap: 5px; color: #fff; font-size: 13px; border-radius: 20px; background: #28241ecc; padding: 7px 11px; }
+.people-location svg { width: 14px; height: 14px; }
+.people-body { padding: 20px; }
+.people-name { display: flex; justify-content: space-between; align-items: center; }
+.people-name h3 { font-size: 25px; line-height: 1.15; letter-spacing: -.04em; margin: 0; }
+.people-name > span { color: #a95638; font-size: 22px; }
+.people-niche { color: #615d55; font-size: 14px; margin: 7px 0; }
+.people-audience { font-size: 12px; margin: 10px 0 18px; color: #3c3932; }
+.people-audience span { color: #79736a; }
+.people-plan { border-top: 1px solid #eae5da; padding-top: 17px; min-height: 108px; }
+.people-plan > span { color: #a14b31; font-size: 10px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+.people-plan p { font-size: 14px; line-height: 1.55; margin: 7px 0 14px; }
+.people-space { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.people-space span { background: #f1eee5; border-radius: 20px; padding: 6px 9px; font-size: 11px; }
+.people-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 17px; border-top: 1px solid #eae5da; }
+.people-footer strong { font-size: 23px; letter-spacing: -.03em; }
+.people-footer small { display: block; font-size: 10px; color: #716c61; margin-top: 3px; }
+.people-footer a { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 650; }
+.people-footer svg { width: 17px; }
+.portrait-initials { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; }
+.portrait-initials > span { font-size: 80px; font-family: Georgia, serif; }
+.portrait-initials small { font-size: 12px; }
+.detail-creator-photo { position: relative; aspect-ratio: 1; max-width: 640px; overflow: hidden; border-radius: 24px; }
+.hero-explainer video { aspect-ratio: 4 / 5; object-fit: cover; border-radius: 24px; border: 0; box-shadow: 0 20px 70px #3b2d1515; max-width: 480px; max-height: none; margin-inline: auto; }
+.hero-explainer figcaption { font-size: 11px; line-height: 1.6; margin-top: 12px; }
+@media (prefers-reduced-motion: reduce) { .people-card { transition: none; } .people-card:hover { transform: none; } }
+.verification-page { padding-top: 56px; padding-bottom: 100px; max-width: 1100px; }
+.verification-page > .eyebrow { margin-top: 32px; }
+.verification-page > h1 { font-size: clamp(36px, 5vw, 68px); line-height: 1.12; letter-spacing: -.05em; max-width: 850px; margin: 24px 0; }
+.verification-lede { max-width: 720px; font-size: 19px; line-height: 1.7; color: #696358; }
+.verification-panel, .verification-status { padding: clamp(22px,4vw,38px); border: 1px solid #e3ded3; border-radius: 22px; background: #fffdf8; margin: 28px 0; }
+.verification-panel h2 { font-size: 28px; line-height: 1.2; letter-spacing: -.03em; margin: 0 0 20px; }
+.verification-panel p, .verification-panel li, .verification-status p { line-height: 1.7; color: #615d55; }
+.verification-panel li { margin: 12px 0; }
+.verification-panel ul { padding-left: 20px; }
+.verification-form { display: grid; gap: 20px; }
+.verification-form h2:not(:first-child) { margin: 22px 0 0; }
+.verification-form label { display: grid; gap: 9px; font-size: 14px; font-weight: 600; }
+.verification-form input:not([type=checkbox]), .verification-form textarea, .verification-form select { width: 100%; padding: 14px; background: #fff; border: 1px solid #cdc7ba; border-radius: 10px; font: inherit; }
+.verification-form .check-label { display: flex; align-items: flex-start; gap: 10px; font-weight: 400; line-height: 1.6; }
+.check-label input { margin-top: 5px; flex-shrink: 0; }
+.verification-form small { color: #716b60; font-weight: 400; line-height: 1.5; }
+.ownership-code { display: block; font-size: 17px; letter-spacing: .03em; padding: 18px; border-radius: 12px; background: #f4ebd8; overflow-wrap: anywhere; }
+.verification-status { background: #f2eddf; }
+.trust-columns { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+@media (max-width:760px) { .trust-columns { grid-template-columns: 1fr; gap: 0; } .verification-page { padding-top: 32px; } }
